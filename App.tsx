@@ -1,5 +1,9 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 
 export default function App() {
-  return <View> Whale Done</View>;
+  return (
+    <View>
+      <Text>Whale Done</Text>
+    </View>
+  );
 }
