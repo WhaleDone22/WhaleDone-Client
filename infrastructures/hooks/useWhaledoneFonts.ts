@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 import { useFonts } from 'expo-font';
 import {
   useFonts as useInterFonts,
@@ -12,8 +13,8 @@ import {
   Inter_900Black,
 } from '@expo-google-fonts/inter';
 
-export function useWhaledoneFonts() {
-  let [interFontsLoaded] = useInterFonts({
+export default function useWhaledoneFonts() {
+  const [interFontsLoaded] = useInterFonts({
     Inter_100Thin,
     Inter_200ExtraLight,
     Inter_300Light,
@@ -24,7 +25,7 @@ export function useWhaledoneFonts() {
     Inter_800ExtraBold,
     Inter_900Black,
   });
-  let [fontsLoaded] = useFonts({
+  const [fontsLoaded] = useFonts({
     Pretendard: require('../../assets/fonts/Pretendard.ttf'),
     'Pretendard-Black': require('../../assets/fonts/Pretendard-Black.otf'),
     'Pretendard-Light': require('../../assets/fonts/Pretendard-Light.otf'),

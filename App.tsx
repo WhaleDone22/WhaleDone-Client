@@ -1,6 +1,6 @@
 import { Text, View } from 'react-native';
 import AppLoading from 'expo-app-loading';
-import { useWhaledoneFonts } from './infrastructures/hooks/useWhaledoneFonts';
+import useWhaledoneFonts from './infrastructures/hooks/useWhaledoneFonts';
 
 export default function App() {
   const { interFontsLoaded, fontsLoaded } = useWhaledoneFonts();
