@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { Text } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 function GroupCodeCreateScreen() {
   return (
-    <View>
+    <SafeAreaView>
       <Text>GroupCodeCreate</Text>
-    </View>
+    </SafeAreaView>
   );
 }
 

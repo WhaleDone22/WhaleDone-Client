@@ -2,12 +2,12 @@ import React from 'react';
 import { Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-function SignUpMainScreen() {
+function MapDetailScreen() {
   return (
     <SafeAreaView>
-      <Text>SignUpMain</Text>
+      <Text>MapDetail</Text>
     </SafeAreaView>
   );
 }
 
-export default SignUpMainScreen;
+export default MapDetailScreen;
