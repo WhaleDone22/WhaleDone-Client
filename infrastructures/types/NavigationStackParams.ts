@@ -1,4 +1,6 @@
-type NavigationStackParams = {
+/* eslint no-undef: "off" */
+
+export type NavigationStackParams = {
   SignUpMain: undefined;
   Login: undefined;
   EmailInput: undefined;

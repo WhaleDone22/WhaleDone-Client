@@ -1,12 +1,17 @@
 import React from 'react';
 import { Image, TouchableOpacity } from 'react-native';
 
-function ButtonBack(props: { onPress: () => void; theme?: 'white' | 'black' }) {
-  const { onPress, theme = 'black' } = props;
-  const iconSrc =
-    theme === 'white'
-      ? require(`../../assets/ic-move-back-white.png`)
-      : require(`../../assets/ic-move-back-black.png`);
+type ButtonBackProp = {
+  onPress: () => void;
+  theme?: 'white' | 'black';
+};
+
+const IconMoveBackWhite = require(`../../assets/ic-move-back-white.png`);
+const IconMoveBackBlack = require(`../../assets/ic-move-back-black.png`);
+
+function ButtonBack(props: ButtonBackProp) {
+  const { onPress, theme } = props;
+  const iconSrc = theme === 'white' ? IconMoveBackWhite : IconMoveBackBlack;
 
   return (
     <TouchableOpacity onPress={onPress}>
@@ -14,5 +19,9 @@ function ButtonBack(props: { onPress: () => void; theme?: 'white' | 'black' }) {
     </TouchableOpacity>
   );
 }
+
+ButtonBack.defaultProps = {
+  theme: 'black',
+};
 
 export default ButtonBack;

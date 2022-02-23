@@ -2,6 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
 import { Button, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonBack from '../../components/ButtonBack';
 
 type GroupCodeCreateScreenProp = NativeStackScreenProps<

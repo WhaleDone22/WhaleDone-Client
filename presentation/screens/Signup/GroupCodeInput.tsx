@@ -3,6 +3,7 @@ import React from 'react';
 import { Button, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NavigationActions, StackActions } from 'react-navigation';
+import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonBack from '../../components/ButtonBack';
 
 type GroupCodeInputScreenProp = NativeStackScreenProps<

@@ -3,6 +3,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Text, Button } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ButtonBack from '../../components/ButtonBack';
+import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 
 type PhoneInputScreenProp = NativeStackScreenProps<
   NavigationStackParams,

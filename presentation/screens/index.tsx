@@ -6,7 +6,7 @@ import MapDetailScreen from './Main/MapDetail';
 import MyPageScreen from './Main/Mypage';
 import NoticeScreen from './Main/Notice';
 import RecordScreen from './Main/Record';
-//import OnboardingScreen from './AppInit/Onboarding';
+// import OnboardingScreen from './AppInit/Onboarding';
 import EmailInputScreen from './Signup/EmailInput';
 import GreetScreen from './Signup/Greet';
 import GroupCodeCreateScreen from './Signup/GroupCodeCreate';

@@ -5,7 +5,7 @@ module.exports = {
     'plugin:prettier/recommended',
     'eslint-config-prettier',
   ],
-  parser: '@babel/eslint-parser',
+  parser: '@typescript-eslint/parser',
   ignorePatterns: ['**/node_modules/**'],
   rules: {
     'react/jsx-filename-extension': [

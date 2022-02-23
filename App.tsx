@@ -1,6 +1,6 @@
 import AppLoading from 'expo-app-loading';
-import useWhaledoneFonts from './infrastructures/hooks/useWhaledoneFonts';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import useWhaledoneFonts from './infrastructures/hooks/useWhaledoneFonts';
 import Screens from './presentation/screens';
 
 export default function App() {
