@@ -1,11 +1,20 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
-import { Text } from 'react-native';
+import { Button, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import ButtonBack from '../../components/ButtonBack';
 
-function GreetScreen() {
+type GreetScreenProp = NativeStackScreenProps<NavigationStackParams, 'Greet'>;
+
+function GreetScreen({ navigation }: GreetScreenProp) {
   return (
     <SafeAreaView>
+      <ButtonBack onPress={() => navigation.goBack()} />
       <Text>Greet</Text>
+      <Button
+        title="다음"
+        onPress={() => navigation.navigate('GroupCodeInput')}
+      />
     </SafeAreaView>
   );
 }

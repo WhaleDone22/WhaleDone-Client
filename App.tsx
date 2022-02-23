@@ -1,7 +1,6 @@
 import AppLoading from 'expo-app-loading';
 import useWhaledoneFonts from './infrastructures/hooks/useWhaledoneFonts';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { NavigationContainer } from '@react-navigation/native';
 import Screens from './presentation/screens';
 
 export default function App() {
@@ -13,9 +12,7 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <NavigationContainer>
-        <Screens />
-      </NavigationContainer>
+      <Screens />
     </SafeAreaProvider>
   );
 }

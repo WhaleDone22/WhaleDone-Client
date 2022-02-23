@@ -1,11 +1,23 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
-import { Text } from 'react-native';
+import { Button, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import ButtonBack from '../../components/ButtonBack';
 
-function EmailInputScreen() {
+type EmailInputScreenProp = NativeStackScreenProps<
+  NavigationStackParams,
+  'EmailInput'
+>;
+
+function EmailInputScreen({ navigation }: EmailInputScreenProp) {
   return (
     <SafeAreaView>
+      <ButtonBack onPress={() => navigation.goBack()} />
       <Text>EmailInput</Text>
+      <Button
+        title="다음"
+        onPress={() => navigation.navigate('PasswordInput')}
+      />
     </SafeAreaView>
   );
 }

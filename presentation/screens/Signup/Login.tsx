@@ -1,22 +1,19 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
-import { Button, Text } from 'react-native';
+import { Text, Button } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NavigationActions, StackActions } from 'react-navigation';
 import ButtonBack from '../../components/ButtonBack';
 
-type GroupCodeInputScreenProp = NativeStackScreenProps<
-  NavigationStackParams,
-  'GroupCodeInput'
->;
+type LoginScreenProp = NativeStackScreenProps<NavigationStackParams, 'Login'>;
 
-function GroupCodeInputScreen({ navigation }: GroupCodeInputScreenProp) {
+function LoginScreen({ navigation }: LoginScreenProp) {
   return (
     <SafeAreaView>
       <ButtonBack onPress={() => navigation.goBack()} />
-      <Text>GroupCodeInput</Text>
+      <Text>Login</Text>
       <Button
-        title="입장하기"
+        title="로그인"
         onPress={() =>
           navigation.dispatch(
             StackActions.reset({
@@ -26,12 +23,8 @@ function GroupCodeInputScreen({ navigation }: GroupCodeInputScreenProp) {
           )
         }
       />
-      <Button
-        title="새로운 초대 코드 만들기"
-        onPress={() => navigation.navigate('GroupCodeCreate')}
-      />
     </SafeAreaView>
   );
 }
 
-export default GroupCodeInputScreen;
+export default LoginScreen;

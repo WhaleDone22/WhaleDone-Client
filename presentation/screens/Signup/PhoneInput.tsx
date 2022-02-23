@@ -4,19 +4,19 @@ import { Text, Button } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ButtonBack from '../../components/ButtonBack';
 
-type NicknameInputScreenProp = NativeStackScreenProps<
+type PhoneInputScreenProp = NativeStackScreenProps<
   NavigationStackParams,
-  'NicknameInput'
+  'PhoneInput'
 >;
 
-function NicknameInputScreen({ navigation }: NicknameInputScreenProp) {
+function PhoneInputScreen({ navigation }: PhoneInputScreenProp) {
   return (
     <SafeAreaView>
       <ButtonBack onPress={() => navigation.goBack()} />
-      <Text>NicknameInput</Text>
-      <Button title="다음" onPress={() => navigation.navigate('EmailInput')} />
+      <Text>PhoneInput</Text>
+      <Button title="다음" onPress={() => navigation.navigate('PhoneAuth')} />
     </SafeAreaView>
   );
 }
 
-export default NicknameInputScreen;
+export default PhoneInputScreen;

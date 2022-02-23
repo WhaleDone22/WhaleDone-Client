@@ -1,5 +1,5 @@
-import { createStackNavigator } from '@react-navigation/stack';
-import React from 'react';
+import { createStackNavigator } from 'react-navigation-stack';
+import { createAppContainer } from 'react-navigation';
 import BottomNavigation from './Main/BottomNavigation';
 import EditProfileScreen from './Main/EditProfile';
 import MapDetailScreen from './Main/MapDetail';
@@ -12,49 +12,37 @@ import GreetScreen from './Signup/Greet';
 import GroupCodeCreateScreen from './Signup/GroupCodeCreate';
 import GroupCodeInputScreen from './Signup/GroupCodeInput';
 import GroupCodeShareScreen from './Signup/GroupCodeShare';
+import LoginScreen from './Signup/Login';
 import SignUpMainScreen from './Signup/Main';
 import NicknameInputScreen from './Signup/NicknameInput';
 import PasswordInputScreen from './Signup/PasswordInput';
 import PhoneAuthScreen from './Signup/PhoneAuth';
+import PhoneInputScreen from './Signup/PhoneInput';
 
-const Stack = createStackNavigator();
+const AppNavigator = createStackNavigator(
+  {
+    Main: { screen: BottomNavigation },
+    SignUpMain: { screen: SignUpMainScreen },
+    EmailInput: { screen: EmailInputScreen },
+    Greet: { screen: GreetScreen },
+    GroupCodeCreate: { screen: GroupCodeCreateScreen },
+    GroupCodeInput: { screen: GroupCodeInputScreen },
+    GroupCodeShare: { screen: GroupCodeShareScreen },
+    NicknameInput: { screen: NicknameInputScreen },
+    PasswordInput: { screen: PasswordInputScreen },
+    PhoneInput: { screen: PhoneInputScreen },
+    PhoneAuth: { screen: PhoneAuthScreen },
+    Login: { screen: LoginScreen },
+    EditProfile: { screen: EditProfileScreen },
+    MapDetail: { screen: MapDetailScreen },
+    MyPage: { screen: MyPageScreen },
+    Notice: { screen: NoticeScreen },
+    Record: { screen: RecordScreen },
+  },
+  {
+    initialRouteName: 'SignUpMain',
+    headerMode: 'none',
+  },
+);
 
-function Screens() {
-  const isUserLoggedIn = true;
-  console.log(isUserLoggedIn);
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {/*<Stack.Screen name="Onboarding" component={OnboardingScreen} />*/}
-      {!isUserLoggedIn && (
-        <>
-          <Stack.Screen name="SignUpMain" component={SignUpMainScreen} />
-          <Stack.Screen name="EmailInput" component={EmailInputScreen} />
-          <Stack.Screen name="Greet" component={GreetScreen} />
-          <Stack.Screen
-            name="GroupCodeCreate"
-            component={GroupCodeCreateScreen}
-          />
-          <Stack.Screen
-            name="GroupCodeInput"
-            component={GroupCodeInputScreen}
-          />
-          <Stack.Screen
-            name="GroupCodeShare"
-            component={GroupCodeShareScreen}
-          />
-          <Stack.Screen name="NicknameInput" component={NicknameInputScreen} />
-          <Stack.Screen name="PasswordInput" component={PasswordInputScreen} />
-          <Stack.Screen name="PhoneAuth" component={PhoneAuthScreen} />
-        </>
-      )}
-      <Stack.Screen name="Main" component={BottomNavigation} />
-      <Stack.Screen name="EditProfile" component={EditProfileScreen} />
-      <Stack.Screen name="MapDetail" component={MapDetailScreen} />
-      <Stack.Screen name="MyPage" component={MyPageScreen} />
-      <Stack.Screen name="Notice" component={NoticeScreen} />
-      <Stack.Screen name="Record" component={RecordScreen} />
-    </Stack.Navigator>
-  );
-}
-
-export default Screens;
+export default createAppContainer(AppNavigator);
