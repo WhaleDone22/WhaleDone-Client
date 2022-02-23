@@ -6,6 +6,7 @@ import MapScreen from './Map';
 import HomeScreen from './Home';
 import { createAppContainer } from 'react-navigation';
 
+// https://reactnavigation.org/docs/2.x/bottom-tab-navigator
 const TabNavigator = createBottomTabNavigator(
   {
     Home: HomeScreen,
@@ -13,6 +14,9 @@ const TabNavigator = createBottomTabNavigator(
     Feed: FeedScreen,
   },
   {
+    tabBarOptions: {
+      activeTintColor: '#000000',
+    },
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused }) => {
         switch (navigation.state.routeName) {

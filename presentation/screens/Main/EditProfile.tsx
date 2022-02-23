@@ -12,8 +12,8 @@ type EditProfileScreenProp = NativeStackScreenProps<
 function EditProfileScreen({ navigation }: EditProfileScreenProp) {
   return (
     <SafeAreaView>
-      <Text>EditProfile</Text>
       <ButtonBack onPress={() => navigation.goBack()} />
+      <Text>EditProfile</Text>
     </SafeAreaView>
   );
 }
