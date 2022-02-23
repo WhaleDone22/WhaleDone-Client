@@ -1,6 +1,7 @@
-import { Text, View } from 'react-native';
 import AppLoading from 'expo-app-loading';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import useWhaledoneFonts from './infrastructures/hooks/useWhaledoneFonts';
+import Screens from './presentation/screens';
 
 export default function App() {
   const { interFontsLoaded, fontsLoaded } = useWhaledoneFonts();
@@ -10,8 +11,8 @@ export default function App() {
   }
 
   return (
-    <View>
-      <Text>Whale Done</Text>
-    </View>
+    <SafeAreaProvider>
+      <Screens />
+    </SafeAreaProvider>
   );
 }
