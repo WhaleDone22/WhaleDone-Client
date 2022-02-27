@@ -26,6 +26,7 @@ module.exports = {
         json: 'never',
       },
     ],
+    'react/jsx-props-no-spreading': 0,
   },
   settings: {
     'import/resolver': { node: { extensions: ['.js', '.jsx', '.ts', '.tsx'] } },
