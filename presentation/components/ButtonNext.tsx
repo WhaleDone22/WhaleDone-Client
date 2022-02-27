@@ -12,7 +12,6 @@ const styles = StyleSheet.create({
   container: {
     borderRadius: 5,
     paddingVertical: 16,
-    flex: 1,
   },
   containerActivated: {
     backgroundColor: COLORS.BLUE_500,
