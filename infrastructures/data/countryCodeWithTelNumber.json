@@ -1,0 +1,1304 @@
+[
+  {
+    "countryNameKR ": "가나",
+    "countryNameEN ": "Ghana",
+    "countryPhoneNumber ": "233",
+    "countryCode ": "GH "
+  },
+  {
+    "countryNameKR ": "가봉",
+    "countryNameEN ": "Gabon",
+    "countryPhoneNumber ": "241",
+    "countryCode ": "GA "
+  },
+  {
+    "countryNameKR ": "가이아나",
+    "countryNameEN ": "Guyana",
+    "countryPhoneNumber ": "592",
+    "countryCode ": "GY "
+  },
+  {
+    "countryNameKR ": "감비아",
+    "countryNameEN ": "Gambia",
+    "countryPhoneNumber ": "220",
+    "countryCode ": "GM "
+  },
+  {
+    "countryNameKR ": "괌",
+    "countryNameEN ": "Guam",
+    "countryPhoneNumber ": "1671",
+    "countryCode ": "GU "
+  },
+  {
+    "countryNameKR ": "과들루프",
+    "countryNameEN ": "Guadeloupe",
+    "countryPhoneNumber ": "590",
+    "countryCode ": "GP "
+  },
+  {
+    "countryNameKR ": "과테말라",
+    "countryNameEN ": "Guatemala",
+    "countryPhoneNumber ": "502",
+    "countryCode ": "GT "
+  },
+  {
+    "countryNameKR ": "그레나다",
+    "countryNameEN ": "Grenada",
+    "countryPhoneNumber ": "1473",
+    "countryCode ": "GD "
+  },
+  {
+    "countryNameKR ": "그리스",
+    "countryNameEN ": "Greece",
+    "countryPhoneNumber ": "30",
+    "countryCode ": "GR "
+  },
+  {
+    "countryNameKR ": "그린란드",
+    "countryNameEN ": "Greenland",
+    "countryPhoneNumber ": "299",
+    "countryCode ": "GL "
+  },
+  {
+    "countryNameKR ": "기니",
+    "countryNameEN ": "Guinea",
+    "countryPhoneNumber ": "224",
+    "countryCode ": "GN "
+  },
+  {
+    "countryNameKR ": "기니비사우",
+    "countryNameEN ": "Guinea-Bissau",
+    "countryPhoneNumber ": "245",
+    "countryCode ": "GW "
+  },
+  {
+    "countryNameKR ": "나미비아",
+    "countryNameEN ": "Namibia",
+    "countryPhoneNumber ": "264",
+    "countryCode ": "NA "
+  },
+  {
+    "countryNameKR ": "나우루",
+    "countryNameEN ": "Nauru",
+    "countryPhoneNumber ": "674",
+    "countryCode ": "NR "
+  },
+  {
+    "countryNameKR ": "나이지리아",
+    "countryNameEN ": "Nigeria",
+    "countryPhoneNumber ": "234",
+    "countryCode ": "NG "
+  },
+  {
+    "countryNameKR ": "남수단",
+    "countryNameEN ": "South Sudan",
+    "countryPhoneNumber ": "211",
+    "countryCode ": "SS "
+  },
+  {
+    "countryNameKR ": "남아프리카 공화국",
+    "countryNameEN ": "South Africa",
+    "countryPhoneNumber ": "27",
+    "countryCode ": "ZA "
+  },
+  {
+    "countryNameKR ": "네덜란드",
+    "countryNameEN ": "the Netherlands",
+    "countryPhoneNumber ": "31",
+    "countryCode ": "NL "
+  },
+  {
+    "countryNameKR ": "네팔",
+    "countryNameEN ": "Nepal",
+    "countryPhoneNumber ": "977",
+    "countryCode ": "NP "
+  },
+  {
+    "countryNameKR ": "노르웨이",
+    "countryNameEN ": "Norway",
+    "countryPhoneNumber ": "47",
+    "countryCode ": "NO "
+  },
+  {
+    "countryNameKR ": "누벨칼레도니",
+    "countryNameEN ": "New Caledonia",
+    "countryPhoneNumber ": "687",
+    "countryCode ": "NC "
+  },
+  {
+    "countryNameKR ": "뉴질랜드",
+    "countryNameEN ": "New Zealand",
+    "countryPhoneNumber ": "64",
+    "countryCode ": "NZ "
+  },
+  {
+    "countryNameKR ": "니우에",
+    "countryNameEN ": "Niue",
+    "countryPhoneNumber ": "683",
+    "countryCode ": "NU "
+  },
+  {
+    "countryNameKR ": "니제르",
+    "countryNameEN ": "Niger",
+    "countryPhoneNumber ": "227",
+    "countryCode ": "NE "
+  },
+  {
+    "countryNameKR ": "니카라과",
+    "countryNameEN ": "Nicaragua",
+    "countryPhoneNumber ": "505",
+    "countryCode ": "NI "
+  },
+  {
+    "countryNameKR ": "대한민국",
+    "countryNameEN ": "Republic of Korea",
+    "countryPhoneNumber ": "82",
+    "countryCode ": "KR "
+  },
+  {
+    "countryNameKR ": "덴마크",
+    "countryNameEN ": "Denmark",
+    "countryPhoneNumber ": "45",
+    "countryCode ": "DK "
+  },
+  {
+    "countryNameKR ": "도미니카 공화국",
+    "countryNameEN ": "Dominican R.",
+    "countryPhoneNumber ": "1809",
+    "countryCode ": "DO "
+  },
+  {
+    "countryNameKR ": "도미니카 연방",
+    "countryNameEN ": "Dominica",
+    "countryPhoneNumber ": "1767",
+    "countryCode ": "DM "
+  },
+  {
+    "countryNameKR ": "독일",
+    "countryNameEN ": "Germany",
+    "countryPhoneNumber ": "49",
+    "countryCode ": "DE "
+  },
+  {
+    "countryNameKR ": "동티모르",
+    "countryNameEN ": "East Timor",
+    "countryPhoneNumber ": "670",
+    "countryCode ": "TL "
+  },
+  {
+    "countryNameKR ": "라오스",
+    "countryNameEN ": "Laos",
+    "countryPhoneNumber ": "856",
+    "countryCode ": "LA "
+  },
+  {
+    "countryNameKR ": "라이베리아",
+    "countryNameEN ": "Liberia",
+    "countryPhoneNumber ": "231",
+    "countryCode ": "LR "
+  },
+  {
+    "countryNameKR ": "라트비아",
+    "countryNameEN ": "Latvia",
+    "countryPhoneNumber ": "371",
+    "countryCode ": "LV "
+  },
+  {
+    "countryNameKR ": "러시아",
+    "countryNameEN ": "Russia",
+    "countryPhoneNumber ": "7",
+    "countryCode ": "RU "
+  },
+  {
+    "countryNameKR ": "레바논",
+    "countryNameEN ": "Lebanon",
+    "countryPhoneNumber ": "961",
+    "countryCode ": "LB "
+  },
+  {
+    "countryNameKR ": "레소토",
+    "countryNameEN ": "Lesotho",
+    "countryPhoneNumber ": "266",
+    "countryCode ": "LS "
+  },
+  {
+    "countryNameKR ": "루마니아",
+    "countryNameEN ": "Romania",
+    "countryPhoneNumber ": "40",
+    "countryCode ": "RO "
+  },
+  {
+    "countryNameKR ": "룩셈부르크",
+    "countryNameEN ": "Luxembourg",
+    "countryPhoneNumber ": "352",
+    "countryCode ": "LU "
+  },
+  {
+    "countryNameKR ": "르완다",
+    "countryNameEN ": "Rwanda",
+    "countryPhoneNumber ": "250",
+    "countryCode ": "RW "
+  },
+  {
+    "countryNameKR ": "리비아",
+    "countryNameEN ": "Libya",
+    "countryPhoneNumber ": "218",
+    "countryCode ": "LY "
+  },
+  {
+    "countryNameKR ": "리투아니아",
+    "countryNameEN ": "Lithuania",
+    "countryPhoneNumber ": "370",
+    "countryCode ": "LT "
+  },
+  {
+    "countryNameKR ": "리히텐슈타인",
+    "countryNameEN ": "Liechtenstein",
+    "countryPhoneNumber ": "423",
+    "countryCode ": "LI "
+  },
+  {
+    "countryNameKR ": "마다가스카르",
+    "countryNameEN ": "Madagascar",
+    "countryPhoneNumber ": "261",
+    "countryCode ": "MG "
+  },
+  {
+    "countryNameKR ": "마르티니크",
+    "countryNameEN ": "Martinique",
+    "countryPhoneNumber ": "596",
+    "countryCode ": "MQ "
+  },
+  {
+    "countryNameKR ": "마셜 제도",
+    "countryNameEN ": "Marshall Islands",
+    "countryPhoneNumber ": "692",
+    "countryCode ": "MH "
+  },
+  {
+    "countryNameKR ": "마요트",
+    "countryNameEN ": "Mayotte",
+    "countryPhoneNumber ": "269",
+    "countryCode ": "YT "
+  },
+  {
+    "countryNameKR ": "마카오",
+    "countryNameEN ": "Macao",
+    "countryPhoneNumber ": "853",
+    "countryCode ": "MO "
+  },
+  {
+    "countryNameKR ": "말라위",
+    "countryNameEN ": "Malawi",
+    "countryPhoneNumber ": "265",
+    "countryCode ": "MW "
+  },
+  {
+    "countryNameKR ": "말레이시아",
+    "countryNameEN ": "Malaysia",
+    "countryPhoneNumber ": "60",
+    "countryCode ": "MY "
+  },
+  {
+    "countryNameKR ": "말리",
+    "countryNameEN ": "Mali",
+    "countryPhoneNumber ": "223",
+    "countryCode ": "ML "
+  },
+  {
+    "countryNameKR ": "멕시코",
+    "countryNameEN ": "Mexico",
+    "countryPhoneNumber ": "52",
+    "countryCode ": "MX "
+  },
+  {
+    "countryNameKR ": "모나코",
+    "countryNameEN ": "Monaco",
+    "countryPhoneNumber ": "377",
+    "countryCode ": "MC "
+  },
+  {
+    "countryNameKR ": "모로코",
+    "countryNameEN ": "Morocco",
+    "countryPhoneNumber ": "212",
+    "countryCode ": "MA "
+  },
+  {
+    "countryNameKR ": "모리셔스",
+    "countryNameEN ": "Mauritius",
+    "countryPhoneNumber ": "230",
+    "countryCode ": "MU "
+  },
+  {
+    "countryNameKR ": "모리타니",
+    "countryNameEN ": "Mauritania",
+    "countryPhoneNumber ": "222",
+    "countryCode ": "MR "
+  },
+  {
+    "countryNameKR ": "모잠비크",
+    "countryNameEN ": "Mozambique",
+    "countryPhoneNumber ": "258",
+    "countryCode ": "MZ "
+  },
+  {
+    "countryNameKR ": "몬테네그로",
+    "countryNameEN ": "Montenegro",
+    "countryPhoneNumber ": "382",
+    "countryCode ": "ME "
+  },
+  {
+    "countryNameKR ": "몬트세랫",
+    "countryNameEN ": "Montserrat",
+    "countryPhoneNumber ": "1664",
+    "countryCode ": "MS "
+  },
+  {
+    "countryNameKR ": "몰도바",
+    "countryNameEN ": "Maldova",
+    "countryPhoneNumber ": "373",
+    "countryCode ": "MD "
+  },
+  {
+    "countryNameKR ": "몰디브",
+    "countryNameEN ": "Maldives",
+    "countryPhoneNumber ": "960",
+    "countryCode ": "MV "
+  },
+  {
+    "countryNameKR ": "몰타",
+    "countryNameEN ": "Malta",
+    "countryPhoneNumber ": "356",
+    "countryCode ": "MT "
+  },
+  {
+    "countryNameKR ": "몽골",
+    "countryNameEN ": "Mongolia",
+    "countryPhoneNumber ": "976",
+    "countryCode ": "MN "
+  },
+  {
+    "countryNameKR ": "미국",
+    "countryNameEN ": "United States of America",
+    "countryPhoneNumber ": "1",
+    "countryCode ": "US "
+  },
+  {
+    "countryNameKR ": "미얀마(버마",
+    "countryNameEN ": "Myanmar",
+    "countryPhoneNumber ": "95",
+    "countryCode ": "MM "
+  },
+  {
+    "countryNameKR ": "미크로네시아 연방",
+    "countryNameEN ": "Micronesia",
+    "countryPhoneNumber ": "691",
+    "countryCode ": "FM "
+  },
+  {
+    "countryNameKR ": "바누아투",
+    "countryNameEN ": "Vanuatu",
+    "countryPhoneNumber ": "678",
+    "countryCode ": "VU "
+  },
+  {
+    "countryNameKR ": "바레인",
+    "countryNameEN ": "Bahrain",
+    "countryPhoneNumber ": "973",
+    "countryCode ": "BH "
+  },
+  {
+    "countryNameKR ": "바베이도스",
+    "countryNameEN ": "Barbados",
+    "countryPhoneNumber ": "1246",
+    "countryCode ": "BB "
+  },
+  {
+    "countryNameKR ": "바티칸 시국",
+    "countryNameEN ": "Vatican",
+    "countryPhoneNumber ": "379",
+    "countryCode ": "VA "
+  },
+  {
+    "countryNameKR ": "바하마",
+    "countryNameEN ": "Bahamas",
+    "countryPhoneNumber ": "1242",
+    "countryCode ": "BS "
+  },
+  {
+    "countryNameKR ": "방글라데시",
+    "countryNameEN ": "Bangladesh",
+    "countryPhoneNumber ": "880",
+    "countryCode ": "BD "
+  },
+  {
+    "countryNameKR ": "버뮤다",
+    "countryNameEN ": "Bermuda",
+    "countryPhoneNumber ": "1441",
+    "countryCode ": "BM "
+  },
+  {
+    "countryNameKR ": "베냉",
+    "countryNameEN ": "Benin",
+    "countryPhoneNumber ": "229",
+    "countryCode ": "BJ "
+  },
+  {
+    "countryNameKR ": "베네수엘라",
+    "countryNameEN ": "Venezuela",
+    "countryPhoneNumber ": "58",
+    "countryCode ": "VE "
+  },
+  {
+    "countryNameKR ": "베트남",
+    "countryNameEN ": "Vietnam",
+    "countryPhoneNumber ": "84",
+    "countryCode ": "VN "
+  },
+  {
+    "countryNameKR ": "벨기에",
+    "countryNameEN ": "Belgium",
+    "countryPhoneNumber ": "32",
+    "countryCode ": "BE "
+  },
+  {
+    "countryNameKR ": "벨라루스",
+    "countryNameEN ": "Belarus",
+    "countryPhoneNumber ": "375",
+    "countryCode ": "BY "
+  },
+  {
+    "countryNameKR ": "벨리즈",
+    "countryNameEN ": "Belize",
+    "countryPhoneNumber ": "501",
+    "countryCode ": "BZ "
+  },
+  {
+    "countryNameKR ": "보스니아 헤르체고비나",
+    "countryNameEN ": "Bosnia and Herzegovina",
+    "countryPhoneNumber ": "387",
+    "countryCode ": "BA "
+  },
+  {
+    "countryNameKR ": "보츠와나",
+    "countryNameEN ": "Botswana",
+    "countryPhoneNumber ": "267",
+    "countryCode ": "BW "
+  },
+  {
+    "countryNameKR ": "볼리비아",
+    "countryNameEN ": "Bolivia",
+    "countryPhoneNumber ": "591",
+    "countryCode ": "BO "
+  },
+  {
+    "countryNameKR ": "부룬디",
+    "countryNameEN ": "Burundi",
+    "countryPhoneNumber ": "257",
+    "countryCode ": "BI "
+  },
+  {
+    "countryNameKR ": "부르키나파소",
+    "countryNameEN ": "Burkina Faso",
+    "countryPhoneNumber ": "226",
+    "countryCode ": "BF "
+  },
+  {
+    "countryNameKR ": "부탄",
+    "countryNameEN ": "Bhutan",
+    "countryPhoneNumber ": "975",
+    "countryCode ": "BT "
+  },
+  {
+    "countryNameKR ": "북마케도니아",
+    "countryNameEN ": "Macedonia",
+    "countryPhoneNumber ": "389",
+    "countryCode ": "MK "
+  },
+  {
+    "countryNameKR ": "불가리아",
+    "countryNameEN ": "Bulgaria",
+    "countryPhoneNumber ": "359",
+    "countryCode ": "BG "
+  },
+  {
+    "countryNameKR ": "브라질",
+    "countryNameEN ": "Brazil",
+    "countryPhoneNumber ": "55",
+    "countryCode ": "BR "
+  },
+  {
+    "countryNameKR ": "브루나이",
+    "countryNameEN ": "Brunei",
+    "countryPhoneNumber ": "673",
+    "countryCode ": "BN "
+  },
+  {
+    "countryNameKR ": "사모아",
+    "countryNameEN ": "Samoa",
+    "countryPhoneNumber ": "685",
+    "countryCode ": "WS "
+  },
+  {
+    "countryNameKR ": "사우디아라비아",
+    "countryNameEN ": "Saudi Arabia",
+    "countryPhoneNumber ": "966",
+    "countryCode ": "SA "
+  },
+  {
+    "countryNameKR ": "산마리노",
+    "countryNameEN ": "San Marino",
+    "countryPhoneNumber ": "378",
+    "countryCode ": "SM "
+  },
+  {
+    "countryNameKR ": "생피에르 미클롱",
+    "countryNameEN ": "Saint Pierre and Miquelon",
+    "countryPhoneNumber ": "508",
+    "countryCode ": "PM "
+  },
+  {
+    "countryNameKR ": "서사하라",
+    "countryNameEN ": "Western Sahara",
+    "countryPhoneNumber ": "212",
+    "countryCode ": "EH "
+  },
+  {
+    "countryNameKR ": "세네갈",
+    "countryNameEN ": "Senegal",
+    "countryPhoneNumber ": "221",
+    "countryCode ": "SN "
+  },
+  {
+    "countryNameKR ": "세르비아",
+    "countryNameEN ": "Serbia",
+    "countryPhoneNumber ": "381",
+    "countryCode ": "RS "
+  },
+  {
+    "countryNameKR ": "세이셸",
+    "countryNameEN ": "Seychelles",
+    "countryPhoneNumber ": "248",
+    "countryCode ": "SC "
+  },
+  {
+    "countryNameKR ": "세인트루시아",
+    "countryNameEN ": "Saint Lucia",
+    "countryPhoneNumber ": "1758",
+    "countryCode ": "LC "
+  },
+  {
+    "countryNameKR ": "세인트헬레나",
+    "countryNameEN ": "Saint Helena",
+    "countryPhoneNumber ": "290",
+    "countryCode ": "SH "
+  },
+  {
+    "countryNameKR ": "소말리아",
+    "countryNameEN ": "Somalia",
+    "countryPhoneNumber ": "252",
+    "countryCode ": "SO "
+  },
+  {
+    "countryNameKR ": "솔로몬 제도",
+    "countryNameEN ": "Solomon Islands",
+    "countryPhoneNumber ": "677",
+    "countryCode ": "SB "
+  },
+  {
+    "countryNameKR ": "수단",
+    "countryNameEN ": "Sudan",
+    "countryPhoneNumber ": "249",
+    "countryCode ": "SD "
+  },
+  {
+    "countryNameKR ": "수리남",
+    "countryNameEN ": "Suriname",
+    "countryPhoneNumber ": "597",
+    "countryCode ": "SR "
+  },
+  {
+    "countryNameKR ": "스리랑카",
+    "countryNameEN ": "Sri Lanka",
+    "countryPhoneNumber ": "94",
+    "countryCode ": "LK "
+  },
+  {
+    "countryNameKR ": "스웨덴",
+    "countryNameEN ": "Sweden",
+    "countryPhoneNumber ": "46",
+    "countryCode ": "SE "
+  },
+  {
+    "countryNameKR ": "스위스",
+    "countryNameEN ": "Switzerland",
+    "countryPhoneNumber ": "41",
+    "countryCode ": "CH "
+  },
+  {
+    "countryNameKR ": "스페인",
+    "countryNameEN ": "Spain",
+    "countryPhoneNumber ": "34",
+    "countryCode ": "ES "
+  },
+  {
+    "countryNameKR ": "슬로바키아",
+    "countryNameEN ": "Slovakia",
+    "countryPhoneNumber ": "421",
+    "countryCode ": "SK "
+  },
+  {
+    "countryNameKR ": "슬로베니아",
+    "countryNameEN ": "Slovenia",
+    "countryPhoneNumber ": "386",
+    "countryCode ": "SI "
+  },
+  {
+    "countryNameKR ": "시리아",
+    "countryNameEN ": "Syria",
+    "countryPhoneNumber ": "963",
+    "countryCode ": "SY "
+  },
+  {
+    "countryNameKR ": "시에라리온",
+    "countryNameEN ": "Sierra Leone",
+    "countryPhoneNumber ": "232",
+    "countryCode ": "SL "
+  },
+  {
+    "countryNameKR ": "신트마르턴",
+    "countryNameEN ": "Sint Maarten",
+    "countryPhoneNumber ": "1721",
+    "countryCode ": "SX "
+  },
+  {
+    "countryNameKR ": "싱가포르",
+    "countryNameEN ": "Singapore",
+    "countryPhoneNumber ": "65",
+    "countryCode ": "SG "
+  },
+  {
+    "countryNameKR ": "아랍에미리트",
+    "countryNameEN ": "United Arab Emirates",
+    "countryPhoneNumber ": "971",
+    "countryCode ": "AE "
+  },
+  {
+    "countryNameKR ": "아루바",
+    "countryNameEN ": "Aruba",
+    "countryPhoneNumber ": "297",
+    "countryCode ": "AW "
+  },
+  {
+    "countryNameKR ": "아르메니아",
+    "countryNameEN ": "Armenia",
+    "countryPhoneNumber ": "374",
+    "countryCode ": "AM "
+  },
+  {
+    "countryNameKR ": "아르헨티나",
+    "countryNameEN ": "Argentina",
+    "countryPhoneNumber ": "54",
+    "countryCode ": "AR "
+  },
+  {
+    "countryNameKR ": "아메리칸사모아",
+    "countryNameEN ": "American Samoa",
+    "countryPhoneNumber ": "1684",
+    "countryCode ": "AS "
+  },
+  {
+    "countryNameKR ": "아이슬란드",
+    "countryNameEN ": "Iceland",
+    "countryPhoneNumber ": "354",
+    "countryCode ": "IS "
+  },
+  {
+    "countryNameKR ": "아이티",
+    "countryNameEN ": "Haiti",
+    "countryPhoneNumber ": "509",
+    "countryCode ": "HT "
+  },
+  {
+    "countryNameKR ": "아일랜드",
+    "countryNameEN ": "Ireland",
+    "countryPhoneNumber ": "353",
+    "countryCode ": "IE "
+  },
+  {
+    "countryNameKR ": "아제르바이잔",
+    "countryNameEN ": "Azerbaijan",
+    "countryPhoneNumber ": "994",
+    "countryCode ": "AZ "
+  },
+  {
+    "countryNameKR ": "아프가니스탄",
+    "countryNameEN ": "Afghanistan",
+    "countryPhoneNumber ": "93",
+    "countryCode ": "AF "
+  },
+  {
+    "countryNameKR ": "안도라",
+    "countryNameEN ": "Andorra",
+    "countryPhoneNumber ": "376",
+    "countryCode ": "AD "
+  },
+  {
+    "countryNameKR ": "알바니아",
+    "countryNameEN ": "Albania",
+    "countryPhoneNumber ": "355",
+    "countryCode ": "AL "
+  },
+  {
+    "countryNameKR ": "알제리",
+    "countryNameEN ": "Algeria",
+    "countryPhoneNumber ": "213",
+    "countryCode ": "DZ "
+  },
+  {
+    "countryNameKR ": "앙골라",
+    "countryNameEN ": "Angola",
+    "countryPhoneNumber ": "244",
+    "countryCode ": "AO "
+  },
+  {
+    "countryNameKR ": "앤티가 바부다",
+    "countryNameEN ": "Antigua and Barbuda",
+    "countryPhoneNumber ": "1268",
+    "countryCode ": "AG "
+  },
+  {
+    "countryNameKR ": "앵귈라",
+    "countryNameEN ": "Anguilla",
+    "countryPhoneNumber ": "1264",
+    "countryCode ": "AI "
+  },
+  {
+    "countryNameKR ": "에리트레아",
+    "countryNameEN ": "Eritrea",
+    "countryPhoneNumber ": "291",
+    "countryCode ": "ER "
+  },
+  {
+    "countryNameKR ": "에스와티니",
+    "countryNameEN ": "Eswatini",
+    "countryPhoneNumber ": "268",
+    "countryCode ": "SZ "
+  },
+  {
+    "countryNameKR ": "에스토니아",
+    "countryNameEN ": "Estonia",
+    "countryPhoneNumber ": "372",
+    "countryCode ": "EE "
+  },
+  {
+    "countryNameKR ": "에콰도르",
+    "countryNameEN ": "Ecuador",
+    "countryPhoneNumber ": "593",
+    "countryCode ": "EC "
+  },
+  {
+    "countryNameKR ": "에티오피아",
+    "countryNameEN ": "Ethiopia",
+    "countryPhoneNumber ": "251",
+    "countryCode ": "ET "
+  },
+  {
+    "countryNameKR ": "엘살바도르",
+    "countryNameEN ": "El Salvador",
+    "countryPhoneNumber ": "503",
+    "countryCode ": "SV "
+  },
+  {
+    "countryNameKR ": "영국",
+    "countryNameEN ": "United Kingdom",
+    "countryPhoneNumber ": "44",
+    "countryCode ": "GB "
+  },
+  {
+    "countryNameKR ": "예멘",
+    "countryNameEN ": "Yemen",
+    "countryPhoneNumber ": "967",
+    "countryCode ": "YE "
+  },
+  {
+    "countryNameKR ": "오만",
+    "countryNameEN ": "Oman",
+    "countryPhoneNumber ": "968",
+    "countryCode ": "OM "
+  },
+  {
+    "countryNameKR ": "오스트레일리아",
+    "countryNameEN ": "Australia",
+    "countryPhoneNumber ": "61",
+    "countryCode ": "AU "
+  },
+  {
+    "countryNameKR ": "오스트리아",
+    "countryNameEN ": "Austria",
+    "countryPhoneNumber ": "43",
+    "countryCode ": "AT "
+  },
+  {
+    "countryNameKR ": "온두라스",
+    "countryNameEN ": "Honduras",
+    "countryPhoneNumber ": "504",
+    "countryCode ": "HN "
+  },
+  {
+    "countryNameKR ": "요르단",
+    "countryNameEN ": "Jordan",
+    "countryPhoneNumber ": "962",
+    "countryCode ": "JO "
+  },
+  {
+    "countryNameKR ": "우간다",
+    "countryNameEN ": "Uganda",
+    "countryPhoneNumber ": "256",
+    "countryCode ": "UG "
+  },
+  {
+    "countryNameKR ": "우루과이",
+    "countryNameEN ": "Uruguay",
+    "countryPhoneNumber ": "598",
+    "countryCode ": "UY "
+  },
+  {
+    "countryNameKR ": "우즈베키스탄",
+    "countryNameEN ": "Uzbekistan",
+    "countryPhoneNumber ": "998",
+    "countryCode ": "UZ "
+  },
+  {
+    "countryNameKR ": "우크라이나",
+    "countryNameEN ": "Ukraine",
+    "countryPhoneNumber ": "380",
+    "countryCode ": "UA "
+  },
+  {
+    "countryNameKR ": "이라크",
+    "countryNameEN ": "Iraq",
+    "countryPhoneNumber ": "964",
+    "countryCode ": "IR "
+  },
+  {
+    "countryNameKR ": "이란",
+    "countryNameEN ": "Iran",
+    "countryPhoneNumber ": "98",
+    "countryCode ": "IQ "
+  },
+  {
+    "countryNameKR ": "이스라엘",
+    "countryNameEN ": "Israel",
+    "countryPhoneNumber ": "972",
+    "countryCode ": "IL "
+  },
+  {
+    "countryNameKR ": "이집트",
+    "countryNameEN ": "Egypt",
+    "countryPhoneNumber ": "20",
+    "countryCode ": "EG "
+  },
+  {
+    "countryNameKR ": "이탈리아",
+    "countryNameEN ": "Italy",
+    "countryPhoneNumber ": "39",
+    "countryCode ": "IT "
+  },
+  {
+    "countryNameKR ": "인도",
+    "countryNameEN ": "India",
+    "countryPhoneNumber ": "91",
+    "countryCode ": "IN "
+  },
+  {
+    "countryNameKR ": "인도네시아",
+    "countryNameEN ": "Indonesia",
+    "countryPhoneNumber ": "62",
+    "countryCode ": "ID "
+  },
+  {
+    "countryNameKR ": "일본",
+    "countryNameEN ": "Japan",
+    "countryPhoneNumber ": "81",
+    "countryCode ": "JP "
+  },
+  {
+    "countryNameKR ": "자메이카",
+    "countryNameEN ": "Jamaica",
+    "countryPhoneNumber ": "1876",
+    "countryCode ": "JM "
+  },
+  {
+    "countryNameKR ": "잠비아",
+    "countryNameEN ": "Zambia",
+    "countryPhoneNumber ": "260",
+    "countryCode ": "ZM "
+  },
+  {
+    "countryNameKR ": "적도 기니",
+    "countryNameEN ": "Equatorial Guinea",
+    "countryPhoneNumber ": "240",
+    "countryCode ": "GQ "
+  },
+  {
+    "countryNameKR ": "북한",
+    "countryNameEN ": "DPR of Korea",
+    "countryPhoneNumber ": "850",
+    "countryCode ": "KP "
+  },
+  {
+    "countryNameKR ": "조지아",
+    "countryNameEN ": "Georgia",
+    "countryPhoneNumber ": "995",
+    "countryCode ": "GE "
+  },
+  {
+    "countryNameKR ": "중앙아프리카 공화국",
+    "countryNameEN ": "Central Africa",
+    "countryPhoneNumber ": "236",
+    "countryCode ": "CF "
+  },
+  {
+    "countryNameKR ": "대만",
+    "countryNameEN ": "Taiwan",
+    "countryPhoneNumber ": "886",
+    "countryCode ": "TW "
+  },
+  {
+    "countryNameKR ": "중화인민공화국",
+    "countryNameEN ": "China",
+    "countryPhoneNumber ": "86",
+    "countryCode ": "CN "
+  },
+  {
+    "countryNameKR ": "지부티",
+    "countryNameEN ": "Djibouti",
+    "countryPhoneNumber ": "253",
+    "countryCode ": "DJ "
+  },
+  {
+    "countryNameKR ": "지브롤터",
+    "countryNameEN ": "Gibraltar",
+    "countryPhoneNumber ": "350",
+    "countryCode ": "GI "
+  },
+  {
+    "countryNameKR ": "짐바브웨",
+    "countryNameEN ": "Zimbabwe",
+    "countryPhoneNumber ": "263",
+    "countryCode ": "ZW "
+  },
+  {
+    "countryNameKR ": "차드",
+    "countryNameEN ": "Chad",
+    "countryPhoneNumber ": "235",
+    "countryCode ": "TD "
+  },
+  {
+    "countryNameKR ": "체코",
+    "countryNameEN ": "Czech",
+    "countryPhoneNumber ": "420",
+    "countryCode ": "CZ "
+  },
+  {
+    "countryNameKR ": "칠레",
+    "countryNameEN ": "Chile",
+    "countryPhoneNumber ": "56",
+    "countryCode ": "CL "
+  },
+  {
+    "countryNameKR ": "카메룬",
+    "countryNameEN ": "Cameroon",
+    "countryPhoneNumber ": "237",
+    "countryCode ": "CM "
+  },
+  {
+    "countryNameKR ": "카보베르데",
+    "countryNameEN ": "Cape Verde",
+    "countryPhoneNumber ": "238",
+    "countryCode ": "CV "
+  },
+  {
+    "countryNameKR ": "카자흐스탄",
+    "countryNameEN ": "Kazakstan",
+    "countryPhoneNumber ": "7",
+    "countryCode ": "KZ "
+  },
+  {
+    "countryNameKR ": "카타르",
+    "countryNameEN ": "Qatar",
+    "countryPhoneNumber ": "974",
+    "countryCode ": "QA "
+  },
+  {
+    "countryNameKR ": "캄보디아",
+    "countryNameEN ": "Cambodia",
+    "countryPhoneNumber ": "855",
+    "countryCode ": "KH "
+  },
+  {
+    "countryNameKR ": "캐나다",
+    "countryNameEN ": "Canada",
+    "countryPhoneNumber ": "1",
+    "countryCode ": "CA "
+  },
+  {
+    "countryNameKR ": "케냐",
+    "countryNameEN ": "Kenya",
+    "countryPhoneNumber ": "254",
+    "countryCode ": "KE "
+  },
+  {
+    "countryNameKR ": "케이맨 제도",
+    "countryNameEN ": "Cayman Islands",
+    "countryPhoneNumber ": "1345",
+    "countryCode ": "KY "
+  },
+  {
+    "countryNameKR ": "코모로",
+    "countryNameEN ": "the Comoros",
+    "countryPhoneNumber ": "269",
+    "countryCode ": "KM "
+  },
+  {
+    "countryNameKR ": "코스타리카",
+    "countryNameEN ": "Costa Rica",
+    "countryPhoneNumber ": "506",
+    "countryCode ": "CR "
+  },
+  {
+    "countryNameKR ": "코트디부아르",
+    "countryNameEN ": "Ivory Coast",
+    "countryPhoneNumber ": "225",
+    "countryCode ": "CI "
+  },
+  {
+    "countryNameKR ": "콜롬비아",
+    "countryNameEN ": "Colombia",
+    "countryPhoneNumber ": "57",
+    "countryCode ": "CO "
+  },
+  {
+    "countryNameKR ": "콩고 공화국",
+    "countryNameEN ": "Congo",
+    "countryPhoneNumber ": "242",
+    "countryCode ": "CG "
+  },
+  {
+    "countryNameKR ": "콩고 민주 공화국",
+    "countryNameEN ": "DR Congo",
+    "countryPhoneNumber ": "243",
+    "countryCode ": "CD "
+  },
+  {
+    "countryNameKR ": "쿠바",
+    "countryNameEN ": "Cuba",
+    "countryPhoneNumber ": "53",
+    "countryCode ": "CU "
+  },
+  {
+    "countryNameKR ": "쿠웨이트",
+    "countryNameEN ": "Kuwait",
+    "countryPhoneNumber ": "965",
+    "countryCode ": "KW "
+  },
+  {
+    "countryNameKR ": "쿡 제도",
+    "countryNameEN ": "Cook Islands",
+    "countryPhoneNumber ": "682",
+    "countryCode ": "CK "
+  },
+  {
+    "countryNameKR ": "크로아티아",
+    "countryNameEN ": "Croatia",
+    "countryPhoneNumber ": "385",
+    "countryCode ": "HR "
+  },
+  {
+    "countryNameKR ": "키르기스스탄",
+    "countryNameEN ": "Kyrgizstan",
+    "countryPhoneNumber ": "996",
+    "countryCode ": "KG "
+  },
+  {
+    "countryNameKR ": "키리바시",
+    "countryNameEN ": "Kiribati",
+    "countryPhoneNumber ": "686",
+    "countryCode ": "KI "
+  },
+  {
+    "countryNameKR ": "키프로스",
+    "countryNameEN ": "Cyprus",
+    "countryPhoneNumber ": "357",
+    "countryCode ": "CY "
+  },
+  {
+    "countryNameKR ": "타지키스탄",
+    "countryNameEN ": "Tajikistan",
+    "countryPhoneNumber ": "992",
+    "countryCode ": "TJ "
+  },
+  {
+    "countryNameKR ": "탄자니아",
+    "countryNameEN ": "Tanzania",
+    "countryPhoneNumber ": "255",
+    "countryCode ": "TZ "
+  },
+  {
+    "countryNameKR ": "태국",
+    "countryNameEN ": "Thailand",
+    "countryPhoneNumber ": "66",
+    "countryCode ": "TH "
+  },
+  {
+    "countryNameKR ": "터키",
+    "countryNameEN ": "Turkey",
+    "countryPhoneNumber ": "90",
+    "countryCode ": "TR "
+  },
+  {
+    "countryNameKR ": "토고",
+    "countryNameEN ": "Togo",
+    "countryPhoneNumber ": "228",
+    "countryCode ": "TG "
+  },
+  {
+    "countryNameKR ": "토켈라우",
+    "countryNameEN ": "Tokelau",
+    "countryPhoneNumber ": "690",
+    "countryCode ": "TK "
+  },
+  {
+    "countryNameKR ": "통가",
+    "countryNameEN ": "Tonga",
+    "countryPhoneNumber ": "676",
+    "countryCode ": "TO "
+  },
+  {
+    "countryNameKR ": "투르크메니스탄",
+    "countryNameEN ": "Turkmenistan",
+    "countryPhoneNumber ": "993",
+    "countryCode ": "TM "
+  },
+  {
+    "countryNameKR ": "투발루",
+    "countryNameEN ": "Tuvalu",
+    "countryPhoneNumber ": "688",
+    "countryCode ": "TV "
+  },
+  {
+    "countryNameKR ": "튀니지",
+    "countryNameEN ": "Tunisia",
+    "countryPhoneNumber ": "216",
+    "countryCode ": "TN "
+  },
+  {
+    "countryNameKR ": "트리니다드 토바고",
+    "countryNameEN ": "Trinidad and Tobago",
+    "countryPhoneNumber ": "1868",
+    "countryCode ": "TT "
+  },
+  {
+    "countryNameKR ": "파나마",
+    "countryNameEN ": "Panama",
+    "countryPhoneNumber ": "507",
+    "countryCode ": "PA "
+  },
+  {
+    "countryNameKR ": "파라과이",
+    "countryNameEN ": "Paraguay",
+    "countryPhoneNumber ": "595",
+    "countryCode ": "PY "
+  },
+  {
+    "countryNameKR ": "파키스탄",
+    "countryNameEN ": "Pakistan",
+    "countryPhoneNumber ": "92",
+    "countryCode ": "PK "
+  },
+  {
+    "countryNameKR ": "파푸아뉴기니",
+    "countryNameEN ": "Papua New Guinea",
+    "countryPhoneNumber ": "675",
+    "countryCode ": "PG "
+  },
+  {
+    "countryNameKR ": "팔라우",
+    "countryNameEN ": "Palau",
+    "countryPhoneNumber ": "680",
+    "countryCode ": "PW "
+  },
+  {
+    "countryNameKR ": "팔레스타인",
+    "countryNameEN ": "State of Palestine",
+    "countryPhoneNumber ": "970",
+    "countryCode ": "PS "
+  },
+  {
+    "countryNameKR ": "페루",
+    "countryNameEN ": "Peru",
+    "countryPhoneNumber ": "51",
+    "countryCode ": "PE "
+  },
+  {
+    "countryNameKR ": "포르투갈",
+    "countryNameEN ": "Portugal",
+    "countryPhoneNumber ": "351",
+    "countryCode ": "PT "
+  },
+  {
+    "countryNameKR ": "포클랜드 제도",
+    "countryNameEN ": "Falkland Islands",
+    "countryPhoneNumber ": "500",
+    "countryCode ": "FK "
+  },
+  {
+    "countryNameKR ": "폴란드",
+    "countryNameEN ": "Poland",
+    "countryPhoneNumber ": "48",
+    "countryCode ": "PL "
+  },
+  {
+    "countryNameKR ": "푸에르토리코",
+    "countryNameEN ": "Puerto Rico",
+    "countryPhoneNumber ": "1787",
+    "countryCode ": "PR "
+  },
+  {
+    "countryNameKR ": "프랑스",
+    "countryNameEN ": "France",
+    "countryPhoneNumber ": "33",
+    "countryCode ": "FR "
+  },
+  {
+    "countryNameKR ": "피지",
+    "countryNameEN ": "Fiji",
+    "countryPhoneNumber ": "679",
+    "countryCode ": "FJ "
+  },
+  {
+    "countryNameKR ": "핀란드",
+    "countryNameEN ": "Finland",
+    "countryPhoneNumber ": "358",
+    "countryCode ": "FI "
+  },
+  {
+    "countryNameKR ": "필리핀",
+    "countryNameEN ": "the Philippines",
+    "countryPhoneNumber ": "63",
+    "countryCode ": "PH "
+  },
+  {
+    "countryNameKR ": "헝가리",
+    "countryNameEN ": "Hungary",
+    "countryPhoneNumber ": "36",
+    "countryCode ": "HU "
+  },
+  {
+    "countryNameKR ": "홍콩",
+    "countryNameEN ": "Hong Kong",
+    "countryPhoneNumber ": "852",
+    "countryCode ": "HK "
+  }
+]
