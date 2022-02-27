@@ -1,4 +1,4 @@
-import { createBottomTabNavigator } from 'react-navigation-tabs';
+import { BottomTabBar, createBottomTabNavigator } from 'react-navigation-tabs';
 import React from 'react';
 import { Image, Text } from 'react-native';
 import { createAppContainer } from 'react-navigation';
@@ -17,8 +17,8 @@ const IcFeedSelectedFalse = require(`../../../assets/ic-feed-selected-false.png`
 const TabNavigator = createBottomTabNavigator(
   {
     Home: HomeScreen,
-    Map: MapScreen,
     Feed: FeedScreen,
+    Map: MapScreen,
   },
   {
     tabBarOptions: {
@@ -31,21 +31,21 @@ const TabNavigator = createBottomTabNavigator(
             return (
               <Image
                 source={focused ? IcHomeSelectedTrue : IcHomeSelectedFalse}
-                style={{ height: 20, width: 20 }}
+                style={{ height: 24, width: 24, marginTop: 6 }}
               />
             );
           case 'Map':
             return (
               <Image
                 source={focused ? IcMapSelectedTrue : IcMapSelectedFalse}
-                style={{ height: 20, width: 20 }}
+                style={{ height: 24, width: 24, marginTop: 6 }}
               />
             );
           case 'Feed':
             return (
               <Image
                 source={focused ? IcFeedSelectedTrue : IcFeedSelectedFalse}
-                style={{ height: 20, width: 20 }}
+                style={{ height: 24, width: 24, marginTop: 6 }}
               />
             );
           default:
@@ -53,6 +53,25 @@ const TabNavigator = createBottomTabNavigator(
         }
       },
     }),
+    tabBarComponent: (props) => (
+      <BottomTabBar
+        {...props}
+        getLabelText={({ route }) => {
+          switch (route.routeName) {
+            case 'Home':
+              return '일상공유';
+            case 'Map':
+              return '마음거리';
+            case 'Feed':
+              return '소통함';
+            default:
+              return '';
+          }
+        }}
+        style={{ borderTopColor: '#ACB3BC' }}
+        labelStyle={{ fontSize: 12, marginTop: 2, fontFamily: 'Pretendard' }}
+      />
+    ),
   },
 );
 
