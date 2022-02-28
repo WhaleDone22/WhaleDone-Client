@@ -18,6 +18,8 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 16,
     paddingTop: 12,
+    backgroundColor: 'white',
+    flex: 1,
   },
   title: {
     fontSize: 20,
@@ -61,6 +63,7 @@ function EmailInputScreen({ navigation }: EmailInputScreenProp) {
         onChangeText={(text) => setEmail(text)}
         style={styles.textInput}
         placeholder="이메일을 입력하세요"
+        placeholderTextColor={COLORS.TEXT_DISABLED_GREY}
         keyboardType="email-address"
       />
       {!isValidate && email !== '' && (

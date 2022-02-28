@@ -15,7 +15,10 @@ function PasswordInputScreen({ navigation }: PasswordInputScreenProp) {
     <SafeAreaView>
       <ButtonBack onPress={() => navigation.goBack()} />
       <Text>PasswordInput</Text>
-      <Button title="다음" onPress={() => navigation.navigate('Greet')} />
+      <Button
+        title="다음"
+        onPress={() => navigation.navigate('NicknameInput')}
+      />
     </SafeAreaView>
   );
 }

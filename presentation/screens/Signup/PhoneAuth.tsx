@@ -15,10 +15,7 @@ function PhoneAuthScreen({ navigation }: PhoneAuthScreenProp) {
     <SafeAreaView>
       <ButtonBack onPress={() => navigation.goBack()} />
       <Text>PhoneAuth</Text>
-      <Button
-        onPress={() => navigation.navigate('NicknameInput')}
-        title="다음"
-      />
+      <Button onPress={() => navigation.navigate('EmailInput')} title="다음" />
     </SafeAreaView>
   );
 }
