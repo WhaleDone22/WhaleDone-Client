@@ -40,7 +40,7 @@ const AppNavigator = createStackNavigator(
     Record: { screen: RecordScreen },
   },
   {
-    initialRouteName: 'PhoneAuth',
+    initialRouteName: 'SignUpMain',
     headerMode: 'none',
   },
 );
