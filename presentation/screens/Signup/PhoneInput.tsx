@@ -17,6 +17,7 @@ import { NavigationStackParams } from '../../../infrastructures/types/Navigation
 import ButtonNext from '../../components/ButtonNext';
 import COLORS from '../../styles/colors';
 import { Country } from '../../../infrastructures/types/country';
+import { commonStyles } from '../../styles/common';
 
 type PhoneInputScreenProp = NativeStackScreenProps<
   NavigationStackParams,
@@ -30,21 +31,6 @@ const icToggleDown = require('../../../assets/ic-toggle-down.png');
 const { height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 16,
-    paddingTop: 12,
-    backgroundColor: 'white',
-    flex: 1,
-  },
-  title: {
-    fontSize: 20,
-    fontFamily: 'Pretendard-Bold',
-    marginBottom: 12,
-  },
-  titleWrapper: {
-    paddingVertical: 20,
-    paddingHorizontal: 10,
-  },
   countryInfoContainer: {
     position: 'absolute',
     alignItems: 'center',
@@ -110,7 +96,7 @@ function PhoneInputScreen({ navigation }: PhoneInputScreenProp) {
   const bottomSheetRef = useRef<any>(null);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={commonStyles.container}>
       <BottomSheet ref={bottomSheetRef} snapPoints={[700]} height={height - 93}>
         <ScrollView>
           <Text style={styles.countryCodeSelectorTitleText}>국가 코드</Text>
@@ -134,8 +120,10 @@ function PhoneInputScreen({ navigation }: PhoneInputScreenProp) {
         </ScrollView>
       </BottomSheet>
       <ButtonBack onPress={() => navigation.goBack()} />
-      <View style={styles.titleWrapper}>
-        <Text style={styles.title}>번호를 입력하세요</Text>
+      <View style={commonStyles.titleWrapper}>
+        <Text style={{ ...commonStyles.title, marginBottom: 12 }}>
+          번호를 입력하세요
+        </Text>
       </View>
       <View>
         <TouchableOpacity

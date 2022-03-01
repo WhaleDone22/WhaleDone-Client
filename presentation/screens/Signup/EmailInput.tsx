@@ -8,6 +8,7 @@ import { validateEmail } from '../../../infrastructures/utils/strings';
 import ButtonBack from '../../components/ButtonBack';
 import ButtonNext from '../../components/ButtonNext';
 import COLORS from '../../styles/colors';
+import { commonStyles } from '../../styles/common';
 
 type EmailInputScreenProp = NativeStackScreenProps<
   NavigationStackParams,
@@ -15,20 +16,6 @@ type EmailInputScreenProp = NativeStackScreenProps<
 >;
 
 const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 16,
-    paddingTop: 12,
-    backgroundColor: 'white',
-    flex: 1,
-  },
-  title: {
-    fontSize: 20,
-    fontFamily: 'Pretendard-Bold',
-  },
-  titleWrapper: {
-    paddingVertical: 20,
-    paddingHorizontal: 10,
-  },
   textInput: {
     paddingVertical: 16,
     paddingHorizontal: 20,
@@ -53,10 +40,10 @@ function EmailInputScreen({ navigation }: EmailInputScreenProp) {
     setIsValidate(validateEmail(email));
   }, [email]);
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={commonStyles.container}>
       <ButtonBack onPress={() => navigation.goBack()} />
-      <View style={styles.titleWrapper}>
-        <Text style={styles.title}>이메일을 입력하세요</Text>
+      <View style={commonStyles.titleWrapper}>
+        <Text style={commonStyles.title}>이메일을 입력하세요</Text>
       </View>
       <TextInput
         value={email}

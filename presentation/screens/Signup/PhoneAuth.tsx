@@ -6,6 +6,7 @@ import ButtonBack from '../../components/ButtonBack';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import COLORS from '../../styles/colors';
 import ButtonNext from '../../components/ButtonNext';
+import { commonStyles } from '../../styles/common';
 
 type PhoneAuthScreenProp = NativeStackScreenProps<
   NavigationStackParams,
@@ -13,20 +14,6 @@ type PhoneAuthScreenProp = NativeStackScreenProps<
 >;
 
 const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 16,
-    paddingTop: 12,
-    backgroundColor: 'white',
-    flex: 1,
-  },
-  title: {
-    fontSize: 20,
-    fontFamily: 'Pretendard-Bold',
-  },
-  titleWrapper: {
-    paddingVertical: 20,
-    paddingHorizontal: 10,
-  },
   textInput: {
     borderRadius: 5,
     backgroundColor: COLORS.GREY_030,
@@ -117,10 +104,10 @@ function PhoneAuthScreen({ navigation }: PhoneAuthScreenProp) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={commonStyles.container}>
       <ButtonBack onPress={() => navigation.goBack()} />
-      <View style={styles.titleWrapper}>
-        <Text style={styles.title}>인증 번호를 입력하세요</Text>
+      <View style={commonStyles.titleWrapper}>
+        <Text style={commonStyles.title}>인증 번호를 입력하세요</Text>
       </View>
       <View style={styles.textInputWrapper}>
         <TextInput
