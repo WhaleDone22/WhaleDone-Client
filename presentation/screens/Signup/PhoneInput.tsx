@@ -7,6 +7,7 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
@@ -48,7 +49,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     alignItems: 'center',
     flexDirection: 'row',
-    height: 54,
+    height: 60,
     width: 99,
     left: 16,
     top: 0,
@@ -66,7 +67,7 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
   countryFlagText: {
-    fontSize: 24,
+    fontSize: Platform.OS === 'ios' ? 24 : 18,
   },
   textInput: {
     paddingStart: 116,
@@ -75,6 +76,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: COLORS.GREY_030,
     marginBottom: 12,
+    height: 60,
     fontSize: 16,
     borderColor: 'transparent',
   },
