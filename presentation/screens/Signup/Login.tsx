@@ -68,6 +68,7 @@ function LoginScreen({ navigation }: LoginScreenProp) {
         style={styles.textInput}
         placeholderTextColor={COLORS.TEXT_DISABLED_GREY}
         placeholder="이메일을 입력하세요"
+        autoFocus
       />
       <View>
         <TextInput

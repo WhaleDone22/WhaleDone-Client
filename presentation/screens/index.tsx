@@ -40,7 +40,7 @@ const AppNavigator = createStackNavigator(
     Record: { screen: RecordScreen },
   },
   {
-    initialRouteName: 'Login',
+    initialRouteName: 'SignUpMain',
     headerMode: 'none',
   },
 );
