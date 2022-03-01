@@ -2,7 +2,6 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
 import {
   Text,
-  Button,
   StyleSheet,
   TextInput,
   View,
@@ -13,6 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { NavigationActions, StackActions } from 'react-navigation';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonBack from '../../components/ButtonBack';
+import ButtonNext from '../../components/ButtonNext';
 import COLORS from '../../styles/colors';
 
 const icPasswordVisibleTrue = require('../../../assets/ic-password-visible-true.png');
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
 function LoginScreen({ navigation }: LoginScreenProp) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(true);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -70,7 +70,7 @@ function LoginScreen({ navigation }: LoginScreenProp) {
         placeholder="이메일을 입력하세요"
         autoFocus
       />
-      <View>
+      <View style={{ marginBottom: 48 }}>
         <TextInput
           value={password}
           onChangeText={(text) => setPassword(text)}
@@ -91,8 +91,7 @@ function LoginScreen({ navigation }: LoginScreenProp) {
           />
         </TouchableOpacity>
       </View>
-      <Button
-        title="다음"
+      <ButtonNext
         onPress={() =>
           navigation.dispatch(
             StackActions.reset({
@@ -101,6 +100,7 @@ function LoginScreen({ navigation }: LoginScreenProp) {
             }),
           )
         }
+        isActivated
       />
     </SafeAreaView>
   );
