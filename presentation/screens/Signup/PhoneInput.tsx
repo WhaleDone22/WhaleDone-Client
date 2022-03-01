@@ -109,7 +109,7 @@ function PhoneInputScreen({ navigation }: PhoneInputScreenProp) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <BottomSheet ref={bottomSheetRef} snapPoints={[700]} height={height - 49}>
+      <BottomSheet ref={bottomSheetRef} snapPoints={[700]} height={height - 93}>
         <ScrollView>
           <Text style={styles.countryCodeSelectorTitleText}>국가 코드</Text>
           {countryCodeWithTelNumber.map((country) => (
