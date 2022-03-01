@@ -1,12 +1,15 @@
 import React, { useRef, useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Text, StyleSheet, View, Image, Dimensions } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import {
-  ScrollView,
-  TextInput,
+  Text,
+  StyleSheet,
+  View,
+  Image,
+  Dimensions,
   TouchableOpacity,
-} from 'react-native-gesture-handler';
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import BottomSheet from 'react-native-gesture-bottom-sheet';
 import ButtonBack from '../../components/ButtonBack';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
@@ -43,11 +46,13 @@ const styles = StyleSheet.create({
   },
   countryInfoContainer: {
     position: 'absolute',
-    flex: 1,
     alignItems: 'center',
     flexDirection: 'row',
     height: 54,
+    width: 99,
     left: 16,
+    top: 0,
+    zIndex: 100,
   },
   countryCodeText: {
     fontFamily: 'Pretendard-Bold',
@@ -58,6 +63,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     flexDirection: 'row',
+    zIndex: 2,
   },
   countryFlagText: {
     fontSize: 24,
@@ -100,6 +106,7 @@ function PhoneInputScreen({ navigation }: PhoneInputScreenProp) {
   const [selectedCountry, setSelectedCountry] = useState('KR');
   const [phone, setPhone] = useState('');
   const bottomSheetRef = useRef<any>(null);
+
   return (
     <SafeAreaView style={styles.container}>
       <BottomSheet ref={bottomSheetRef} snapPoints={[700]} height={height - 49}>

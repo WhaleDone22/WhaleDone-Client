@@ -65,6 +65,7 @@ function EmailInputScreen({ navigation }: EmailInputScreenProp) {
         placeholder="이메일을 입력하세요"
         placeholderTextColor={COLORS.TEXT_DISABLED_GREY}
         keyboardType="email-address"
+        autoFocus
       />
       {!isValidate && email !== '' && (
         <Text style={styles.errorText}>

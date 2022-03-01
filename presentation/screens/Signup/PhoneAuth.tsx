@@ -52,11 +52,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 17,
-    gap: 4,
   },
   resendTimerText: {
     fontFamily: 'Inter_700Bold',
     color: COLORS.TEXT_SECONDARY,
+    marginRight: 5,
   },
   resendButton: {
     color: COLORS.TEXT_SECONDARY,

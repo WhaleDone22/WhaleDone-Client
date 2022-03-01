@@ -52,18 +52,19 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: 'Pretendard-Bold',
     fontSize: 16,
+    textAlign: 'center',
   },
   signInContainer: {
     marginTop: 17,
     marginBottom: 24,
     flexDirection: 'row',
-    gap: 8,
     alignItems: 'center',
   },
   signInText: {
     fontFamily: 'Pretendard',
     color: COLORS.TEXT_SECONDARY,
     fontSize: 14,
+    marginRight: 8,
   },
   signInButton: {
     fontFamily: 'Pretendard-Bold',

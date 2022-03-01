@@ -95,6 +95,7 @@ function PasswordInputScreen({ navigation }: PasswordInputScreenProp) {
           secureTextEntry={isPasswordVisible}
           placeholderTextColor={COLORS.TEXT_DISABLED_GREY}
           keyboardType="default"
+          autoFocus
         />
         <TouchableOpacity
           onPress={() => setIsPasswordVisible((prev) => !prev)}

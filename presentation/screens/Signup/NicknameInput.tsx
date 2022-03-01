@@ -65,6 +65,7 @@ function NicknameInputScreen({ navigation }: NicknameInputScreenProp) {
         placeholder="닉네임(최대 5자)"
         placeholderTextColor={COLORS.TEXT_DISABLED_GREY}
         keyboardType="default"
+        autoFocus
       />
       <Text style={styles.hintText}>
         한글/영문/숫자/특수문자(*,._-+!?)까지 입력 가능해요
