@@ -9,7 +9,6 @@ import {
   Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { NavigationActions, StackActions } from 'react-navigation';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonBack from '../../components/ButtonBack';
 import ButtonNext from '../../components/ButtonNext';
@@ -91,17 +90,7 @@ function LoginScreen({ navigation }: LoginScreenProp) {
           />
         </TouchableOpacity>
       </View>
-      <ButtonNext
-        onPress={() =>
-          navigation.dispatch(
-            StackActions.reset({
-              index: 0,
-              actions: [NavigationActions.navigate({ routeName: 'Main' })],
-            }),
-          )
-        }
-        isActivated
-      />
+      <ButtonNext onPress={() => navigation.push('Main')} isActivated />
     </SafeAreaView>
   );
 }
