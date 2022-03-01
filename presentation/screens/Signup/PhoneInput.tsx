@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Text, StyleSheet, View, Image } from 'react-native';
+import { Text, StyleSheet, View, Image, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   ScrollView,
@@ -22,6 +22,8 @@ type PhoneInputScreenProp = NativeStackScreenProps<
 const countryCodeWithEmoji = require('../../../infrastructures/data/countryCodeWithEmoji.json');
 const countryCodeWithTelNumber: Country[] = require('../../../infrastructures/data/countryCodeWithTelNumber.json');
 const icToggleDown = require('../../../assets/ic-toggle-down.png');
+
+const { height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -100,7 +102,7 @@ function PhoneInputScreen({ navigation }: PhoneInputScreenProp) {
   const bottomSheetRef = useRef<any>(null);
   return (
     <SafeAreaView style={styles.container}>
-      <BottomSheet ref={bottomSheetRef} snapPoints={[700]} height={700}>
+      <BottomSheet ref={bottomSheetRef} snapPoints={[700]} height={height - 49}>
         <ScrollView>
           <Text style={styles.countryCodeSelectorTitleText}>국가 코드</Text>
           {countryCodeWithTelNumber.map((country) => (
