@@ -48,6 +48,7 @@ function PhotoSelectorModal(props: PhotoSelectorModalProp) {
     if (!permissionResult.granted) return;
     const result = await ImagePicker.launchCameraAsync();
     if (!result.cancelled) setPickedImagePath(result.uri);
+    closeModal();
   }, []);
 
   const selectPhoto = useCallback(async () => {
@@ -56,6 +57,7 @@ function PhotoSelectorModal(props: PhotoSelectorModalProp) {
     if (!permissionResult.granted) return;
     const result = await ImagePicker.launchImageLibraryAsync();
     if (!result.cancelled) setPickedImagePath(result.uri);
+    closeModal();
   }, []);
 
   return (
@@ -67,22 +69,22 @@ function PhotoSelectorModal(props: PhotoSelectorModalProp) {
     >
       <Pressable style={styles.modalContainer} onPress={closeModal}>
         <View style={styles.actionContainer}>
-          <TouchableOpacity
+          <Pressable
             onPress={takePhoto}
             style={[styles.actionButton, styles.bottomLiner]}
           >
             <Text style={styles.actionText}>카메라로 촬영</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={selectPhoto} style={styles.actionButton}>
+          </Pressable>
+          <Pressable onPress={selectPhoto} style={styles.actionButton}>
             <Text style={styles.actionText}>앨범에서 선택</Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
-        <TouchableOpacity
+        <Pressable
           onPress={closeModal}
           style={[styles.actionContainer, styles.actionButton]}
         >
           <Text style={[styles.actionText, styles.cancelText]}>취소하기</Text>
-        </TouchableOpacity>
+        </Pressable>
       </Pressable>
     </Modal>
   );

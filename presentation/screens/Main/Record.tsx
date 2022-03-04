@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
   image: {
     width: width * 0.79,
     height: height * 0.58,
+    borderRadius: 5,
   },
   headerContainer: {
     flexDirection: 'row',
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: 12,
+    marginTop: 6,
     height: 60,
   },
   bottomButton: {
