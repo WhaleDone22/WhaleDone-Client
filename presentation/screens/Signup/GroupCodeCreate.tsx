@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
 import { Button, Text } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonBack from '../../components/ButtonBack';
 
@@ -11,6 +11,8 @@ type GroupCodeCreateScreenProp = NativeStackScreenProps<
 >;
 
 function GroupCodeCreateScreen({ navigation }: GroupCodeCreateScreenProp) {
+
+
   return (
     <SafeAreaView>
       <ButtonBack onPress={() => navigation.goBack()} />
@@ -24,3 +26,5 @@ function GroupCodeCreateScreen({ navigation }: GroupCodeCreateScreenProp) {
 }
 
 export default GroupCodeCreateScreen;
+//style={isBtnActivated ? styles.createCodeBtn :styles.inactivatedCreateCodeBtn}
+// style={[ styles.createCodeBtn , styles.inactive && styles.inactivatedCreateCodeBtn ]}
