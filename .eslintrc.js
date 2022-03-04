@@ -15,6 +15,7 @@ module.exports = {
     'react/react-in-jsx-scope': 'off', // https://stackoverflow.com/questions/42640636/react-must-be-in-scope-when-using-jsx-react-react-in-jsx-scope
     camelcase: ['error', { allow: ['Inter_*'] }],
     'import/no-unresolved': 'off',
+    'import/prefer-default-export': 'off',
     'import/extensions': [
       'error',
       'ignorePackages',
@@ -26,6 +27,7 @@ module.exports = {
         json: 'never',
       },
     ],
+    'react/jsx-props-no-spreading': 0,
   },
   'prettier/prettier': [
     'error',
