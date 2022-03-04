@@ -131,7 +131,7 @@ function RecordScreen({ navigation }: RecordScreenProp) {
         <ButtonBack onPress={() => navigation.goBack()} />
         <Text style={styles.headerTitle}>일상 공유 제목</Text>
         <TouchableOpacity
-          onPress={() => navigation.push('Feed')}
+          onPress={() => navigation.push('Main', { screen: 'Feed' })}
           disabled={!isUploadable}
         >
           <Text
