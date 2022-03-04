@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react';
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import COLORS from '../styles/colors';
 
@@ -17,6 +16,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     paddingHorizontal: 11,
+    paddingBottom: 20,
   },
   actionContainer: {
     borderRadius: 10,
@@ -65,27 +65,25 @@ function PhotoSelectorModal(props: PhotoSelectorModalProp) {
       visible={isModalVisible}
       onRequestClose={closeModal}
     >
-      <SafeAreaView style={{ flex: 1 }}>
-        <Pressable style={styles.modalContainer} onPress={closeModal}>
-          <View style={styles.actionContainer}>
-            <TouchableOpacity
-              onPress={takePhoto}
-              style={[styles.actionButton, styles.bottomLiner]}
-            >
-              <Text style={styles.actionText}>카메라로 촬영</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={selectPhoto} style={styles.actionButton}>
-              <Text style={styles.actionText}>앨범에서 선택</Text>
-            </TouchableOpacity>
-          </View>
+      <Pressable style={styles.modalContainer} onPress={closeModal}>
+        <View style={styles.actionContainer}>
           <TouchableOpacity
-            onPress={closeModal}
-            style={[styles.actionContainer, styles.actionButton]}
+            onPress={takePhoto}
+            style={[styles.actionButton, styles.bottomLiner]}
           >
-            <Text style={[styles.actionText, styles.cancelText]}>취소하기</Text>
+            <Text style={styles.actionText}>카메라로 촬영</Text>
           </TouchableOpacity>
-        </Pressable>
-      </SafeAreaView>
+          <TouchableOpacity onPress={selectPhoto} style={styles.actionButton}>
+            <Text style={styles.actionText}>앨범에서 선택</Text>
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity
+          onPress={closeModal}
+          style={[styles.actionContainer, styles.actionButton]}
+        >
+          <Text style={[styles.actionText, styles.cancelText]}>취소하기</Text>
+        </TouchableOpacity>
+      </Pressable>
     </Modal>
   );
 }

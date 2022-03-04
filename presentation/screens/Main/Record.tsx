@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginTop: 12,
+    height: 60,
   },
   bottomButton: {
     flex: 1,
@@ -100,6 +101,7 @@ const styles = StyleSheet.create({
   iconLabel: {
     fontFamily: 'Pretendard-Bold',
     fontSize: 14,
+    color: COLORS.TEXT_PRIMARY,
   },
   iconLabelInactive: {
     color: COLORS.TEXT_DISABLED_GREY,
