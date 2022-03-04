@@ -8,6 +8,7 @@ import { NavigationStackParams } from '../../../infrastructures/types/Navigation
 import COLORS from '../../styles/colors';
 import ButtonNext from '../../components/ButtonNext';
 import { validatePassword } from '../../../infrastructures/utils/strings';
+import { commonStyles } from '../../styles/common';
 
 const icPasswordVisibleTrue = require('../../../assets/ic-password-visible-true.png');
 const icPasswordVisibleFalse = require('../../../assets/ic-password-visible-false.png');
@@ -18,20 +19,6 @@ type PasswordInputScreenProp = NativeStackScreenProps<
 >;
 
 const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 16,
-    paddingTop: 12,
-    backgroundColor: 'white',
-    flex: 1,
-  },
-  title: {
-    fontSize: 20,
-    fontFamily: 'Pretendard-Bold',
-  },
-  titleWrapper: {
-    paddingVertical: 20,
-    paddingHorizontal: 10,
-  },
   textInput: {
     paddingVertical: 16,
     paddingHorizontal: 20,
@@ -81,10 +68,10 @@ function PasswordInputScreen({ navigation }: PasswordInputScreenProp) {
   }, [password2, password]);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={commonStyles.container}>
       <ButtonBack onPress={() => navigation.goBack()} />
-      <View style={styles.titleWrapper}>
-        <Text style={styles.title}>비밀번호 설정하세요</Text>
+      <View style={commonStyles.titleWrapper}>
+        <Text style={commonStyles.title}>비밀번호 설정하세요</Text>
       </View>
       <View>
         <TextInput
