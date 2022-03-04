@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react';
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import COLORS from '../styles/colors';
 
 type PhotoSelectorModalProp = {

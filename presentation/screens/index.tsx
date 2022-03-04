@@ -21,11 +21,11 @@ import PhoneInputScreen from './Signup/PhoneInput';
 const Stack = createStackNavigator();
 
 function Screens() {
-  const isUserLoggedIn = true;
+  const isUserLoggedIn = false;
   return (
     <Stack.Navigator
       screenOptions={{ headerShown: false }}
-      initialRouteName="Record"
+      initialRouteName="SignUpMain"
     >
       {!isUserLoggedIn && (
         <>
