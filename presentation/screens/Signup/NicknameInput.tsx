@@ -8,6 +8,7 @@ import { NavigationStackParams } from '../../../infrastructures/types/Navigation
 import COLORS from '../../styles/colors';
 import { validateNickName } from '../../../infrastructures/utils/strings';
 import ButtonNext from '../../components/ButtonNext';
+import { commonStyles } from '../../styles/common';
 
 type NicknameInputScreenProp = NativeStackScreenProps<
   NavigationStackParams,
@@ -15,20 +16,6 @@ type NicknameInputScreenProp = NativeStackScreenProps<
 >;
 
 const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 16,
-    paddingTop: 12,
-    backgroundColor: 'white',
-    flex: 1,
-  },
-  title: {
-    fontSize: 20,
-    fontFamily: 'Pretendard-Bold',
-  },
-  titleWrapper: {
-    paddingVertical: 20,
-    paddingHorizontal: 10,
-  },
   textInput: {
     paddingVertical: 16,
     paddingHorizontal: 20,
@@ -53,10 +40,10 @@ function NicknameInputScreen({ navigation }: NicknameInputScreenProp) {
     setIsValidate(validateNickName(nickName));
   });
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={commonStyles.container}>
       <ButtonBack onPress={() => navigation.goBack()} />
-      <View style={styles.titleWrapper}>
-        <Text style={styles.title}>닉네임을 입력하세요</Text>
+      <View style={commonStyles.titleWrapper}>
+        <Text style={commonStyles.title}>닉네임을 입력하세요</Text>
       </View>
       <TextInput
         value={nickName}

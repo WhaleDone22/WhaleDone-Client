@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { NavigationActions, StackActions } from 'react-navigation';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonBack from '../../components/ButtonBack';
 import PhotoSelectorModal from '../../components/PhotoSelectorModal';
@@ -48,21 +47,7 @@ function RecordScreen({ navigation }: RecordScreenProp) {
       />
       <ButtonBack onPress={() => navigation.goBack()} />
       <Text>일상 공유 제목</Text>
-      <TouchableOpacity
-        onPress={() =>
-          navigation.dispatch(
-            StackActions.reset({
-              index: 0,
-              actions: [
-                NavigationActions.navigate({
-                  routeName: 'Main',
-                  action: NavigationActions.navigate({ routeName: 'Feed' }),
-                }),
-              ],
-            }),
-          )
-        }
-      >
+      <TouchableOpacity onPress={() => navigation.push('Feed')}>
         <Text>업로드</Text>
       </TouchableOpacity>
       <View>
@@ -96,6 +81,8 @@ function RecordScreen({ navigation }: RecordScreenProp) {
         </Text>
         <Text onPress={() => setMode('TEXT')}>글</Text>
       </View>
+      <Text>Record</Text>
+      <Text onPress={() => navigation.push('Feed')}>작성 완료</Text>
     </SafeAreaView>
   );
 }
