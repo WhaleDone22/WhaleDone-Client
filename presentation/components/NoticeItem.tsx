@@ -1,5 +1,6 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import { Swipeable, RectButton } from 'react-native-gesture-handler';
 import { Notice, noticeToIcon } from '../../infrastructures/types/notice';
 import COLORS from '../styles/colors';
 
@@ -19,6 +20,13 @@ const styles = StyleSheet.create({
   containerUnseen: {
     backgroundColor: COLORS.BLUE_200,
     borderColor: COLORS.BLUE_300,
+  },
+  containerDelete: {
+    backgroundColor: COLORS.THEME_NEGATIVE,
+    borderWidth: 0,
+    flex: 1,
+    justifyContent: 'flex-end',
+    paddingEnd: 20,
   },
   icon: { width: 24, height: 24 },
   iconWrapper: {
@@ -45,30 +53,40 @@ const styles = StyleSheet.create({
   },
 });
 
+const IcTrash = require('../../assets/ic-trash.png');
+
 function NoticeItem(prop: Notice) {
   const { type, isSeen, body, sub } = prop;
   return (
-    <Pressable
-      style={[
-        styles.container,
-        isSeen ? styles.containerSeen : styles.containerUnseen,
-      ]}
+    <Swipeable
+      renderRightActions={() => (
+        <RectButton style={[styles.container, styles.containerDelete]}>
+          <Image source={IcTrash} style={styles.icon} />
+        </RectButton>
+      )}
     >
-      <View style={styles.iconWrapper}>
-        <Image source={noticeToIcon[type]} style={styles.icon} />
-      </View>
-      <View style={styles.textWrapper}>
-        <Text style={[styles.text, isSeen && styles.textSeen]}>{body}</Text>
-        {sub && (
-          <Text
-            numberOfLines={1}
-            style={[styles.text, styles.subText, isSeen && styles.textSeen]}
-          >
-            {sub}
-          </Text>
-        )}
-      </View>
-    </Pressable>
+      <RectButton
+        style={[
+          styles.container,
+          isSeen ? styles.containerSeen : styles.containerUnseen,
+        ]}
+      >
+        <View style={styles.iconWrapper}>
+          <Image source={noticeToIcon[type]} style={styles.icon} />
+        </View>
+        <View style={styles.textWrapper}>
+          <Text style={[styles.text, isSeen && styles.textSeen]}>{body}</Text>
+          {sub && (
+            <Text
+              numberOfLines={1}
+              style={[styles.text, styles.subText, isSeen && styles.textSeen]}
+            >
+              {sub}
+            </Text>
+          )}
+        </View>
+      </RectButton>
+    </Swipeable>
   );
 }
 
