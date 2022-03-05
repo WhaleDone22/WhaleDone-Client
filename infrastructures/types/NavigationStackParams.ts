@@ -4,10 +4,9 @@ export type NavigationStackParams = {
   SignUpMain: undefined;
   Login: undefined;
   EmailInput: undefined;
-  Greet: undefined;
-  GroupCodeCreate: undefined;
+  Greet: {nickname: string};
   GroupCodeInput: undefined;
-  GroupCodeShare: undefined;
+  GroupCodeShare: { code: string };
   NicknameInput: undefined;
   PasswordInput: undefined;
   PhoneInput: undefined;

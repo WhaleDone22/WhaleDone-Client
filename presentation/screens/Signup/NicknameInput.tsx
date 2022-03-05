@@ -59,7 +59,7 @@ function NicknameInputScreen({ navigation }: NicknameInputScreenProp) {
       </Text>
       <View style={{ marginTop: 22 }}>
         <ButtonNext
-          onPress={() => navigation.navigate('Greet')}
+          onPress={() => navigation.navigate('Greet', {nickname: nickName})}
           isActivated={isValidate && nickName.length < 6}
         />
       </View>
