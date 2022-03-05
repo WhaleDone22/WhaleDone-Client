@@ -74,9 +74,7 @@ function GroupCodeShareScreen({ navigation, route }: GroupCodeShareScreenProp) {
               초대 코드는 48시간 뒤 사라져요
             </Text>
           </View>
-        </View>
-
-        <View style={styles.resendContainer}>
+          <View style={styles.resendContainer}>
           <Text style={styles.resendTimerText}>
             {hours}:{minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, '0')}
           </Text>
@@ -84,6 +82,9 @@ function GroupCodeShareScreen({ navigation, route }: GroupCodeShareScreenProp) {
             재발급
           </Text>
         </View>
+        </View>
+
+        
 
         <View>
           <TouchableOpacity style={styles.btnShare} onPress={onSharePressed}>
@@ -105,7 +106,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'space-between',
-    
   },
   safeAreaContainer: {
     flex: 1,
@@ -169,8 +169,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     // alignItems: 'center',
     justifyContent: 'center',
-    // marginTop: 5,
-    bottom: 200,
+    marginTop: 18,
   },
   resendTimerText: {
     fontFamily: 'Inter_700Bold',
