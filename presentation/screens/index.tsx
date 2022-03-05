@@ -16,16 +16,21 @@ import PasswordInputScreen from './Signup/PasswordInput';
 import PhoneAuthScreen from './Signup/PhoneAuth';
 import LoginScreen from './Signup/Login';
 import PhoneInputScreen from './Signup/PhoneInput';
+import OnboardingScreen from './AppInit/Onboarding';
 
 const Stack = createStackNavigator();
 
 function Screens() {
   const isUserLoggedIn = false;
+  const isOnboardingUnseen = false;
   return (
     <Stack.Navigator
       screenOptions={{ headerShown: false }}
-      initialRouteName="NicknameInput"
+      initialRouteName="SignUpMain"
     >
+      {!isOnboardingUnseen && (
+        <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+      )}
       {!isUserLoggedIn && (
         <>
           <Stack.Screen name="SignUpMain" component={SignUpMainScreen} />

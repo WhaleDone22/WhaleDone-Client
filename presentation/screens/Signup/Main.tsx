@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   },
   logoImage: {
     width: 162,
-    height: 159,
+    height: 130,
   },
   infoText: {
     fontFamily: 'Pretendard-Bold',
