@@ -8,7 +8,6 @@ import NoticeScreen from './Main/Notice';
 import RecordScreen from './Main/Record';
 import EmailInputScreen from './Signup/EmailInput';
 import GreetScreen from './Signup/Greet';
-import GroupCodeCreateScreen from './Signup/GroupCodeCreate';
 import GroupCodeInputScreen from './Signup/GroupCodeInput';
 import GroupCodeShareScreen from './Signup/GroupCodeShare';
 import SignUpMainScreen from './Signup/Main';
@@ -25,17 +24,13 @@ function Screens() {
   return (
     <Stack.Navigator
       screenOptions={{ headerShown: false }}
-      initialRouteName="SignUpMain"
+      initialRouteName="GroupCodeInput"
     >
       {!isUserLoggedIn && (
         <>
           <Stack.Screen name="SignUpMain" component={SignUpMainScreen} />
           <Stack.Screen name="EmailInput" component={EmailInputScreen} />
           <Stack.Screen name="Greet" component={GreetScreen} />
-          <Stack.Screen
-            name="GroupCodeCreate"
-            component={GroupCodeCreateScreen}
-          />
           <Stack.Screen
             name="GroupCodeInput"
             component={GroupCodeInputScreen}

@@ -1,12 +1,19 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
-import { Button, Text, View, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  Button,
+  Text,
+  View,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonBack from '../../components/ButtonBack';
 // import greetIcon from '../../../assets/greetIcon.png'
 
-import COLORS from '../../styles/colors'
+import COLORS from '../../styles/colors';
 
 type GreetScreenProp = NativeStackScreenProps<NavigationStackParams, 'Greet'>;
 
@@ -20,55 +27,48 @@ function GreetScreen({ navigation }: GreetScreenProp) {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.safeAreaContainer}>
-        <ButtonBack onPress={() => navigation.goBack()} />
+        <ButtonBack onPress={() => navigation.goBack()} theme='white'/>
         <View style={styles.container}>
-          {/* <View style={layout.header}>
-            <Text style={styles.mainTxt}>user1님 웨일던에서 {"\n"}가족과 더 가까워져 보세요!</Text>
-          </View>
 
-          <View style={layout.content}>
-            <Image style={styles.img} source={require('../../../assets/greetIcon.png')}></Image>
-            <Text style={styles.subTxt}>쉿-! 웨일던은 가족과만 {"\n"}대화할 수 있는 비밀 공간이에요 :)</Text>
-          </View> */}
-
-          
           <View style={styles.titleWrapper}>
             <Text style={styles.title}>user1님 웨일던에서 </Text>
             <Text style={styles.title}>가족과 더 가까워져 보세요!</Text>
           </View>
 
           <View style={styles.contentsContainer}>
-            <Image style={styles.img} source={require('../../../assets/greetIcon.png')}></Image>
+            <Image
+              style={styles.img}
+              source={require('../../../assets/ic-greet.png')}
+            ></Image>
             <Text style={styles.subTxt}>쉿-! 웨일던은 가족과만</Text>
             <Text style={styles.subTxt}>공유할 수 있는 비밀 공간이에요 :)</Text>
           </View>
-            
+
           <View>
             <TouchableOpacity
               style={styles.btnNext}
               onPress={() => navigation.navigate('GroupCodeInput')}
             >
-              <Text style={styles.btnNextText}>다음</Text> 
+              <Text style={styles.btnNextText}>다음</Text>
             </TouchableOpacity>
           </View>
         </View>
-
       </SafeAreaView>
     </SafeAreaProvider>
   );
 }
 
-
-
 const styles = StyleSheet.create({
   safeAreaContainer: {
     flex: 1,
     backgroundColor: COLORS.BLUE_300,
+    paddingTop: 12,
+    paddingHorizontal: 16,
   },
   container: {
     flex: 1,
     justifyContent: 'space-between',
-    paddingHorizontal: 16,
+    
   },
 
   textTitle: {
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 100,
   },
-    title: {
+  title: {
     fontSize: 20,
     fontFamily: 'Pretendard-Bold',
     color: '#fff',
@@ -96,8 +96,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
 
-  
-  // mainTxt: { 
+  // mainTxt: {
   //   width: 311,
   //   height: 58,
   //   left: 10,
@@ -112,16 +111,16 @@ const styles = StyleSheet.create({
   //   margin: 10,
   // },
 
-  contentsContainer: { 
+  contentsContainer: {
     justifyContent: 'center',
     alignItems: 'center',
     // backgroundColor: '#446CFF',
     // paddingVertical:100,
     borderRadius: 10,
   },
-  img: { 
-    width: 297,
-    height: 216,
+  img: {
+    width: 344,
+    height: 344,
     alignItems: 'center',
     justifyContent: 'center',
     // marginTop: 49,
@@ -136,10 +135,9 @@ const styles = StyleSheet.create({
     fontWeight: 'normal',
     fontSize: 16,
     lineHeight: 24,
-    textAlign: 'center'
-    
+    textAlign: 'center',
   },
-  btnNext : {
+  btnNext: {
     backgroundColor: '#446CFF',
     paddingVertical: 17,
     marginTop: 70,
@@ -158,6 +156,3 @@ const styles = StyleSheet.create({
 });
 
 export default GreetScreen;
-
-
-

@@ -1,12 +1,18 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useState, useRef } from 'react';
-import { Button, Text, View, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import {
+  Button,
+  Text,
+  View,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { NavigationActions, StackActions } from 'react-navigation';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonBack from '../../components/ButtonBack';
-import COLORS from '../../styles/colors'
-import GP from './GroupCodeShare'
+import COLORS from '../../styles/colors';
+import GP from './GroupCodeShare';
 
 type GroupCodeInputScreenProp = NativeStackScreenProps<
   NavigationStackParams,
@@ -28,8 +34,17 @@ function GroupCodeInputScreen({ navigation }: GroupCodeInputScreenProp) {
     '',
     '',
   ]);
-  const [isBtnActivated, setIsBtnActivated] = useState(true)
-  const [groupCode, setGroupCode] = useState([])
+  const [isBtnActivated, setIsBtnActivated] = useState(true);
+  const [isFilled, setIsFilled] = useState(false)
+  const [groupCode, setGroupCode] = useState<string[]>([]);
+
+  useEffect(()=> {
+    if(filledTexts.filter(text=>text==='').length === 0){
+      setIsFilled(true)
+    }else {
+      setIsFilled(false)
+    }
+  },[filledTexts])
 
   const insertText = (text: string, index: number) => {
     setFilledTexts((prev) => {
@@ -41,34 +56,38 @@ function GroupCodeInputScreen({ navigation }: GroupCodeInputScreenProp) {
 
   //코드 생성
   const createCode = () => {
-    const rawCode = Math.random().toString(36).substr(2,6)
+    const rawCode = Math.random().toString(36).substr(2, 6);
     const code: string[] = [];
-    for(var i=0; i<rawCode.length; i++){
-      code[i] = rawCode.charAt(i)
+    for (var i = 0; i < rawCode.length; i++) {
+      code[i] = rawCode.charAt(i);
     }
-    return code
+    return code;
   };
 
-  const onCreateCodePressed =()=>{
+  const onCreateCodePressed = () => {
     const code: any = createCode();
-    setGroupCode(code)
-    setIsBtnActivated(false)
-    
+    setGroupCode(code);
+    setIsBtnActivated(false);
+    setIsFilled(true);
   };
-  type codeType = { code: [] };
-
 
   return (
-      <SafeAreaView style={styles.safeAreaContainer}>
-        <ButtonBack onPress={() => navigation.goBack()} />
-        <View style={styles.container}>
-          <View style={styles.titleWrapper}>
-            <Text style={styles.title}>웨일던에 입장해 볼까요?</Text>
-            <Text style={styles.title}>초대 코드를 입력하세요</Text>
-          </View>
+    <SafeAreaView style={styles.safeAreaContainer}>
+      <ButtonBack onPress={() => navigation.goBack()} />
+      <View style={styles.container}>
+        <View style={styles.titleWrapper}>
+          <Text style={styles.title}>웨일던에 입장해 볼까요?</Text>
+          <Text style={styles.title}>초대 코드를 입력하세요</Text>
+        </View>
 
-        <View>
-          <View style={!isBtnActivated ? styles.inactivatedCodeContainer: styles.codeContainer}>
+        <View >
+          <View
+            style={
+              isFilled
+                ? styles.inactivatedCodeContainer
+                : styles.codeContainer
+            }
+          >
             <View style={styles.textInputWrapper}>
               <TextInput
                 style={styles.textInput}
@@ -138,47 +157,57 @@ function GroupCodeInputScreen({ navigation }: GroupCodeInputScreenProp) {
               />
             </View>
           </View>
+          
 
-          {/* <GP code={groupCode}/> */}
           <TouchableOpacity
-            style={!isBtnActivated? styles.inactivatedEntranceBtnWrapper:styles.entranceBtnWrapper}
+            style={
+              isFilled
+                ? styles.inactivatedEntranceBtnWrapper
+                : styles.entranceBtnWrapper
+            }
             onPress={() =>
-              navigation.dispatch(
-                StackActions.reset({
-                  index: 0,
-                  actions: [NavigationActions.navigate({ routeName: 'GroupCodeShare' })],
-                }),
-              )
+              navigation.navigate('GroupCodeShare', {
+                code: groupCode.join(''),
+              })
             }
           >
             <Text style={styles.entranceBtnText}>입장하기</Text>
           </TouchableOpacity>
+          
         </View>
-
 
         <View>
-          <Text style={styles.createTxt} onPress={() => navigation.navigate('GroupCodeCreate')}>아직 초대 코드가 없으신가요?</Text>
-          <TouchableOpacity style={isBtnActivated ? styles.createCodeBtn :styles.inactivatedCreateCodeBtn} onPress={onCreateCodePressed} >
-            <Text style={styles.createCodeBtnTxt}> 새로운 초대 코드 만들기</Text>
+          <Text style={styles.createTxt}>아직 초대 코드가 없으신가요?</Text>
+          <TouchableOpacity
+            style={
+              !isFilled
+                ? styles.createCodeBtn
+                : styles.inactivatedCreateCodeBtn
+            }
+            onPress={onCreateCodePressed}
+          >
+            <Text style={styles.createCodeBtnTxt}>
+              {' '}
+              새로운 초대 코드 만들기
+            </Text>
           </TouchableOpacity>
         </View>
-
-        </View>
-      </SafeAreaView>
+      </View>
+    </SafeAreaView>
   );
 }
-
-
 
 const styles = StyleSheet.create({
   safeAreaContainer: {
     flex: 1,
     backgroundColor: '#fff',
+    paddingTop: 12,
+    paddingHorizontal: 16,
   },
   container: {
     flex: 1,
     justifyContent: 'space-between',
-    paddingHorizontal: 16,
+    
   },
   title: {
     fontSize: 20,
@@ -189,6 +218,7 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     paddingHorizontal: 10,
   },
+
   textInput: {
     borderRadius: 5,
     backgroundColor: '#fff',
@@ -203,6 +233,7 @@ const styles = StyleSheet.create({
     marginVertical: 12,
     flexDirection: 'row',
     justifyContent: 'center',
+    
   },
 
   inactivatedCodeContainer: {
@@ -218,6 +249,8 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.TEXT_DISABLED_GREY,
     paddingVertical: 35,
     borderRadius: 10,
+    // flex: 1,
+
   },
 
   //
@@ -225,14 +258,14 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingVertical: 17,
     backgroundColor: COLORS.BLUE_500,
-    marginBottom:300,
+    marginBottom: 300,
     marginTop: 30,
   },
   entranceBtnWrapper: {
     borderRadius: 5,
     paddingVertical: 17,
     backgroundColor: COLORS.TEXT_DISABLED_GREY,
-    marginBottom:300,
+    marginBottom: 300,
     marginTop: 30,
   },
   entranceBtnText: {
@@ -243,12 +276,12 @@ const styles = StyleSheet.create({
   },
 
   //
-  inactive: { 
+  inactive: {
     backgroundColor: COLORS.TEXT_DISABLED_GREY,
     color: 'white',
   },
 
-  inactivatedCreateCodeBtn: { 
+  inactivatedCreateCodeBtn: {
     textAlign: 'center',
     backgroundColor: COLORS.TEXT_DISABLED_GREY,
     paddingVertical: 17,
@@ -266,15 +299,15 @@ const styles = StyleSheet.create({
     marginBottom: 60,
     bottom: 16,
   },
-  createCodeBtnTxt: { 
+  createCodeBtnTxt: {
     color: 'white',
     textAlign: 'center',
     fontFamily: 'Pretendard-Bold',
     fontSize: 16,
     fontWeight: '600',
   },
-  
-  createTxt: { 
+
+  createTxt: {
     fontFamily: 'Pretendard',
     fontSize: 12,
     textAlign: 'center',
@@ -282,7 +315,7 @@ const styles = StyleSheet.create({
     color: COLORS.TEXT_SECONDARY,
     marginBottom: 10,
     bottom: 5,
-  }
-})
+  },
+});
 
 export default GroupCodeInputScreen;

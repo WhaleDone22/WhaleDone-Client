@@ -2,14 +2,13 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
 import { Button, Text, View, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { NavigationActions, StackActions } from 'react-navigation';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonBack from '../../components/ButtonBack';
-import COLORS from '../../styles/colors'
+import COLORS from '../../styles/colors';
 
-import useBottomSheet from '../../../infrastructures/hooks/useBottomSheet'
-import { BOTTOM_SHEET_HEIGHT } from './config/constants'
-import BottomSheetHeader from './BottomSheetHeader'
+import useBottomSheet from '../../../infrastructures/hooks/useBottomSheet';
+import { BOTTOM_SHEET_HEIGHT } from './config/constants';
+import BottomSheetHeader from './BottomSheetHeader';
 
 type BottomSheetScreenProp = NativeStackScreenProps<
   NavigationStackParams,
@@ -18,7 +17,6 @@ type BottomSheetScreenProp = NativeStackScreenProps<
 
 function BottomSheet({ navigation }: BottomSheetScreenProp) {
   const { sheet } = useBottomSheet();
-  
 
   return (
     <SafeAreaView>
@@ -27,7 +25,7 @@ function BottomSheet({ navigation }: BottomSheetScreenProp) {
         <BottomSheetHeader />
       </View>
     </SafeAreaView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -45,6 +43,6 @@ const styles = StyleSheet.create({
     // boxShadow: 0px 0px 10px rgba(0, 0, 0, 0.6)
     height: BOTTOM_SHEET_HEIGHT,
   },
-})
+});
 
 export default BottomSheet;

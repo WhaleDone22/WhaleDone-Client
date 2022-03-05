@@ -5,9 +5,8 @@ export type NavigationStackParams = {
   Login: undefined;
   EmailInput: undefined;
   Greet: undefined;
-  GroupCodeCreate: undefined;
   GroupCodeInput: undefined;
-  GroupCodeShare: undefined;
+  GroupCodeShare: { code: string };
   NicknameInput: undefined;
   PasswordInput: undefined;
   PhoneInput: undefined;
@@ -21,5 +20,4 @@ export type NavigationStackParams = {
   Home: undefined;
   Map: undefined;
   Feed: undefined;
-  BottomSheet: undefined;
 };
