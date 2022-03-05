@@ -121,7 +121,7 @@ function PhoneInputScreen({ navigation }: PhoneInputScreenProp) {
       </BottomSheet>
       <ButtonBack onPress={() => navigation.goBack()} />
       <View style={commonStyles.titleWrapper}>
-        <Text style={{ ...commonStyles.title, marginBottom: 12 }}>
+        <Text style={[commonStyles.title, { marginBottom: 12 }]}>
           번호를 입력하세요
         </Text>
       </View>

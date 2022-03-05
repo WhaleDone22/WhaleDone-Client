@@ -28,6 +28,7 @@ module.exports = {
       },
     ],
     'react/jsx-props-no-spreading': 0,
+    'no-unused-vars': 'warn',
   },
   'prettier/prettier': [
     'error',

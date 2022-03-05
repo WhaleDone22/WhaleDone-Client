@@ -11,7 +11,7 @@ export type NavigationStackParams = {
   PasswordInput: undefined;
   PhoneInput: undefined;
   PhoneAuth: undefined;
-  Main: undefined;
+  Main: { screen: 'Home' | 'Map' | 'Feed' };
   EditProfile: undefined;
   MapDetail: undefined;
   MyPage: undefined;
