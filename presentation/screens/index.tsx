@@ -25,7 +25,7 @@ function Screens() {
   return (
     <Stack.Navigator
       screenOptions={{ headerShown: false }}
-      initialRouteName="Notice"
+      initialRouteName="SignUpMain"
     >
       {!isUserLoggedIn && (
         <>
