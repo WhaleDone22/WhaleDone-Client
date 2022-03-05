@@ -20,4 +20,5 @@ export type NavigationStackParams = {
   Home: undefined;
   Map: undefined;
   Feed: undefined;
+  Onboarding: undefined;
 };
