@@ -24,7 +24,7 @@ function Screens() {
   return (
     <Stack.Navigator
       screenOptions={{ headerShown: false }}
-      initialRouteName="GroupCodeInput"
+      initialRouteName="NicknameInput"
     >
       {!isUserLoggedIn && (
         <>

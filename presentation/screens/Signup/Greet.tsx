@@ -17,13 +17,8 @@ import COLORS from '../../styles/colors';
 
 type GreetScreenProp = NativeStackScreenProps<NavigationStackParams, 'Greet'>;
 
-// interface Btn {
-//   style: StyleSheet,
-//   title: String,
-//   onPress: () => void,
-// }
-
-function GreetScreen({ navigation }: GreetScreenProp) {
+function GreetScreen({ navigation, route }: GreetScreenProp) {
+  const { nickname } = route.params;
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.safeAreaContainer}>
@@ -31,7 +26,7 @@ function GreetScreen({ navigation }: GreetScreenProp) {
         <View style={styles.container}>
 
           <View style={styles.titleWrapper}>
-            <Text style={styles.title}>user1님 웨일던에서 </Text>
+            <Text style={styles.title}>{nickname}님 웨일던에서 </Text>
             <Text style={styles.title}>가족과 더 가까워져 보세요!</Text>
           </View>
 
