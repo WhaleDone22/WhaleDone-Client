@@ -1,9 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { ClockTime } from '../../infrastructures/types/feed';
 import { toTimeFormat } from '../../infrastructures/utils/dates';
+import COLORS from '../styles/colors';
 
 const countryCodeWithEmoji = require('../../infrastructures/data/countryCodeWithEmoji.json');
+
+const styles = StyleSheet.create({
+  container: {
+    marginTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text: {
+    fontSize: 16,
+    fontFamily: 'Pretendard-Bold',
+    color: COLORS.TEXT_PRIMARY,
+    padding: 5,
+  },
+});
 
 function ClockItem({ clock }: { clock: ClockTime }) {
   const [time, setTime] = useState<Date>(new Date());
@@ -18,9 +34,9 @@ function ClockItem({ clock }: { clock: ClockTime }) {
   }, []);
 
   return (
-    <View>
-      <Text>{countryCodeWithEmoji[clock.countryCode]}</Text>
-      <Text>{toTimeFormat(time)}</Text>
+    <View style={styles.container}>
+      <Text style={styles.text}>{countryCodeWithEmoji[clock.countryCode]}</Text>
+      <Text style={styles.text}>{toTimeFormat(time)}</Text>
     </View>
   );
 }
