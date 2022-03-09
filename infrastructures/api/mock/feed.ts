@@ -6,5 +6,9 @@ export function feedMock(): FeedService {
     return FEED_DATA.GET_ALL;
   };
 
-  return { getAllFeed };
+  const getTime = async () => {
+    return FEED_DATA.GET_TIME;
+  };
+
+  return { getAllFeed, getTime };
 }

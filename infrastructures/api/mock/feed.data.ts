@@ -1,6 +1,9 @@
-import { Feed } from '../../types/feed';
+import { ClockTime, Feed } from '../../types/feed';
 
-export const FEED_DATA: { GET_ALL: { date: string; feeds: Feed[] }[] } = {
+export const FEED_DATA: {
+  GET_ALL: { date: string; feeds: Feed[] }[];
+  GET_TIME: { my: ClockTime; families: ClockTime[] };
+} = {
   GET_ALL: [
     {
       date: '2022-01-21 금',
@@ -89,4 +92,11 @@ export const FEED_DATA: { GET_ALL: { date: string; feeds: Feed[] }[] } = {
       ],
     },
   ],
+  GET_TIME: {
+    my: { countryCode: 'KR', timeDelta: 0 },
+    families: [
+      { countryCode: 'KR', timeDelta: 0 },
+      { countryCode: 'CN', timeDelta: -1 },
+    ],
+  },
 };

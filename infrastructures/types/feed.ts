@@ -12,3 +12,8 @@ export type Reaction = {
   type: 'EMOJI' | 'TEXT' | 'RECORD';
   count: number;
 };
+
+export type ClockTime = {
+  countryCode: string;
+  timeDelta: number;
+};
