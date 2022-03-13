@@ -93,7 +93,7 @@ function FeedScreen() {
   }, []);
 
   return (
-    <SafeAreaView edges={['top']}>
+    <SafeAreaView edges={['top']} style={{ backgroundColor: 'white', flex: 1 }}>
       <ScrollView stickyHeaderIndices={[1]}>
         <View style={styles.timeContainer}>
           <View style={commonStyles.titleWrapper}>
@@ -121,30 +121,32 @@ function FeedScreen() {
             </View>
           </View>
         </View>
-        <View style={styles.feedHeader}>
-          <Text style={styles.feedHeaderTitle}>일상 피드</Text>
-          <View style={styles.feedModeSelector}>
-            <Text
-              style={[
-                styles.feedFilter,
-                isAll && styles.feedFilterSelected,
-                { paddingRight: 12 },
-              ]}
-              onPress={() => setIsAll(true)}
-            >
-              전체
-            </Text>
-            <Text
-              style={[styles.feedFilter, !isAll && styles.feedFilterSelected]}
-              onPress={() => setIsAll(false)}
-            >
-              나의 일상
-            </Text>
+        <View>
+          <View style={styles.feedHeader}>
+            <Text style={styles.feedHeaderTitle}>일상 피드</Text>
+            <View style={styles.feedModeSelector}>
+              <Text
+                style={[
+                  styles.feedFilter,
+                  isAll && styles.feedFilterSelected,
+                  { paddingRight: 12 },
+                ]}
+                onPress={() => setIsAll(true)}
+              >
+                전체
+              </Text>
+              <Text
+                style={[styles.feedFilter, !isAll && styles.feedFilterSelected]}
+                onPress={() => setIsAll(false)}
+              >
+                나의 일상
+              </Text>
+            </View>
           </View>
         </View>
         <View style={styles.feedsWrapper}>
           {feeds.map((feed) => (
-            <FeedsPerDay key={feed.date} {...feed} />
+            <FeedsPerDay key={feed.date} {...feed} isAll={isAll} />
           ))}
         </View>
       </ScrollView>
