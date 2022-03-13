@@ -14,7 +14,6 @@ const styles = StyleSheet.create({
   timeContainer: {
     backgroundColor: COLORS.BLUE_100,
     paddingBottom: 16,
-    paddingTop: 44,
   },
   timeWrapper: {
     borderRadius: 5,
@@ -43,6 +42,35 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   icon: { width: 24, height: 24 },
+  feedHeader: {
+    backgroundColor: 'white',
+    display: 'flex',
+    flexDirection: 'row',
+    height: 60,
+    paddingStart: 26,
+    paddingEnd: 22,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  feedHeaderTitle: {
+    fontSize: 18,
+    fontFamily: 'Pretendard-Bold',
+    color: COLORS.TEXT_PRIMARY,
+  },
+  feedFilter: {
+    fontSize: 14,
+    fontFamily: 'Pretendard',
+    color: COLORS.TEXT_DISABLED_GREY,
+  },
+  feedFilterSelected: {
+    color: COLORS.TEXT_PRIMARY,
+  },
+  feedModeSelector: {
+    flexDirection: 'row',
+  },
+  feedsWrapper: {
+    backgroundColor: 'white',
+  },
 });
 
 const IcSwiperNext = require('../../../assets/ic-swiper-next.png');
@@ -54,6 +82,7 @@ function FeedScreen() {
     my: ClockTime;
     families: ClockTime[];
   }>({ my: { countryCode: 'KR', timeDelta: 0 }, families: [] });
+  const [isAll, setIsAll] = useState(true);
 
   useEffect(() => {
     api.feedService.getAllFeed().then((response) => setFeeds(response));
@@ -64,44 +93,62 @@ function FeedScreen() {
   }, []);
 
   return (
-    <ScrollView stickyHeaderIndices={[1]}>
-      <View style={styles.timeContainer}>
-        <View style={commonStyles.titleWrapper}>
-          <Text style={commonStyles.title}>소통함</Text>
-        </View>
-        <View style={styles.timeWrapper}>
-          <View style={[styles.timeChild, styles.rightBorder]}>
-            <Text style={styles.timeTitle}>지금 내 시간</Text>
-            <ClockItem clock={times.my} />
+    <SafeAreaView edges={['top']}>
+      <ScrollView stickyHeaderIndices={[1]}>
+        <View style={styles.timeContainer}>
+          <View style={commonStyles.titleWrapper}>
+            <Text style={commonStyles.title}>소통함</Text>
           </View>
-          <View style={styles.timeChild}>
-            <Text style={styles.timeTitle}>지금 가족 시간</Text>
-            <Swiper
-              showsButtons={times.families.length > 1}
-              nextButton={<Image source={IcSwiperNext} style={styles.icon} />}
-              prevButton={<Image source={IcSwiperPrev} style={styles.icon} />}
-              showsPagination={false}
-              buttonWrapperStyle={styles.timeSwiperButtonWrapper}
-              height={60}
+          <View style={styles.timeWrapper}>
+            <View style={[styles.timeChild, styles.rightBorder]}>
+              <Text style={styles.timeTitle}>지금 내 시간</Text>
+              <ClockItem clock={times.my} />
+            </View>
+            <View style={styles.timeChild}>
+              <Text style={styles.timeTitle}>지금 가족 시간</Text>
+              <Swiper
+                showsButtons={times.families.length > 1}
+                nextButton={<Image source={IcSwiperNext} style={styles.icon} />}
+                prevButton={<Image source={IcSwiperPrev} style={styles.icon} />}
+                showsPagination={false}
+                buttonWrapperStyle={styles.timeSwiperButtonWrapper}
+                height={60}
+              >
+                {times.families.map((time) => (
+                  <ClockItem key={time.countryCode} clock={time} />
+                ))}
+              </Swiper>
+            </View>
+          </View>
+        </View>
+        <View style={styles.feedHeader}>
+          <Text style={styles.feedHeaderTitle}>일상 피드</Text>
+          <View style={styles.feedModeSelector}>
+            <Text
+              style={[
+                styles.feedFilter,
+                isAll && styles.feedFilterSelected,
+                { paddingRight: 12 },
+              ]}
+              onPress={() => setIsAll(true)}
             >
-              {times.families.map((time) => (
-                <ClockItem key={time.countryCode} clock={time} />
-              ))}
-            </Swiper>
+              전체
+            </Text>
+            <Text
+              style={[styles.feedFilter, !isAll && styles.feedFilterSelected]}
+              onPress={() => setIsAll(false)}
+            >
+              나의 일상
+            </Text>
           </View>
         </View>
-      </View>
-      <View>
-        <Text>일상 피드</Text>
-        <Text>전체</Text>
-        <Text>나의 일상</Text>
-      </View>
-      <View>
-        {feeds.map((feed) => (
-          <FeedsPerDay key={feed.date} {...feed} />
-        ))}
-      </View>
-    </ScrollView>
+        <View style={styles.feedsWrapper}>
+          {feeds.map((feed) => (
+            <FeedsPerDay key={feed.date} {...feed} />
+          ))}
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
