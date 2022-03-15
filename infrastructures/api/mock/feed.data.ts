@@ -52,7 +52,7 @@ export const FEED_DATA: {
       date: '2022-01-22 토',
       feeds: [
         {
-          id: 1,
+          id: 4,
           writer: '가나다라마',
           writerID: 2,
           writerThumbnail:
@@ -66,7 +66,7 @@ export const FEED_DATA: {
           ],
         },
         {
-          id: 2,
+          id: 5,
           writer: '마라다나가',
           writerID: 4,
           title: '가족에게 소개하고 싶은 운동 한 가지는?',
@@ -78,7 +78,7 @@ export const FEED_DATA: {
           ],
         },
         {
-          id: 3,
+          id: 6,
           writer: '나나나나나',
           writerID: 5,
           title: '가족에게 소개하고 싶은 운동 한 가지는?',

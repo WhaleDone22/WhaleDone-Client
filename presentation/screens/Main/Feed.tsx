@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import React, { useEffect, useRef, useState } from 'react';
+import { BackHandler, Image, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Swiper from 'react-native-swiper';
+import BottomSheet from 'react-native-gesture-bottom-sheet';
 import { api } from '../../../infrastructures/api';
 import { ClockTime, Feed } from '../../../infrastructures/types/feed';
 import ClockItem from '../../components/ClockItem';
@@ -82,7 +83,15 @@ function FeedScreen() {
     my: ClockTime;
     families: ClockTime[];
   }>({ my: { countryCode: 'KR', timeDelta: 0 }, families: [] });
+  const [selectedFeedID, setSelectedFeedID] = useState<number | undefined>(
+    undefined,
+  );
+  const [selectedFeedY, setSelectedFeedY] = useState<number | undefined>(
+    undefined,
+  );
   const [isAll, setIsAll] = useState(true);
+  const bottomSheetRef = useRef<any>(null);
+  const scrollViewRef = useRef<ScrollView>(null);
 
   useEffect(() => {
     api.feedService.getAllFeed().then((response) => setFeeds(response));
@@ -92,9 +101,37 @@ function FeedScreen() {
     api.feedService.getTime().then((response) => setTimes(response));
   }, []);
 
+  useEffect(() => {
+    if (selectedFeedID !== undefined) bottomSheetRef.current?.show();
+  }, [selectedFeedID]);
+
+  useEffect(() => {
+    if (selectedFeedY !== undefined)
+      scrollViewRef.current?.scrollTo({
+        x: 0,
+        y: selectedFeedY - 40,
+        animated: true,
+      });
+  }, [selectedFeedY]);
+
   return (
     <SafeAreaView edges={['top']} style={{ backgroundColor: 'white', flex: 1 }}>
-      <ScrollView stickyHeaderIndices={[1]}>
+      <BottomSheet
+        ref={bottomSheetRef}
+        snapPoints={[700]}
+        height={400}
+        backgroundColor="#00000000"
+        sheetBackgroundColor="#FFFFFF"
+        hasDraggableIcon={true}
+        onClose={() => {
+          setSelectedFeedID(undefined);
+          bottomSheetRef.current?.close();
+        }}
+      >
+        <TextInput />
+        <ScrollView></ScrollView>
+      </BottomSheet>
+      <ScrollView stickyHeaderIndices={[1]} ref={scrollViewRef}>
         <View style={styles.timeContainer}>
           <View style={commonStyles.titleWrapper}>
             <Text style={commonStyles.title}>소통함</Text>
@@ -144,9 +181,21 @@ function FeedScreen() {
             </View>
           </View>
         </View>
-        <View style={styles.feedsWrapper}>
+        <View
+          style={[
+            styles.feedsWrapper,
+            selectedFeedID !== undefined && { paddingBottom: 400 },
+          ]}
+        >
           {feeds.map((feed) => (
-            <FeedsPerDay key={feed.date} {...feed} isAll={isAll} />
+            <FeedsPerDay
+              key={feed.date}
+              {...feed}
+              isAll={isAll}
+              setSelectedFeedID={setSelectedFeedID}
+              selectedFeedID={selectedFeedID}
+              setSelectedFeedY={setSelectedFeedY}
+            />
           ))}
         </View>
       </ScrollView>
