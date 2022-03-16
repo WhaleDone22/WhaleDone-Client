@@ -1,8 +1,9 @@
-import { ClockTime, Feed } from '../../types/feed';
+import { ClockTime, Feed, ReactionItem } from '../../types/feed';
 
 export const FEED_DATA: {
   GET_ALL: { date: string; feeds: Feed[] }[];
   GET_TIME: { my: ClockTime; families: ClockTime[] };
+  GET_REACTIONS: ReactionItem[];
 } = {
   GET_ALL: [
     {
@@ -99,4 +100,60 @@ export const FEED_DATA: {
       { countryCode: 'CN', timeDelta: -1 },
     ],
   },
+  GET_REACTIONS: [
+    {
+      reactionID: 1,
+      writerID: 1,
+      reactionType: 'EMOJI',
+      content: '😄',
+    },
+    { reactionID: 2, writerID: 2, reactionType: 'EMOJI', content: '😄' },
+    {
+      reactionID: 3,
+      writerID: 3,
+      reactionType: 'RECORD',
+      content:
+        'https://seojinseojin-dummy.s3.ap-northeast-2.amazonaws.com/1643563516149.webm',
+    },
+    {
+      reactionID: 4,
+      writerThumbnail: 'https://avatars.githubusercontent.com/u/48249505?v=4',
+      writerID: 4,
+      reactionType: 'TEXT',
+      content:
+        '텍스트 반응이 들어갑니다. 최대 40글자. 텍스트 반응이 들어갑니다. 최대 40글자. 텍스트 반응이 들어갑니다. 최대 40글자. ',
+    },
+    {
+      reactionID: 5,
+      writerThumbnail: 'https://avatars.githubusercontent.com/u/48249505?v=4',
+      writerID: 4,
+      reactionType: 'TEXT',
+      content:
+        '텍스트 반응이 들어갑니다. 최대 40글자. 텍스트 반응이 들어갑니다. 최대 40글자. 텍스트 반응이 들어갑니다. 최대 40글자. ',
+    },
+    {
+      reactionID: 6,
+      writerThumbnail: 'https://avatars.githubusercontent.com/u/48249505?v=4',
+      writerID: 4,
+      reactionType: 'TEXT',
+      content:
+        '텍스트 반응이 들어갑니다. 최대 40글자. 텍스트 반응이 들어갑니다. 최대 40글자. 텍스트 반응이 들어갑니다. 최대 40글자. ',
+    },
+    {
+      reactionID: 7,
+      writerThumbnail: 'https://avatars.githubusercontent.com/u/48249505?v=4',
+      writerID: 4,
+      reactionType: 'TEXT',
+      content:
+        '텍스트 반응이 들어갑니다. 최대 40글자. 텍스트 반응이 들어갑니다. 최대 40글자. 텍스트 반응이 들어갑니다. 최대 40글자. ',
+    },
+    {
+      reactionID: 8,
+      writerThumbnail: 'https://avatars.githubusercontent.com/u/48249505?v=4',
+      writerID: 4,
+      reactionType: 'TEXT',
+      content:
+        '텍스트 반응이 들어갑니다. 최대 40글자. 텍스트 반응이 들어갑니다. 최대 40글자. 텍스트 반응이 들어갑니다. 최대 40글자. ',
+    },
+  ],
 };

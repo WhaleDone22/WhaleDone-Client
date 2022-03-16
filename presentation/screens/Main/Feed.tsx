@@ -12,11 +12,16 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Swiper from 'react-native-swiper';
 import BottomSheet from 'react-native-gesture-bottom-sheet';
 import { api } from '../../../infrastructures/api';
-import { ClockTime, Feed } from '../../../infrastructures/types/feed';
+import {
+  ClockTime,
+  Feed,
+  ReactionItem as ReactionItemType,
+} from '../../../infrastructures/types/feed';
 import ClockItem from '../../components/ClockItem';
 import FeedsPerDay from '../../components/FeedsPerDay';
 import COLORS from '../../styles/colors';
 import { commonStyles } from '../../styles/common';
+import ReactionItem from '../../components/ReactionItem';
 
 const styles = StyleSheet.create({
   timeContainer: {
@@ -128,6 +133,7 @@ function FeedScreen() {
   const scrollViewRef = useRef<ScrollView>(null);
   const [typedText, setTypedText] = useState('');
   const [viewPaddingBottom, setViewPaddingBottom] = useState(40);
+  const [reactions, setReactions] = useState<ReactionItemType[]>([]);
 
   useEffect(() => {
     api.feedService.getAllFeed().then((response) => setFeeds(response));
@@ -140,6 +146,7 @@ function FeedScreen() {
   useEffect(() => {
     if (selectedFeedID !== undefined) {
       bottomSheetRef.current?.show();
+      api.feedService.getReactions(selectedFeedID).then((r) => setReactions(r));
     }
   }, [selectedFeedID]);
 
@@ -193,6 +200,7 @@ function FeedScreen() {
               placeholder={bottomSheetMode === 'text' ? '텍스트 입력' : ''}
               onChangeText={(text) => setTypedText(text)}
               value={typedText}
+              maxLength={40}
             />
             {bottomSheetMode !== 'text' ? (
               <>
@@ -230,7 +238,32 @@ function FeedScreen() {
               </Pressable>
             )}
           </Pressable>
-          <ScrollView></ScrollView>
+          <View
+            style={{
+              marginTop: 20,
+              borderColor: 'white',
+              borderTopColor: COLORS.GREY_020,
+              borderWidth: 6,
+              flex: 1,
+            }}
+          >
+            {bottomSheetMode === 'reaction' ? (
+              <ScrollView
+                style={{ flex: 1, paddingVertical: 24, paddingHorizontal: 16 }}
+              >
+                <View
+                  onStartShouldSetResponder={() => true}
+                  style={{ paddingBottom: 30 }}
+                >
+                  {reactions.map((reaction) => (
+                    <ReactionItem {...reaction} key={reaction.reactionID} />
+                  ))}
+                </View>
+              </ScrollView>
+            ) : (
+              <></>
+            )}
+          </View>
         </Pressable>
       </BottomSheet>
       <ScrollView stickyHeaderIndices={[1]} ref={scrollViewRef}>

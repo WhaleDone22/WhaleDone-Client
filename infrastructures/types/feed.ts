@@ -27,3 +27,11 @@ export type ClockTime = {
   countryCode: string;
   timeDelta: number;
 };
+
+export type ReactionItem = {
+  writerThumbnail?: string;
+  writerID: number;
+  reactionID: number;
+  reactionType: Reaction['type'];
+  content: string;
+};

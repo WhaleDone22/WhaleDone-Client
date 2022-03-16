@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Feed, reactionToIcon } from '../../infrastructures/types/feed';
 import COLORS from '../styles/colors';
