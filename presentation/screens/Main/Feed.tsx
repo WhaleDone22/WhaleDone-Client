@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
+  Dimensions,
   Image,
   Keyboard,
   Pressable,
@@ -7,7 +8,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import { ScrollView, TextInput } from 'react-native-gesture-handler';
+import { FlatList, ScrollView, TextInput } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Swiper from 'react-native-swiper';
 import BottomSheet from 'react-native-gesture-bottom-sheet';
@@ -22,6 +23,9 @@ import FeedsPerDay from '../../components/FeedsPerDay';
 import COLORS from '../../styles/colors';
 import { commonStyles } from '../../styles/common';
 import ReactionItem from '../../components/ReactionItem';
+
+const { width } = Dimensions.get('window');
+const reactionEmojis: string[] = require('../../../infrastructures/data/reactionEmoji.json');
 
 const styles = StyleSheet.create({
   timeContainer: {
@@ -249,7 +253,11 @@ function FeedScreen() {
           >
             {bottomSheetMode === 'reaction' ? (
               <ScrollView
-                style={{ flex: 1, paddingVertical: 24, paddingHorizontal: 16 }}
+                style={{
+                  flex: 1,
+                  paddingVertical: 24,
+                  paddingHorizontal: 16,
+                }}
               >
                 <View
                   onStartShouldSetResponder={() => true}
@@ -260,6 +268,21 @@ function FeedScreen() {
                   ))}
                 </View>
               </ScrollView>
+            ) : bottomSheetMode === 'emoji' ? (
+              <View>
+                <FlatList
+                  data={reactionEmojis}
+                  renderItem={({ item }) => (
+                    <Image
+                      key={item}
+                      source={{ uri: item }}
+                      style={{ width: width / 3, height: width / 3 }}
+                    />
+                  )}
+                  numColumns={3}
+                  keyExtractor={(item) => item}
+                />
+              </View>
             ) : (
               <></>
             )}
