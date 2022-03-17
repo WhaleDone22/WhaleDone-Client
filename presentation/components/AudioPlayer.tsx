@@ -32,6 +32,7 @@ function AudioPlayer(props: AudioPlayerProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [sound, setSound] = useState<Audio.Sound>();
   const [status, setStatus] = useState<AVPlaybackStatus>();
+  const [seconds, setSeconds] = useState(0);
 
   useEffect(() => {
     Audio.Sound.createAsync({ uri: src })
@@ -48,8 +49,18 @@ function AudioPlayer(props: AudioPlayerProps) {
   }, []);
 
   useEffect(() => {
-    if (sound && isPlaying) sound.playAsync().catch((e) => console.error(e));
-    if (sound && !isPlaying) sound.pauseAsync().catch((e) => console.error(e));
+    let timer: NodeJS.Timer | undefined = undefined;
+    if (sound && isPlaying) {
+      timer = setInterval(() => setSeconds((prev) => prev + 1), 1000);
+      sound.playAsync().catch((e) => console.error(e));
+    }
+    if (sound && !isPlaying) {
+      if (timer !== undefined) clearInterval(timer);
+      sound.pauseAsync().catch((e) => console.error(e));
+    }
+    return () => {
+      timer && clearInterval(timer);
+    };
   }, [isPlaying]);
 
   return (
@@ -66,10 +77,17 @@ function AudioPlayer(props: AudioPlayerProps) {
               style={styles.icon}
             />
           </Pressable>
-          <View style={styles.statusbar}></View>
+          <View style={styles.statusbar}>
+            <View
+              style={{
+                height: 6,
+                backgroundColor: COLORS.THEME_PRIMARY,
+                width: (seconds * 100000) / (status.durationMillis ?? 10000),
+              }}
+            ></View>
+          </View>
           <Text style={styles.timeStamp}>
-            {status?.isLoaded &&
-              status.durationMillis &&
+            {status.durationMillis &&
               `${Math.floor(status.durationMillis / 60000)
                 .toString()
                 .padStart(2, '0')}:${Math.floor(status.durationMillis / 1000)
