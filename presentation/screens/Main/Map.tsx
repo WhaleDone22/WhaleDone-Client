@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import BottomSheet from 'react-native-gesture-bottom-sheet';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import { commonStyles } from '../../styles/common';
-import MapView,  { PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
 import COLORS from '../../styles/colors';
 
@@ -60,7 +60,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     height: 50,
     width: 150,
-    backgroundColor: "#000",
+    backgroundColor: "red",
+    color: 'blue',
     // justifyContent: "center",
     // alignItems: "center",
     borderRadius: 20,
@@ -164,8 +165,6 @@ const IcNotice = require('../../../assets/ic-bell.png');
 const IcMyPage = require('../../../assets/ic-user-circle.png'); 
 
 function MapScreen({ navigation }: MapScreenProp) {
-
-  const [selectedCountry, setSelectedCountry] = useState(true);
   const [isBottomSheetOpened, setIsBottomSheetOpened] = useState(false)
   const bottomSheetRef = useRef<any>(null);
 
@@ -241,7 +240,7 @@ function MapScreen({ navigation }: MapScreenProp) {
 
         {/* onPress 왜안돼요ㅠㅠㅠㅠㅠㅠㅠㅠㅠ */}
         <TouchableOpacity style={styles.button} onPress={() => {bottomSheetRef.current?.show(); console.log('press'); setIsBottomSheetOpened(true)}}>
-          <Text>버튼</Text> 
+          <Text>버튼버튼버튼버튼버튼버튼버튼버튼</Text> 
         </TouchableOpacity>
 
 
@@ -249,11 +248,11 @@ function MapScreen({ navigation }: MapScreenProp) {
 
       <View style={{ width: '100%', height: '100%'}}>
         {/* Google Map */}
-        {/* <MapView 
+        <MapView 
           style={{ width: '100%', height: '100%'}} 
           provider={PROVIDER_GOOGLE}
           initialRegion={{ latitude: 35.91395373474155, longitude: 127.73829440215488, latitudeDelta: 80, longitudeDelta: 80,}} 
-        /> */}
+        />
         
 
         {/* Header */}
