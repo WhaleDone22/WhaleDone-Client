@@ -44,12 +44,13 @@ function ReactionItem(props: ReactionItemProps) {
       <View style={styles.bubbleWrapper}>
         {reactionType === 'RECORD' ? (
           <AudioPlayer src={content} />
+        ) : reactionType === 'TEXT' ? (
+          <Text style={styles.text}>{content}</Text>
         ) : (
-          <Text
-            style={[styles.text, reactionType === 'EMOJI' && { fontSize: 30 }]}
-          >
-            {content}
-          </Text>
+          <Image
+            source={{ uri: content }}
+            style={{ width: 120, height: 120, alignSelf: 'center' }}
+          />
         )}
       </View>
     </View>

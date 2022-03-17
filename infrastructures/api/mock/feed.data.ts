@@ -105,9 +105,16 @@ export const FEED_DATA: {
       reactionID: 1,
       writerID: 1,
       reactionType: 'EMOJI',
-      content: '😄',
+      content:
+        'https://seojinseojin-dummy.s3.ap-northeast-2.amazonaws.com/emoji_6.png',
     },
-    { reactionID: 2, writerID: 2, reactionType: 'EMOJI', content: '😄' },
+    {
+      reactionID: 2,
+      writerID: 2,
+      reactionType: 'EMOJI',
+      content:
+        'https://seojinseojin-dummy.s3.ap-northeast-2.amazonaws.com/emoji_1.png',
+    },
     {
       reactionID: 3,
       writerID: 3,
