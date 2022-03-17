@@ -23,6 +23,7 @@ import FeedsPerDay from '../../components/FeedsPerDay';
 import COLORS from '../../styles/colors';
 import { commonStyles } from '../../styles/common';
 import ReactionItem from '../../components/ReactionItem';
+import AudioRecorder from '../../components/AudioRecorder';
 
 const { width } = Dimensions.get('window');
 const reactionEmojis: string[] = require('../../../infrastructures/data/reactionEmoji.json');
@@ -284,7 +285,9 @@ function FeedScreen() {
                 />
               </View>
             ) : (
-              <></>
+              <AudioRecorder
+                setReactionMode={() => setBottomSheetMode('reaction')}
+              />
             )}
           </View>
         </Pressable>
