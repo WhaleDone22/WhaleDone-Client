@@ -2,6 +2,7 @@ import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { ReactionItem as ReactionItemType } from '../../infrastructures/types/feed';
 import COLORS from '../styles/colors';
+import AudioPlayer from './AudioPlayer';
 
 type ReactionItemProps = ReactionItemType;
 
@@ -42,7 +43,7 @@ function ReactionItem(props: ReactionItemProps) {
       />
       <View style={styles.bubbleWrapper}>
         {reactionType === 'RECORD' ? (
-          <Text>미디어플레이어</Text>
+          <AudioPlayer src={content} />
         ) : (
           <Text
             style={[styles.text, reactionType === 'EMOJI' && { fontSize: 30 }]}

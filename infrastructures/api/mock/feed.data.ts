@@ -113,7 +113,7 @@ export const FEED_DATA: {
       writerID: 3,
       reactionType: 'RECORD',
       content:
-        'https://seojinseojin-dummy.s3.ap-northeast-2.amazonaws.com/1643563516149.webm',
+        'https://seojinseojin-dummy.s3.ap-northeast-2.amazonaws.com/sample-6s.mp3',
     },
     {
       reactionID: 4,
