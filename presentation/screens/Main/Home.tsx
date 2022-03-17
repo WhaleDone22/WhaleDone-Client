@@ -51,16 +51,17 @@ const styles = StyleSheet.create({
 
   // carousel
   carouselWrapper: {
-    // backgroundColor:'yellow',
     flex: 1,
-    // width: 200,
-    // justifyContent:'center',
+    // paddingLeft: 30,
+    // alignItems: 'center',
+    paddingVertical: 15,
+    marginHorizontal: 24,
   },
   card: {
     backgroundColor: COLORS.BLUE_400,
     borderRadius: 10,
-    width: 308,
-    height: 413,
+    width: 323,
+    height: 433,
     shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowOffset: {
@@ -89,7 +90,8 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.BLUE_500,
     paddingVertical: 12,
     borderRadius: 5,
-    bottom: Platform.OS === 'ios' ? 135 : 45, // bug: 안드 깨짐(안보임)
+    bottom: Platform.OS === 'ios' ? 135 : 45,
+    marginTop: 20,
   },
   answerTxt: {
     color: '#fff',
@@ -122,9 +124,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 19,
   },
-  temp: {
-    backgroundColor: 'red',
-  },
 });
 
 const Logo = require('../../../assets/logo-whaledone.png');
@@ -138,7 +137,6 @@ const IcTmi = require('../../../assets/ic-tmi.png');
 
 function HomeScreen({ navigation }: HomeScreenProp) {
   const pageRef = useRef<any>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
 
   const [week1, setWeek1] = useState('');
   const [week2, setWeek2] = useState('');
@@ -204,12 +202,6 @@ function HomeScreen({ navigation }: HomeScreenProp) {
     setWeek2(dayOfWeek2);
   }, []);
 
-  const changeActiveIndex = () => {
-    const currentIndex = pageRef.current?.activeIndex;
-    if (currentIndex) setActiveIndex(currentIndex);
-  };
-  //  edges={['top']}
-
   return (
     <SafeAreaView style={commonStyles.container}>
       <View style={styles.headerContainer}>
@@ -232,11 +224,7 @@ function HomeScreen({ navigation }: HomeScreenProp) {
 
       {/* Carousel */}
       <View style={styles.carouselWrapper}>
-        <Pages
-          indicatorColor={COLORS.THEME_PRIMARY}
-          ref={pageRef}
-          onScrollEnd={changeActiveIndex}
-        >
+        <Pages indicatorColor={COLORS.THEME_PRIMARY} ref={pageRef}>
           {mainCarouselData.map((data) => (
             <View style={[styles.item, styles.card]} key={data.category}>
               <Image source={data.icon} style={styles.icon} />
