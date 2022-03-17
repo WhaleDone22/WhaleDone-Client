@@ -98,7 +98,7 @@ function FeedItem({
   const feedViewRef = useRef<View>(null);
   const onBubbleClicked = () => {
     setSelectedFeedID();
-    positionY && height && setSelectedFeedY(positionY + height);
+    if (positionY && height) setSelectedFeedY(positionY + height);
   };
 
   return (

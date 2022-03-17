@@ -42,11 +42,9 @@ function ReactionItem(props: ReactionItemProps) {
         style={styles.profileImage}
       />
       <View style={styles.bubbleWrapper}>
-        {reactionType === 'RECORD' ? (
-          <AudioPlayer src={content} />
-        ) : reactionType === 'TEXT' ? (
-          <Text style={styles.text}>{content}</Text>
-        ) : (
+        {reactionType === 'RECORD' && <AudioPlayer src={content} />}
+        {reactionType === 'TEXT' && <Text style={styles.text}>{content}</Text>}
+        {reactionType === 'EMOJI' && (
           <Image
             source={{ uri: content }}
             style={{ width: 120, height: 120, alignSelf: 'center' }}

@@ -29,16 +29,19 @@ module.exports = {
     ],
     'react/jsx-props-no-spreading': 0,
     'no-unused-vars': 'warn',
+    'no-use-before-define': 'warn',
+    'prettier/prettier': [
+      'error',
+      {
+        endOfLine: 'auto',
+      },
+    ],
   },
-  'prettier/prettier': [
-    'error',
-    {
-      endOfLine: 'auto',
-    },
-  ],
   settings: {
     'import/resolver': { node: { extensions: ['.js', '.jsx', '.ts', '.tsx'] } },
   },
-
+  globals: {
+    NodeJS: true,
+  },
   plugins: ['prettier'],
 };

@@ -36,9 +36,9 @@ function AudioPlayer(props: AudioPlayerProps) {
 
   useEffect(() => {
     Audio.Sound.createAsync({ uri: src })
-      .then(({ sound, status }) => {
-        setSound(sound);
-        setStatus(status);
+      .then(({ sound: exSound, status: exStatus }) => {
+        setSound(exSound);
+        setStatus(exStatus);
       })
       .catch((e) => {
         console.error(src, e);
@@ -49,7 +49,7 @@ function AudioPlayer(props: AudioPlayerProps) {
   }, []);
 
   useEffect(() => {
-    let timer: NodeJS.Timer | undefined = undefined;
+    let timer: NodeJS.Timer | undefined;
     if (sound && isPlaying) {
       timer = setInterval(() => setSeconds((prev) => prev + 1), 1000);
       sound.playAsync().catch((e) => console.error(e));
@@ -59,7 +59,7 @@ function AudioPlayer(props: AudioPlayerProps) {
       sound.pauseAsync().catch((e) => console.error(e));
     }
     return () => {
-      timer && clearInterval(timer);
+      if (timer) clearInterval(timer);
     };
   }, [isPlaying]);
 
@@ -84,7 +84,7 @@ function AudioPlayer(props: AudioPlayerProps) {
                 backgroundColor: COLORS.THEME_PRIMARY,
                 width: (seconds * 100000) / (status.durationMillis ?? 10000),
               }}
-            ></View>
+            />
           </View>
           <Text style={styles.timeStamp}>
             {status.durationMillis &&

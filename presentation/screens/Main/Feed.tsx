@@ -177,7 +177,7 @@ function FeedScreen() {
         height={430}
         backgroundColor="#00000000"
         sheetBackgroundColor="#FFFFFF"
-        hasDraggableIcon={true}
+        hasDraggableIcon
         onClose={() => {
           setSelectedFeedID(undefined);
           setBottomSheetMode('reaction');
@@ -252,7 +252,7 @@ function FeedScreen() {
               flex: 1,
             }}
           >
-            {bottomSheetMode === 'reaction' ? (
+            {bottomSheetMode === 'reaction' && (
               <ScrollView
                 style={{
                   flex: 1,
@@ -269,7 +269,8 @@ function FeedScreen() {
                   ))}
                 </View>
               </ScrollView>
-            ) : bottomSheetMode === 'emoji' ? (
+            )}
+            {bottomSheetMode === 'emoji' && (
               <View>
                 <FlatList
                   data={reactionEmojis}
@@ -284,7 +285,8 @@ function FeedScreen() {
                   keyExtractor={(item) => item}
                 />
               </View>
-            ) : (
+            )}
+            {bottomSheetMode === 'record' && (
               <AudioRecorder
                 setReactionMode={() => setBottomSheetMode('reaction')}
               />

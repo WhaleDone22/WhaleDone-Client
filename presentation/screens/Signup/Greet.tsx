@@ -1,19 +1,14 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
-import {
-  Button,
-  Text,
-  View,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import { Text, View, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonBack from '../../components/ButtonBack';
 // import greetIcon from '../../../assets/greetIcon.png'
 
 import COLORS from '../../styles/colors';
+
+const IcGreet = require('../../../assets/ic-greet.png');
 
 type GreetScreenProp = NativeStackScreenProps<NavigationStackParams, 'Greet'>;
 
@@ -22,19 +17,15 @@ function GreetScreen({ navigation, route }: GreetScreenProp) {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.safeAreaContainer}>
-        <ButtonBack onPress={() => navigation.goBack()} theme='white'/>
+        <ButtonBack onPress={() => navigation.goBack()} theme="white" />
         <View style={styles.container}>
-
           <View style={styles.titleWrapper}>
             <Text style={styles.title}>{nickname}님 웨일던에서 </Text>
             <Text style={styles.title}>가족과 더 가까워져 보세요!</Text>
           </View>
 
           <View style={styles.contentsContainer}>
-            <Image
-              style={styles.img}
-              source={require('../../../assets/ic-greet.png')}
-            ></Image>
+            <Image style={styles.img} source={IcGreet} />
             <Text style={styles.subTxt}>쉿-! 웨일던은 가족과만</Text>
             <Text style={styles.subTxt}>공유할 수 있는 비밀 공간이에요 :)</Text>
           </View>
@@ -63,7 +54,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'space-between',
-    
   },
 
   textTitle: {

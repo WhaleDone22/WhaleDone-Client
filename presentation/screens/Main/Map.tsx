@@ -3,8 +3,8 @@ import React, { useState, useRef } from 'react';
 import { Text, Image, StyleSheet, View } from 'react-native';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import BottomSheet from 'react-native-gesture-bottom-sheet';
-import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 
 import COLORS from '../../styles/colors';
 
@@ -253,10 +253,10 @@ function MapScreen({ navigation }: MapScreenProp) {
           <Text style={styles.headerTitle}>마음거리</Text>
           <View style={{ flexDirection: 'row' }}>
             <TouchableOpacity onPress={() => navigation.navigate('Notice')}>
-              <Image source={IcNotice} style={styles.headerNotice}></Image>
+              <Image source={IcNotice} style={styles.headerNotice} />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate('MyPage')}>
-              <Image source={IcMyPage} style={styles.headerMyPage}></Image>
+              <Image source={IcMyPage} style={styles.headerMyPage} />
             </TouchableOpacity>
           </View>
         </View>
