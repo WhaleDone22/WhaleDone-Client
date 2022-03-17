@@ -8,11 +8,10 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonBack from '../../components/ButtonBack';
 import COLORS from '../../styles/colors';
-import GP from './GroupCodeShare';
 
 type GroupCodeInputScreenProp = NativeStackScreenProps<
   NavigationStackParams,
