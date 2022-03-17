@@ -1,12 +1,13 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useEffect, useState, useRef } from 'react';
-import { 
+import {
   Dimensions,
   Image,
   StyleSheet,
   Text,
   View,
-  Platform } from 'react-native';
+  Platform,
+} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Pages } from 'react-native-pages';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerLogo: {
-    marginStart: 8,   
+    marginStart: 8,
     marginRight: 190,
     width: 118,
     height: 27,
@@ -48,7 +49,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
 
-  //carousel
+  // carousel
   carouselWrapper: {
     flex: 1,
     // paddingLeft: 30,
@@ -57,17 +58,16 @@ const styles = StyleSheet.create({
     marginHorizontal: 24,
   },
   card: {
-    backgroundColor:COLORS.BLUE_400,
+    backgroundColor: COLORS.BLUE_400,
     borderRadius: 10,
     width: 323,
     height: 433,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowOffset: {
       height: 8,
       width: 8,
     },
-    
   },
   item: {
     alignItems: 'center',
@@ -101,7 +101,6 @@ const styles = StyleSheet.create({
     lineHeight: 22,
   },
 
-
   //
   subTxt: {
     fontFamily: 'Pretendard',
@@ -125,12 +124,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 19,
   },
-  
 });
 
 const Logo = require('../../../assets/logo-whaledone.png');
 const IcNotice = require('../../../assets/ic-bell.png');
-const IcMyPage = require('../../../assets/ic-user-circle.png'); 
+const IcMyPage = require('../../../assets/ic-user-circle.png');
 const IcWork = require('../../../assets/ic-work.png');
 const IcRelationship = require('../../../assets/ic-relationship.png');
 const IcDaily = require('../../../assets/ic-daily.png');
@@ -139,13 +137,20 @@ const IcTmi = require('../../../assets/ic-tmi.png');
 
 function HomeScreen({ navigation }: HomeScreenProp) {
   const pageRef = useRef<any>(null);
-  const [week1, setWeek1] = useState('')
-  const [week2, setWeek2] = useState('')
 
-  const weekTxt2=['가족의 일상은 어떤지 확인해 보세요','오늘을 활기차게 기록해 보세요',
-                '가족과 소통을 주고받아 보세요','가족과 대화로 충전해 보세요',
-                '가족에게 안부를 전해 보세요','마음 편히 가족과 연락해 보세요','소중한 시간을 가족과 나눠 보세요']
-  
+  const [week1, setWeek1] = useState('');
+  const [week2, setWeek2] = useState('');
+
+  const weekTxt2 = [
+    '가족의 일상은 어떤지 확인해 보세요',
+    '오늘을 활기차게 기록해 보세요',
+    '가족과 소통을 주고받아 보세요',
+    '가족과 대화로 충전해 보세요',
+    '가족에게 안부를 전해 보세요',
+    '마음 편히 가족과 연락해 보세요',
+    '소중한 시간을 가족과 나눠 보세요',
+  ];
+
   const mainCarouselData = [
     {
       icon: IcWork,
@@ -176,33 +181,38 @@ function HomeScreen({ navigation }: HomeScreenProp) {
       title: '평생 한 나이로 산다면 몇 살로 살고 싶은지?',
       category: 'tmi',
       backgroundColor: COLORS.BLUE_400,
-    }
-  ]
+    },
+  ];
 
   useEffect(() => {
     const now = new Date();
-    const weekTxt1 = ['한 주의 정리와 시작이 있는 일요일','한 주를 시작하는 월요일',
-                  '동기부여가 필요한 화요일','설마 했지만 오늘은 수요일',
-                  '드디어 반이나 온 목요일,','주중의 마지막 금요일','기분 좋은 첫 주말인 토요일']
-    
+    const weekTxt1 = [
+      '한 주의 정리와 시작이 있는 일요일',
+      '한 주를 시작하는 월요일',
+      '동기부여가 필요한 화요일',
+      '설마 했지만 오늘은 수요일',
+      '드디어 반이나 온 목요일,',
+      '주중의 마지막 금요일',
+      '기분 좋은 첫 주말인 토요일',
+    ];
+
     const dayOfWeek1 = weekTxt1[now.getDay()];
     const dayOfWeek2 = weekTxt2[now.getDay()];
-    setWeek1(dayOfWeek1)
-    setWeek2(dayOfWeek2)
-  }, [])
-  
-  
+    setWeek1(dayOfWeek1);
+    setWeek2(dayOfWeek2);
+  }, []);
+
   return (
-    <SafeAreaView style={commonStyles.container} >
+    <SafeAreaView style={commonStyles.container}>
       <View style={styles.headerContainer}>
-        <Image source={Logo} style={styles.headerLogo}></Image>
+        <Image source={Logo} style={styles.headerLogo} />
 
         <TouchableOpacity onPress={() => navigation.navigate('Notice')}>
-          <Image source={IcNotice} style={styles.headerNotice}></Image>
+          <Image source={IcNotice} style={styles.headerNotice} />
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate('MyPage')}>
-          <Image source={IcMyPage} style={styles.headerMyPage} ></Image>
+          <Image source={IcMyPage} style={styles.headerMyPage} />
         </TouchableOpacity>
       </View>
 
@@ -215,13 +225,13 @@ function HomeScreen({ navigation }: HomeScreenProp) {
       {/* Carousel */}
       <View style={styles.carouselWrapper}>
         <Pages indicatorColor={COLORS.THEME_PRIMARY} ref={pageRef}>
-          {mainCarouselData.map((data)=>(
+          {mainCarouselData.map((data) => (
             <View style={[styles.item, styles.card]} key={data.category}>
               <Image source={data.icon} style={styles.icon} />
               <Text style={styles.questionText}>{data.title}</Text>
               <TouchableOpacity
-              style={styles.answerBtn}
-              onPress={() => {navigation.navigate('Record'); console.log('press');}}
+                style={styles.answerBtn}
+                onPress={() => navigation.navigate('Record')}
               >
                 <Text style={styles.answerTxt}>답변하기</Text>
               </TouchableOpacity>
@@ -229,7 +239,6 @@ function HomeScreen({ navigation }: HomeScreenProp) {
           ))}
         </Pages>
       </View>
-
 
       {/* Button */}
       <Text style={styles.subTxt}>잠깐, 답변할 질문이 없으신가요?</Text>

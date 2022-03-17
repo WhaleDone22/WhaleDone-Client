@@ -13,7 +13,6 @@ type MapDetailScreenProp = NativeStackScreenProps<
   'MapDetail'
 >;
 
-
 const styles = StyleSheet.create({
   safeAreaContainer: {
     backgroundColor: 'white',
@@ -67,18 +66,17 @@ const styles = StyleSheet.create({
     // backgroundColor: COLORS.BLUE_500,
     paddingHorizontal: 20,
   },
-})
+});
 
-const defaultProfile = require('../../../assets/image-profile-default.png')
-const ex1Profile = require('../../../assets/image-profile-ex1.png')
-const ex2Profile = require('../../../assets/image-profile-ex2.png')
-const distanceLine = require('../../../assets/ic-distance-line2.png')
+const defaultProfile = require('../../../assets/image-profile-default.png');
+const ex1Profile = require('../../../assets/image-profile-ex1.png');
+const ex2Profile = require('../../../assets/image-profile-ex2.png');
+const distanceLine = require('../../../assets/ic-distance-line2.png');
 
 function MapDetailScreen({ navigation }: MapDetailScreenProp) {
   return (
     <SafeAreaView style={[styles.safeAreaContainer]} edges={['bottom']}>
       <View style={styles.topAreaWrapper}>
-
         {/* Header */}
         <View style={styles.headerContainer}>
           <ButtonBack onPress={() => navigation.goBack()} />
@@ -101,9 +99,9 @@ function MapDetailScreen({ navigation }: MapDetailScreenProp) {
         {/* Progress Bar */}
         <View style={styles.progressBarWrapper}>
           <ProgressBar
-            navigation={'???'}
-            distance1={'60%'}
-            distance2={'20%'}
+            navigation="???"
+            distance1="60%"
+            distance2="20%"
             height={20}
             completedColor1={COLORS.BLUE_500}
             completedColor2={COLORS.BLUE_300}

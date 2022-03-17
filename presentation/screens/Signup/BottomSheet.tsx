@@ -6,24 +6,22 @@ import { NavigationStackParams } from '../../../infrastructures/types/Navigation
 import ButtonBack from '../../components/ButtonBack';
 import COLORS from '../../styles/colors';
 
-import useBottomSheet from '../../../infrastructures/hooks/useBottomSheet';
-import { BOTTOM_SHEET_HEIGHT } from './config/constants';
-import BottomSheetHeader from './BottomSheetHeader';
-
+/*
 type BottomSheetScreenProp = NativeStackScreenProps<
   NavigationStackParams,
   'BottomSheet'
 >;
+*/
 
-function BottomSheet({ navigation }: BottomSheetScreenProp) {
-  const { sheet } = useBottomSheet();
+function BottomSheet(/* { navigation }: BottomSheetScreenProp */) {
+  /* const { sheet } = useBottomSheet(); */
 
   return (
     <SafeAreaView>
-      <ButtonBack onPress={() => navigation.goBack()} />
+      {/* <ButtonBack onPress={() => navigation.goBack()} />
       <View style={styles.wrapper} ref={sheet}>
         <BottomSheetHeader />
-      </View>
+  </View> */}
     </SafeAreaView>
   );
 }
@@ -32,7 +30,7 @@ const styles = StyleSheet.create({
   wrapper: {
     display: 'flex',
     flexDirection: 'column',
-    position: 'absolute', //fixed?
+    position: 'absolute', // fixed?
     // z-index: 1,
     top: 0,
     left: 0,
@@ -41,7 +39,6 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 8,
     backgroundColor: '#fff',
     // boxShadow: 0px 0px 10px rgba(0, 0, 0, 0.6)
-    height: BOTTOM_SHEET_HEIGHT,
   },
 });
 

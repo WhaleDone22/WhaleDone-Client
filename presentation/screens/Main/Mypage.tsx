@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useEffect, useState } from 'react';
-import { 
+import {
   Platform,
   Image,
   StyleSheet,
@@ -8,12 +8,12 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  Button
+  Button,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import { Avatar, Switch } from 'react-native-elements';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonBack from '../../components/ButtonBack';
 import PhotoSelectorModal from '../../components/PhotoSelectorModal';
 import COLORS from '../../styles/colors';
@@ -21,10 +21,10 @@ import { commonStyles } from '../../styles/common';
 
 type MyPageScreenProp = NativeStackScreenProps<NavigationStackParams, 'MyPage'>;
 
-const IcProfileImageEdit = require('../../../assets/ic-profile-image-edit.png')
-const ProfileImageDefault = require('../../../assets/profile-image-default.png')
-const mypageLine = require('../../../assets/mypage-line.png')
-const IcArrowRight = require('../../../assets/ic-arrow-right.png')
+const IcProfileImageEdit = require('../../../assets/ic-profile-image-edit.png');
+const ProfileImageDefault = require('../../../assets/profile-image-default.png');
+const mypageLine = require('../../../assets/mypage-line.png');
+const IcArrowRight = require('../../../assets/ic-arrow-right.png');
 
 const styles = StyleSheet.create({
   headerContainer: {
@@ -62,7 +62,6 @@ const styles = StyleSheet.create({
 
   settingsWrapper: {
     paddingHorizontal: 16,
-    
   },
   eachSettings: {
     flexDirection: 'row',
@@ -97,7 +96,6 @@ const styles = StyleSheet.create({
   logout: {
     color: COLORS.THEME_NEGATIVE,
   },
-
 
   //
   membershipBtn: {
@@ -137,7 +135,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'flex-start',
   },
-})
+});
 
 function MyPageScreen({ navigation }: MyPageScreenProp) {
   const [isEditable, setIsEditable] = useState(true);
@@ -158,8 +156,6 @@ function MyPageScreen({ navigation }: MyPageScreenProp) {
 
   const openModal = () => setIsModalVisible(true);
   const closeModal = () => setIsModalVisible(false);
-  
-
 
   // 함수의 parameter는 type을 선언해줘야 하는데 ..?
   // const onChange = (selectedDate: string) => {
@@ -177,12 +173,9 @@ function MyPageScreen({ navigation }: MyPageScreenProp) {
     showMode('time');
   };
 
-
   const onSharePressed = () => {
-    console.log('onSharePressed')
+    console.log('onSharePressed');
   };
-
-
 
   return (
     <SafeAreaView style={commonStyles.container}>
@@ -202,9 +195,7 @@ function MyPageScreen({ navigation }: MyPageScreenProp) {
           <Text
             style={[
               styles.editText,
-              isEditable
-                ? styles.uploadTextEnabled
-                : styles.uploadTextDisabled,
+              isEditable ? styles.uploadTextEnabled : styles.uploadTextDisabled,
             ]}
           >
             수정
@@ -214,11 +205,7 @@ function MyPageScreen({ navigation }: MyPageScreenProp) {
 
       {/* Profile Wrapper */}
       <View style={styles.profileWrapper}>
-        <Avatar
-          size={60}
-          rounded
-          source={ProfileImageDefault}
-        >
+        <Avatar size={60} rounded source={ProfileImageDefault}>
           {/* <Avatar.Accessory size={20} source={IcProfileImageEdit} /> */}
         </Avatar>
         <Text style={styles.userName}>user1 님</Text>
@@ -226,37 +213,38 @@ function MyPageScreen({ navigation }: MyPageScreenProp) {
 
       {/* 각각 설정 항목 */}
       <View style={styles.settingsWrapper}>
-
         {/* 국가 */}
         <View style={styles.eachSettings}>
           <Text style={styles.settingTxt}>국가</Text>
           <Text style={styles.settingValueTxt}>+82 010-7979-8282</Text>
         </View>
-        <Image source={mypageLine} style={styles.lineImage}></Image>
+        <Image source={mypageLine} style={styles.lineImage} />
 
         {/* 가족 채널 */}
         <View style={styles.eachSettings}>
           <Text style={styles.settingTxt}>가족 채널</Text>
           <Text style={styles.settingValueTxt}>웨일던, 칭찬하는_가족</Text>
         </View>
-        <Image source={mypageLine} style={styles.lineImage}></Image>
-        
+        <Image source={mypageLine} style={styles.lineImage} />
+
         {/* 알림 받기 */}
         <View style={styles.eachSettings}>
           <Text style={styles.settingTxt}>알림 받기</Text>
           <View style={styles.alarmWrapper}>
-            <Text style={[styles.settingValueTxt, styles.alarmTxt]}>10:00 PM</Text>
+            <Text style={[styles.settingValueTxt, styles.alarmTxt]}>
+              10:00 PM
+            </Text>
             {/* <Switch value={isSetAlarm} onValueChange={(value)=>setIsSetAlarm(value)} style={styles.alarmSwitch}></Switch> */}
           </View>
         </View>
-        <Image source={mypageLine} style={styles.lineImage}></Image>
-        
+        <Image source={mypageLine} style={styles.lineImage} />
+
         {/* 약관동의/정책 */}
         <View style={styles.eachSettings}>
           <Text style={styles.settingTxt}>약관동의/정책</Text>
         </View>
-        <Image source={mypageLine} style={styles.lineImage}></Image>
-        
+        <Image source={mypageLine} style={styles.lineImage} />
+
         {/* 로그아웃 */}
         <View style={styles.eachSettings}>
           <TouchableOpacity>
@@ -265,38 +253,35 @@ function MyPageScreen({ navigation }: MyPageScreenProp) {
         </View>
       </View>
 
-
-
-
       {/* TEMP */}
-        <View>
-          <Text>{date.toUTCString()}</Text>
-      {isPickerShow && (
-        <DateTimePicker
-          value={date}
-          mode={'date'}
-          display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-          is24Hour={true}
-          // onChange={onChange}
-          style={styles.datePicker}
-        />
-      )}
-    </View>
-
+      <View>
+        <Text>{date.toUTCString()}</Text>
+        {isPickerShow && (
+          <DateTimePicker
+            value={date}
+            mode="date"
+            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+            is24Hour
+            // onChange={onChange}
+            style={styles.datePicker}
+          />
+        )}
+      </View>
 
       <View>
-          <TouchableOpacity style={styles.membershipBtn} onPress={onSharePressed}>
-            <Text style={styles.membershipTxt}>웨일던 프라이빗 지금 시작하세요!</Text>
-            <Image source={IcArrowRight} style={styles.membershipIcon}></Image>
-          </TouchableOpacity>
-          <Text
-            style={styles.withdrawTxt}
-            onPress={() => navigation.navigate('Home')}
-          >
-            탈퇴하기
+        <TouchableOpacity style={styles.membershipBtn} onPress={onSharePressed}>
+          <Text style={styles.membershipTxt}>
+            웨일던 프라이빗 지금 시작하세요!
           </Text>
-        </View>
-        
+          <Image source={IcArrowRight} style={styles.membershipIcon} />
+        </TouchableOpacity>
+        <Text
+          style={styles.withdrawTxt}
+          onPress={() => navigation.navigate('Home')}
+        >
+          탈퇴하기
+        </Text>
+      </View>
     </SafeAreaView>
   );
 }

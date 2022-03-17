@@ -34,16 +34,16 @@ function GroupCodeInputScreen({ navigation }: GroupCodeInputScreenProp) {
     '',
   ]);
   const [isBtnActivated, setIsBtnActivated] = useState(true);
-  const [isFilled, setIsFilled] = useState(false)
+  const [isFilled, setIsFilled] = useState(false);
   const [groupCode, setGroupCode] = useState<string[]>([]);
 
-  useEffect(()=> {
-    if(filledTexts.filter(text=>text==='').length === 0){
-      setIsFilled(true)
-    }else {
-      setIsFilled(false)
+  useEffect(() => {
+    if (filledTexts.filter((text) => text === '').length === 0) {
+      setIsFilled(true);
+    } else {
+      setIsFilled(false);
     }
-  },[filledTexts])
+  }, [filledTexts]);
 
   const insertText = (text: string, index: number) => {
     setFilledTexts((prev) => {
@@ -53,11 +53,11 @@ function GroupCodeInputScreen({ navigation }: GroupCodeInputScreenProp) {
     });
   };
 
-  //코드 생성
+  // 코드 생성
   const createCode = () => {
     const rawCode = Math.random().toString(36).substr(2, 6);
     const code: string[] = [];
-    for (var i = 0; i < rawCode.length; i++) {
+    for (let i = 0; i < rawCode.length; i += 1) {
       code[i] = rawCode.charAt(i);
     }
     return code;
@@ -79,12 +79,10 @@ function GroupCodeInputScreen({ navigation }: GroupCodeInputScreenProp) {
           <Text style={styles.title}>초대 코드를 입력하세요</Text>
         </View>
 
-        <View >
+        <View>
           <View
             style={
-              isFilled
-                ? styles.inactivatedCodeContainer
-                : styles.codeContainer
+              isFilled ? styles.inactivatedCodeContainer : styles.codeContainer
             }
           >
             <View style={styles.textInputWrapper}>
@@ -156,7 +154,6 @@ function GroupCodeInputScreen({ navigation }: GroupCodeInputScreenProp) {
               />
             </View>
           </View>
-          
 
           <TouchableOpacity
             style={
@@ -172,16 +169,13 @@ function GroupCodeInputScreen({ navigation }: GroupCodeInputScreenProp) {
           >
             <Text style={styles.entranceBtnText}>입장하기</Text>
           </TouchableOpacity>
-          
         </View>
 
         <View>
           <Text style={styles.createTxt}>아직 초대 코드가 없으신가요?</Text>
           <TouchableOpacity
             style={
-              !isFilled
-                ? styles.createCodeBtn
-                : styles.inactivatedCreateCodeBtn
+              !isFilled ? styles.createCodeBtn : styles.inactivatedCreateCodeBtn
             }
             onPress={onCreateCodePressed}
           >
@@ -206,7 +200,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'space-between',
-    
   },
   title: {
     fontSize: 20,
@@ -232,7 +225,6 @@ const styles = StyleSheet.create({
     marginVertical: 12,
     flexDirection: 'row',
     justifyContent: 'center',
-    
   },
 
   inactivatedCodeContainer: {
@@ -249,7 +241,6 @@ const styles = StyleSheet.create({
     paddingVertical: 35,
     borderRadius: 10,
     // flex: 1,
-
   },
 
   //

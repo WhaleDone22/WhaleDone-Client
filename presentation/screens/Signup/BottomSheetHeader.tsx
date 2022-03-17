@@ -10,7 +10,7 @@ function BottomSheetHeader() {
   return (
     <SafeAreaView>
       <View style={styles.wrapper}>
-        <View style={styles.handle}></View>
+        <View style={styles.handle} />
       </View>
     </SafeAreaView>
   );

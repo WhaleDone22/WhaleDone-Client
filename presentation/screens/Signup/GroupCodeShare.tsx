@@ -37,10 +37,10 @@ function GroupCodeShareScreen({ navigation, route }: GroupCodeShareScreenProp) {
             setSeconds(59);
           }
         } else {
-            setMinutes(minutes - 1);
-            setSeconds(59);
-          }
-      } 
+          setMinutes(minutes - 1);
+          setSeconds(59);
+        }
+      }
     }, 1000);
     return () => clearInterval(countdown);
   }, [hours, minutes, seconds]);
@@ -52,7 +52,7 @@ function GroupCodeShareScreen({ navigation, route }: GroupCodeShareScreenProp) {
         message: `초대 코드는 ${code}입니다.`,
       });
     } catch (error) {
-      alert(error);
+      // alert(error);
     }
   };
   return (
@@ -75,16 +75,15 @@ function GroupCodeShareScreen({ navigation, route }: GroupCodeShareScreenProp) {
             </Text>
           </View>
           <View style={styles.resendContainer}>
-          <Text style={styles.resendTimerText}>
-            {hours}:{minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, '0')}
-          </Text>
-          <Text onPress={resetTime} style={styles.resendButton}>
-            재발급
-          </Text>
+            <Text style={styles.resendTimerText}>
+              {hours}:{minutes.toString().padStart(2, '0')}:
+              {seconds.toString().padStart(2, '0')}
+            </Text>
+            <Text onPress={resetTime} style={styles.resendButton}>
+              재발급
+            </Text>
+          </View>
         </View>
-        </View>
-
-        
 
         <View>
           <TouchableOpacity style={styles.btnShare} onPress={onSharePressed}>
@@ -164,7 +163,7 @@ const styles = StyleSheet.create({
     color: COLORS.TEXT_SECONDARY,
   },
 
-  //resend
+  // resend
   resendContainer: {
     flexDirection: 'row',
     // alignItems: 'center',
