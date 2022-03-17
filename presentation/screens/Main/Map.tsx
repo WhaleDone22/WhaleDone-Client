@@ -1,46 +1,36 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useEffect, useState, useRef } from 'react';
-import { Text, Image, StyleSheet, View, Platform, Dimensions } from 'react-native';
-import { TouchableOpacity, ScrollView, TextInput } from 'react-native-gesture-handler';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React, { useState, useRef } from 'react';
+import { Text, Image, StyleSheet, View } from 'react-native';
+import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import BottomSheet from 'react-native-gesture-bottom-sheet';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
-import { commonStyles } from '../../styles/common';
-import MapView,  { PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
 import COLORS from '../../styles/colors';
 
 type MapScreenProp = NativeStackScreenProps<NavigationStackParams, 'Map'>;
 
-const { height } = Dimensions.get('window');
-
 const styles = StyleSheet.create({
   headerContainer: {
-    position: 'absolute',
-    top: 59,
-    left: 26,
+    marginTop: 54,
+    flexDirection: 'row',
+    marginStart: 24,
+    marginEnd: 15,
+    justifyContent: 'space-between',
   },
   headerTitle: {
-    position: 'absolute',
     fontFamily: 'Pretendard-Bold',
     fontSize: 20,
-    // marginStart: 8,   
-    // marginRight: 190,
   },
   headerNotice: {
-    position: 'absolute',
     width: 24,
     height: 24,
-    left: 295,
+    marginRight: 16,
   },
   headerMyPage: {
-    position: 'absolute',
     width: 24,
     height: 24,
-    left: 335,
   },
-
-  //
   countryCodeSelectorTitleText: {
     position: 'absolute',
     marginTop: 66,
@@ -49,32 +39,16 @@ const styles = StyleSheet.create({
     fontFamily: 'Pretendard-Bold',
     fontSize: 20,
   },
-  // countryCodeSelectorWrapper: {
-  //   flex: 1,
-  //   flexDirection: 'row',
-  //   paddingHorizontal: 26,
-  //   paddingVertical: 20,
-  //   alignItems: 'center',
-  // },
   button: {
-    position: 'absolute',
     height: 50,
     width: 150,
-    backgroundColor: "#000",
-    // justifyContent: "center",
-    // alignItems: "center",
+    backgroundColor: '#000',
     borderRadius: 20,
-    left: 0,
-    top: 500,
-    right: 0,
   },
-  
-
-
 
   // Bottom sheet
-  bottomSheet:{
-    shadowColor: "#000",
+  bottomSheet: {
+    shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowOffset: {
       height: 8,
@@ -116,21 +90,20 @@ const styles = StyleSheet.create({
     fontFamily: 'Pretendard',
     fontSize: 12,
     color: COLORS.TEXT_SECONDARY,
-    textAlign: 'center',
   },
   editText: {
     color: COLORS.BLUE_500,
     paddingLeft: 10,
   },
 
-
   // 마음거리 Component
   distanceWrapper: {
     height: 80,
     flexDirection: 'row',
     alignItems: 'center',
-    // justifyContent: 'center',
+    justifyContent: 'space-between',
     paddingLeft: 14,
+    paddingRight: 24,
     marginBottom: 12,
     backgroundColor: COLORS.BLUE_100,
     borderRadius: 10,
@@ -144,58 +117,49 @@ const styles = StyleSheet.create({
   distanceText: {
     fontFamily: 'Pretendard',
     fontSize: 14,
-    paddingRight: 110, //49.5
     paddingLeft: 12,
   },
   distnaceValue: {
     fontFamily: 'Pretendard-Bold',
     color: COLORS.BLUE_500,
   },
-})
+});
 
 // Image
-const defaultProfile = require('../../../assets/image-profile-default.png')
-const ex1Profile = require('../../../assets/image-profile-ex1.png')
-const ex2Profile = require('../../../assets/image-profile-ex2.png')
-const addFamily = require('../../../assets/ic-add-family.png')
-
+const defaultProfile = require('../../../assets/image-profile-default.png');
+const ex1Profile = require('../../../assets/image-profile-ex1.png');
+const ex2Profile = require('../../../assets/image-profile-ex2.png');
+const addFamily = require('../../../assets/ic-add-family.png');
 
 const IcNotice = require('../../../assets/ic-bell.png');
-const IcMyPage = require('../../../assets/ic-user-circle.png'); 
+const IcMyPage = require('../../../assets/ic-user-circle.png');
 
 function MapScreen({ navigation }: MapScreenProp) {
-
   const [selectedCountry, setSelectedCountry] = useState(true);
-  const [isBottomSheetOpened, setIsBottomSheetOpened] = useState(false)
   const bottomSheetRef = useRef<any>(null);
 
-  useEffect(() => {
-    // bottomSheetRef.current?.show()
-    if(isBottomSheetOpened){
-      bottomSheetRef.current?.show()
-    }
-  }, [isBottomSheetOpened])
-  
-
   return (
-    <View>
-      {/* Bottom Sheet */}
-      <BottomSheet ref={bottomSheetRef} hasDraggableIcon snapPoints={[200]} height={400} radius={25} style={styles.bottomSheet}>
+    <View style={{ flex: 1 }}>
+      <BottomSheet
+        ref={bottomSheetRef}
+        hasDraggableIcon
+        height={400}
+        radius={25}
+        style={styles.bottomSheet}
+      >
         <ScrollView style={styles.bsWrapper}>
-
-          {/* Text */}
           <View style={styles.textWrapper1}>
             <Text style={styles.mainText}>가족 간 마음거리</Text>
-            <Text style={styles.subText}>소통을 많이 할수록 원의 거리가 가까워져요</Text>
+            <Text style={styles.subText}>
+              소통을 많이 할수록 원의 거리가 가까워져요
+            </Text>
           </View>
-
           <View style={[styles.textWrapper1, styles.textWrapper2]}>
             <Text style={styles.subText}>가족 채널명</Text>
             <TouchableOpacity>
-              <Text style={styles.editText}>수정 > </Text>
+              <Text style={styles.editText}>수정 {'>'} </Text>
             </TouchableOpacity>
           </View>
-
 
           {/* Profile */}
           <View style={styles.userWrapper}>
@@ -215,68 +179,122 @@ function MapScreen({ navigation }: MapScreenProp) {
             </View>
 
             <View style={styles.profileWrapper}>
-              <TouchableOpacity onPress={() => navigation.navigate('MapDetail')}>
+              <TouchableOpacity
+                onPress={() => {
+                  bottomSheetRef.current?.close();
+                  navigation.navigate('MapDetail');
+                }}
+              >
                 <Image source={addFamily} style={styles.imgWrapper} />
-                <Text style={[styles.subText, { color: COLORS.BLUE_500}]}> 가족 추가 </Text>
+                <Text style={[styles.subText, { color: COLORS.BLUE_500 }]}>
+                  가족 추가
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
 
-
           {/* 마음 거리 */}
           <View style={styles.distanceWrapper}>
-            <Image source={defaultProfile} style={styles.distanceProfile} />
-            <Text style={styles.distanceText}>user님과의 마음거리</Text>
-            <Text style={styles.distnaceValue} onPress={() => navigation.navigate('MapDetail')}>9999km > </Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Image source={defaultProfile} style={styles.distanceProfile} />
+              <Text style={styles.distanceText}>user님과의 마음거리</Text>
+            </View>
+            <Text
+              style={styles.distnaceValue}
+              onPress={() => {
+                bottomSheetRef.current?.close();
+                navigation.navigate('MapDetail');
+              }}
+            >
+              9999km {'>'}
+            </Text>
           </View>
 
           <View style={styles.distanceWrapper}>
-            <Image source={defaultProfile} style={styles.distanceProfile} />
-            <Text style={styles.distanceText}>user님과의 마음거리</Text>
-            <Text style={styles.distnaceValue}>9999km > </Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Image source={defaultProfile} style={styles.distanceProfile} />
+              <Text style={styles.distanceText}>user님과의 마음거리</Text>
+            </View>
+            <Text
+              style={styles.distnaceValue}
+              onPress={() => {
+                bottomSheetRef.current?.close();
+                navigation.navigate('MapDetail');
+              }}
+            >
+              9999km {'>'}
+            </Text>
           </View>
         </ScrollView>
       </BottomSheet>
 
-
-        {/* onPress 왜안돼요ㅠㅠㅠㅠㅠㅠㅠㅠㅠ */}
-        <TouchableOpacity style={styles.button} onPress={() => {bottomSheetRef.current?.show(); console.log('press'); setIsBottomSheetOpened(true)}}>
-          <Text>버튼</Text> 
-        </TouchableOpacity>
-
-
-
-
-      <View style={{ width: '100%', height: '100%'}}>
-        {/* Google Map */}
-        {/* <MapView 
-          style={{ width: '100%', height: '100%'}} 
+      <View
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+        }}
+      >
+        <MapView
+          style={{ width: '100%', height: '100%' }}
           provider={PROVIDER_GOOGLE}
-          initialRegion={{ latitude: 35.91395373474155, longitude: 127.73829440215488, latitudeDelta: 80, longitudeDelta: 80,}} 
-        /> */}
-        
-
-        {/* Header */}
+          initialRegion={{
+            latitude: 35.91395373474155,
+            longitude: 127.73829440215488,
+            latitudeDelta: 80,
+            longitudeDelta: 80,
+          }}
+        />
+      </View>
+      <View style={{ justifyContent: 'space-between', flex: 1 }}>
         <View style={styles.headerContainer}>
           <Text style={styles.headerTitle}>마음거리</Text>
-
-          <TouchableOpacity onPress={() => navigation.navigate('Notice')}>
-            <Image source={IcNotice} style={styles.headerNotice}></Image>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => navigation.navigate('MyPage')}>
-            <Image source={IcMyPage} style={styles.headerMyPage} ></Image>
-          </TouchableOpacity>
+          <View style={{ flexDirection: 'row' }}>
+            <TouchableOpacity onPress={() => navigation.navigate('Notice')}>
+              <Image source={IcNotice} style={styles.headerNotice}></Image>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('MyPage')}>
+              <Image source={IcMyPage} style={styles.headerMyPage}></Image>
+            </TouchableOpacity>
+          </View>
         </View>
 
-
-        
+        <TouchableOpacity
+          style={{
+            height: 68,
+            backgroundColor: '#FFFFFFE6',
+            borderTopLeftRadius: 25,
+            borderTopRightRadius: 25,
+            alignItems: 'center',
+          }}
+          onPress={() => bottomSheetRef.current?.show()}
+        >
+          <View
+            style={{
+              backgroundColor: COLORS.TEXT_DISABLED_GREY,
+              borderRadius: 100,
+              width: 76,
+              height: 5,
+              marginTop: 14,
+            }}
+          />
+          <View
+            style={[
+              styles.textWrapper1,
+              { paddingHorizontal: 18, paddingTop: 10, width: '100%' },
+            ]}
+          >
+            <Text style={styles.mainText}>가족 간 마음거리</Text>
+            <Text style={styles.subText}>
+              소통을 많이 할수록 원의 거리가 가까워져요
+            </Text>
+          </View>
+        </TouchableOpacity>
       </View>
-
-
-      {/* <Text onPress={() => navigation.navigate('MapDetail')}>상세 보기</Text> */}
     </View>
   );
 }
-// 2B:72:F1:EE:17:E6:4A:45:F3:9E:F3:30:25:A6:12:5A:BF:79:A6:40
+
 export default MapScreen;
