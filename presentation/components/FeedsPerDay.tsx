@@ -5,11 +5,8 @@ import COLORS from '../styles/colors';
 import FeedItem from './FeedItem';
 
 const styles = StyleSheet.create({
-  feedContainer: {
-    paddingHorizontal: 17,
-    marginTop: 24,
-  },
   dateText: {
+    marginTop: 24,
     backgroundColor: COLORS.BLUE_100,
     width: 100,
     textAlign: 'center',
@@ -25,14 +22,20 @@ function FeedsPerDay({
   date,
   feeds,
   isAll,
+  setSelectedFeedID,
+  selectedFeedID,
+  setSelectedFeedY,
 }: {
   date: string;
   feeds: Feed[];
   isAll: boolean;
+  setSelectedFeedID: (id: number) => void;
+  selectedFeedID: number | undefined;
+  setSelectedFeedY: (y: number) => void;
 }) {
   const myID = 4;
   return (
-    <View style={styles.feedContainer}>
+    <>
       <View style={{ alignItems: 'center' }}>
         <Text style={styles.dateText}>{date}</Text>
       </View>
@@ -42,6 +45,9 @@ function FeedsPerDay({
               key={feed.id}
               feed={feed}
               isMine={feed.writerID === myID}
+              setSelectedFeedID={() => setSelectedFeedID(feed.id)}
+              selectedFeedID={selectedFeedID}
+              setSelectedFeedY={setSelectedFeedY}
             />
           ))
         : feeds
@@ -51,9 +57,12 @@ function FeedsPerDay({
                 key={feed.id}
                 feed={feed}
                 isMine={feed.writerID === myID}
+                setSelectedFeedID={() => setSelectedFeedID(feed.id)}
+                selectedFeedID={selectedFeedID}
+                setSelectedFeedY={setSelectedFeedY}
               />
             ))}
-    </View>
+    </>
   );
 }
 

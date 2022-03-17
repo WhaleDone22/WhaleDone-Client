@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Feed, reactionToIcon } from '../../infrastructures/types/feed';
 import COLORS from '../styles/colors';
@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flex: 1,
     marginTop: 16,
+    paddingHorizontal: 17,
   },
   myFeed: {
     flexDirection: 'row-reverse',
@@ -26,6 +27,10 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     flex: 1,
+  },
+  selectedFeedBox: {
+    borderWidth: 1,
+    borderColor: COLORS.GREY_050,
   },
   writerText: {
     color: COLORS.TEXT_SECONDARY,
@@ -62,11 +67,50 @@ const styles = StyleSheet.create({
     marginRight: 4,
   },
   reactionCount: { color: COLORS.TEXT_SECONDARY, fontSize: 12 },
+  titleText: {
+    fontSize: 16,
+    fontFamily: 'Pretendard-Bold',
+    color: COLORS.TEXT_PRIMARY,
+  },
+  bodyText: {
+    marginTop: 14,
+    fontSize: 14,
+    fontFamily: 'Pretendard',
+    color: 'black',
+  },
 });
 
-function FeedItem({ feed, isMine }: { feed: Feed; isMine: boolean }) {
+function FeedItem({
+  feed,
+  isMine,
+  setSelectedFeedID,
+  selectedFeedID,
+  setSelectedFeedY,
+}: {
+  feed: Feed;
+  isMine: boolean;
+  setSelectedFeedID: () => void;
+  selectedFeedID: number | undefined;
+  setSelectedFeedY: (y: number) => void;
+}) {
+  const [positionY, setPositionY] = useState<number | undefined>(undefined);
+  const [height, setHeight] = useState<number | undefined>(undefined);
+  const feedViewRef = useRef<View>(null);
+  const onBubbleClicked = () => {
+    setSelectedFeedID();
+    positionY && height && setSelectedFeedY(positionY + height);
+  };
+
   return (
-    <View style={[styles.feed, isMine ? styles.myFeed : styles.familyFeed]}>
+    <View
+      style={[styles.feed, isMine ? styles.myFeed : styles.familyFeed]}
+      onLayout={(event) => {
+        const { layout } = event.nativeEvent;
+        setPositionY(layout.y);
+        setHeight(layout.height);
+      }}
+      ref={feedViewRef}
+    >
       <Image
         source={
           feed.writerThumbnail
@@ -77,9 +121,16 @@ function FeedItem({ feed, isMine }: { feed: Feed; isMine: boolean }) {
       />
       <View style={styles.feedBox}>
         {!isMine && <Text style={styles.writerText}>{feed.writer}</Text>}
-        <View style={[styles.feedBubble, isMine && styles.myFeedBubble]}>
-          <Text>{feed.title}</Text>
-          <Text>{feed.body}</Text>
+        <TouchableOpacity
+          style={[
+            styles.feedBubble,
+            isMine && styles.myFeedBubble,
+            selectedFeedID === feed.id && styles.selectedFeedBox,
+          ]}
+          onPress={onBubbleClicked}
+        >
+          <Text style={styles.titleText}>{feed.title}</Text>
+          <Text style={styles.bodyText}>{feed.body}</Text>
           <View style={styles.feedReactions}>
             {feed.reactions.map((reaction) => (
               <TouchableOpacity key={reaction.type} style={styles.reactionBox}>
@@ -91,7 +142,7 @@ function FeedItem({ feed, isMine }: { feed: Feed; isMine: boolean }) {
               </TouchableOpacity>
             ))}
           </View>
-        </View>
+        </TouchableOpacity>
       </View>
     </View>
   );
