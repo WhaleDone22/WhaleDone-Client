@@ -1,0 +1,69 @@
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { Feed } from '../../infrastructures/types/feed';
+import COLORS from '../styles/colors';
+import FeedItem from './FeedItem';
+
+const styles = StyleSheet.create({
+  dateText: {
+    marginTop: 24,
+    backgroundColor: COLORS.BLUE_100,
+    width: 100,
+    textAlign: 'center',
+    color: COLORS.TEXT_SECONDARY,
+    fontSize: 12,
+    paddingVertical: 5,
+    borderRadius: 3,
+    fontFamily: 'Pretendard',
+  },
+});
+
+function FeedsPerDay({
+  date,
+  feeds,
+  isAll,
+  setSelectedFeedID,
+  selectedFeedID,
+  setSelectedFeedY,
+}: {
+  date: string;
+  feeds: Feed[];
+  isAll: boolean;
+  setSelectedFeedID: (id: number) => void;
+  selectedFeedID: number | undefined;
+  setSelectedFeedY: (y: number) => void;
+}) {
+  const myID = 4;
+  return (
+    <>
+      <View style={{ alignItems: 'center' }}>
+        <Text style={styles.dateText}>{date}</Text>
+      </View>
+      {isAll
+        ? feeds.map((feed) => (
+            <FeedItem
+              key={feed.id}
+              feed={feed}
+              isMine={feed.writerID === myID}
+              setSelectedFeedID={() => setSelectedFeedID(feed.id)}
+              selectedFeedID={selectedFeedID}
+              setSelectedFeedY={setSelectedFeedY}
+            />
+          ))
+        : feeds
+            .filter((feed) => feed.writerID === myID)
+            .map((feed) => (
+              <FeedItem
+                key={feed.id}
+                feed={feed}
+                isMine={feed.writerID === myID}
+                setSelectedFeedID={() => setSelectedFeedID(feed.id)}
+                selectedFeedID={selectedFeedID}
+                setSelectedFeedY={setSelectedFeedY}
+              />
+            ))}
+    </>
+  );
+}
+
+export default FeedsPerDay;
