@@ -36,6 +36,7 @@ module.exports = {
         endOfLine: 'auto',
       },
     ],
+    'react/prop-types': ['error', { ignore: ['navigation'] }],
   },
   settings: {
     'import/resolver': { node: { extensions: ['.js', '.jsx', '.ts', '.tsx'] } },

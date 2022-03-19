@@ -4,5 +4,6 @@
     "strict": true,
     "typeRoots": ["./infrastructures/types/@types", "./node_modules/@types"],
     "moduleResolution": "node",
-  }
+  },
+  
 }
