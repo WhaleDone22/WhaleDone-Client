@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Pretendard-Bold',
     fontSize: 16,
     textAlign: 'center',
-    marginBottom: 25,
+    marginBottom: 20,
   },
   answerBtn: {
     width: 260,
@@ -94,6 +94,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 5,
     marginBottom: 25,
+    marginLeft: 23,
   },
   answerTxt: {
     color: '#fff',
@@ -102,8 +103,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   paginationWrapper: {
-    backgroundColor: COLORS.BLUE_200,
-    height: 30,
+    paddingBottom: 10,
+    bottom: 25,
     justifyContent: 'center',
   },
 
@@ -194,7 +195,7 @@ function HomeScreen({ navigation }: HomeScreenProp) {
         <View style={[styles.card, { backgroundColor: item.backgroundColor }]}>
           <ImageBackground
             source={item.icon}
-            style={{ flex: 1, justifyContent: 'flex-end' }}
+            style={{ flex: 1, justifyContent: 'flex-end', width:308, height: 413 }}
             resizeMode="contain"
           >
             <Text style={styles.questionText}>{item.title}</Text>
@@ -261,7 +262,7 @@ function HomeScreen({ navigation }: HomeScreenProp) {
         onSnapToItem={(index: number) => setActiveIndex(index)}
         layoutCardOffset={5}
       />
-      <View>
+      <View style={styles.paginationWrapper}>
         <Pagination
           dotsLength={5}
           activeDotIndex={activeIndex}
