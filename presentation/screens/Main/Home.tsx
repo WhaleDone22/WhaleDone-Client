@@ -1,15 +1,14 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import {
-  Dimensions,
   Image,
   StyleSheet,
   Text,
   View,
   Platform,
+  ImageBackground,
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Pages } from 'react-native-pages';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
@@ -26,7 +25,6 @@ interface ItemProps {
 interface RenderItemProps {
   // eslint-disable-next-line react/no-unused-prop-types
   item: ItemProps;
-  // index: number;
 }
 
 type HomeScreenProp = NativeStackScreenProps<NavigationStackParams, 'Home'>;
@@ -70,10 +68,10 @@ const styles = StyleSheet.create({
     width: 240,
   },
   card: {
+    flex: 1,
     borderRadius: 10,
     alignItems: 'center',
     width: 308,
-    height: 413,
     shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowOffset: {
@@ -81,25 +79,21 @@ const styles = StyleSheet.create({
       width: 8,
     },
   },
-  icon: {
-    width: 308,
-    height: 413,
-  },
   questionText: {
-    position: 'absolute',
     color: '#fff',
     fontFamily: 'Pretendard-Bold',
     fontSize: 16,
     textAlign: 'center',
-    paddingTop: 305,
+    marginBottom: 25,
   },
   answerBtn: {
     width: 260,
     height: 45,
     backgroundColor: COLORS.BLUE_500,
-    paddingVertical: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
     borderRadius: 5,
-    bottom: Platform.OS === 'ios' ? 70 : 45,
+    marginBottom: 25,
   },
   answerTxt: {
     color: '#fff',
@@ -196,12 +190,13 @@ function HomeScreen({ navigation }: HomeScreenProp) {
 
   const renderItem = useCallback(({ item }: RenderItemProps) => {
     return (
-      <View style={styles.carouselWrapper}>
-        <View key={item.category}>
-          <View
-            style={[styles.card, { backgroundColor: item.backgroundColor }]}
+      <View style={styles.carouselWrapper} key={item.category}>
+        <View style={[styles.card, { backgroundColor: item.backgroundColor }]}>
+          <ImageBackground
+            source={item.icon}
+            style={{ flex: 1, justifyContent: 'flex-end' }}
+            resizeMode="contain"
           >
-            <Image source={item.icon} style={styles.icon} />
             <Text style={styles.questionText}>{item.title}</Text>
             <TouchableOpacity
               style={styles.answerBtn}
@@ -209,7 +204,7 @@ function HomeScreen({ navigation }: HomeScreenProp) {
             >
               <Text style={styles.answerTxt}>답변하기</Text>
             </TouchableOpacity>
-          </View>
+          </ImageBackground>
         </View>
       </View>
     );
@@ -256,23 +251,6 @@ function HomeScreen({ navigation }: HomeScreenProp) {
         <Text style={styles.title}>{week2}</Text>
       </View>
 
-      {/* Carousel */}
-      {/* <View style={styles.carouselWrapper}>
-        <Pages indicatorColor={COLORS.THEME_PRIMARY} ref={pageRef}>
-          {mainCarouselData.map((data) => (
-            <View style={[styles.item, styles.card]} key={data.category}>
-              <Image source={data.icon} style={styles.icon} />
-              <Text style={styles.questionText}>{data.title}</Text>
-              <TouchableOpacity
-                style={styles.answerBtn}
-                onPress={() => navigation.navigate('Record')}
-              >
-                <Text style={styles.answerTxt}>답변하기</Text>
-              </TouchableOpacity>
-            </View>
-          ))}
-        </Pages>
-      </View> */}
       <Carousel
         layout="default"
         ref={carouselRef}
