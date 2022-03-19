@@ -22,7 +22,9 @@ interface ItemProps {
   category: string;
   backgroundColor: string;
 }
+
 interface RenderItemProps {
+  // eslint-disable-next-line react/no-unused-prop-types
   item: ItemProps;
   // index: number;
 }
@@ -196,7 +198,9 @@ function HomeScreen({ navigation }: HomeScreenProp) {
     return (
       <View style={styles.carouselWrapper}>
         <View key={item.category}>
-          <View style={[ styles.card, { backgroundColor: item.backgroundColor }]}>
+          <View
+            style={[styles.card, { backgroundColor: item.backgroundColor }]}
+          >
             <Image source={item.icon} style={styles.icon} />
             <Text style={styles.questionText}>{item.title}</Text>
             <TouchableOpacity
@@ -289,7 +293,11 @@ function HomeScreen({ navigation }: HomeScreenProp) {
             borderRadius: 10,
             backgroundColor: COLORS.THEME_PRIMARY,
           }}
-          inactiveDotStyle={{ backgroundColor: COLORS.TEXT_DISABLED_GREY, width: 12, height: 12 }}
+          inactiveDotStyle={{
+            backgroundColor: COLORS.TEXT_DISABLED_GREY,
+            width: 12,
+            height: 12,
+          }}
         />
       </View>
 

@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   saveTextEnabled: {
     color: COLORS.BLUE_500,
   },
-})
+});
 
 function EditProfileScreen({ navigation }: EditProfileScreenProp) {
   const [isSaveable, setIsSaveable] = useState(false);

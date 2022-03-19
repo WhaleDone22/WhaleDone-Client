@@ -26,7 +26,7 @@ function Screens() {
   return (
     <Stack.Navigator
       screenOptions={{ headerShown: false }}
-      initialRouteName="Main"
+      initialRouteName="Onboarding"
     >
       {!isOnboardingUnseen && (
         <Stack.Screen name="Onboarding" component={OnboardingScreen} />
