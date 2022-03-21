@@ -187,7 +187,7 @@ function MyPageScreen({ navigation }: MyPageScreenProp) {
 
       <View style={styles.headerContainer}>
         <ButtonBack onPress={() => navigation.goBack()} />
-        <Text style={styles.headerTitle}>마이 페이지</Text>
+        <Text style={styles.headerTitle}>마이페이지</Text>
         <TouchableOpacity
           onPress={() => navigation.navigate('EditProfile')}
           disabled={!isEditable}

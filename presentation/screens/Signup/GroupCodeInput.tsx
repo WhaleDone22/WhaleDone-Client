@@ -161,11 +161,7 @@ function GroupCodeInputScreen({ navigation }: GroupCodeInputScreenProp) {
                 ? styles.inactivatedEntranceBtnWrapper
                 : styles.entranceBtnWrapper
             }
-            onPress={() =>
-              navigation.navigate('GroupCodeShare', {
-                code: groupCode.join(''),
-              })
-            }
+            onPress={() => navigation.push('Main', { screen: 'Home' })}
           >
             <Text style={styles.entranceBtnText}>입장하기</Text>
           </TouchableOpacity>
