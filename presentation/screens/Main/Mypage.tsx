@@ -12,7 +12,6 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Avatar, Switch } from 'react-native-elements';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonBack from '../../components/ButtonBack';
 import PhotoSelectorModal from '../../components/PhotoSelectorModal';
@@ -21,7 +20,7 @@ import { commonStyles } from '../../styles/common';
 
 type MyPageScreenProp = NativeStackScreenProps<NavigationStackParams, 'MyPage'>;
 
-const IcProfileImageEdit = require('../../../assets/ic-profile-image-edit.png');
+
 const ProfileImageDefault = require('../../../assets/profile-image-default.png');
 const mypageLine = require('../../../assets/mypage-line.png');
 const IcArrowRight = require('../../../assets/ic-arrow-right.png');
@@ -126,56 +125,33 @@ const styles = StyleSheet.create({
     paddingVertical: 17,
     color: COLORS.TEXT_SECONDARY,
   },
-
-  // This only works on iOS
-  datePicker: {
-    width: 320,
-    height: 260,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-  },
 });
 
-function MyPageScreen({ navigation }: MyPageScreenProp) {
+function MyPageScreen({ navigation, route }: MyPageScreenProp) {
   const [isEditable, setIsEditable] = useState(true);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [pickedImagePath, setPickedImagePath] = useState('');
+  const [channelName, setChannelName] = useState('');
   const [text, setText] = useState('');
-  const [isUploadable, setIsUploadable] = useState(false);
   const [isSetAlarm, setIsSetAlarm] = useState(true);
 
-  const [isPickerShow, setIsPickerShow] = useState(false);
-  const [date, setDate] = useState(new Date(1598051730000));
-  const [mode, setMode] = useState('date');
-  const [show, setShow] = useState(false);
+  const openModal = () => setIsModalVisible(true);
+  const closeModal = () => setIsModalVisible(false);
+
+  const onSharePressed = () => {
+    console.log('onSharePressed');
+  };
 
   // useEffect(() => {
   //   setIsUploadable(text.length > 10 || pickedImagePath !== '');
   // }, [text, pickedImagePath]);
 
-  const openModal = () => setIsModalVisible(true);
-  const closeModal = () => setIsModalVisible(false);
-
-  // 함수의 parameter는 type을 선언해줘야 하는데 ..?
-  // const onChange = (selectedDate: string) => {
-  //   const currentDate: string = selectedDate;
-  //   setShow(false);
-  //   setDate(currentDate); // 앗...타입..?
-  // };
-
-  const showMode = (currentMode: string) => {
-    setShow(true);
-    setMode(currentMode);
-  };
-
-  const showTimepicker = () => {
-    showMode('time');
-  };
-
-  const onSharePressed = () => {
-    console.log('onSharePressed');
-  };
+  // 수정페이지에 일단 들어간 다음에 거기서 저장으로 다시 Mypage에 들어올 때 route.params를 받아와야 함
+  // const { newChannelName } = route.params;
+  // console.log(newChannelName)
+  // useEffect(() => {
+  //   //
+  // }, [newChannelName])
 
   return (
     <SafeAreaView style={commonStyles.container}>
@@ -185,6 +161,7 @@ function MyPageScreen({ navigation }: MyPageScreenProp) {
         setPickedImagePath={(path: string) => setPickedImagePath(path)}
       />
 
+      {/* Header */}
       <View style={styles.headerContainer}>
         <ButtonBack onPress={() => navigation.goBack()} />
         <Text style={styles.headerTitle}>마이페이지</Text>
@@ -223,18 +200,30 @@ function MyPageScreen({ navigation }: MyPageScreenProp) {
         {/* 가족 채널 */}
         <View style={styles.eachSettings}>
           <Text style={styles.settingTxt}>가족 채널</Text>
-          <Text style={styles.settingValueTxt}>웨일던, 칭찬하는_가족</Text>
+          <TextInput
+            editable={false}
+            maxLength={15}
+            // value={channelName}
+            // onChangeText={setChannelName}
+            style={styles.settingValueTxt}
+          >
+            웨일던, 칭찬하는 가족
+          </TextInput>
         </View>
         <Image source={mypageLine} style={styles.lineImage} />
 
         {/* 알림 받기 */}
-        <View style={styles.eachSettings}>
+        <View style={[styles.eachSettings, { height: 64 }]}>
           <Text style={styles.settingTxt}>알림 받기</Text>
           <View style={styles.alarmWrapper}>
             <Text style={[styles.settingValueTxt, styles.alarmTxt]}>
               10:00 PM
             </Text>
-            {/* <Switch value={isSetAlarm} onValueChange={(value)=>setIsSetAlarm(value)} style={styles.alarmSwitch}></Switch> */}
+            <Switch
+              value={isSetAlarm}
+              onValueChange={(value) => setIsSetAlarm(value)}
+              style={styles.alarmSwitch}
+            />
           </View>
         </View>
         <Image source={mypageLine} style={styles.lineImage} />
@@ -251,21 +240,6 @@ function MyPageScreen({ navigation }: MyPageScreenProp) {
             <Text style={[styles.settingTxt, styles.logout]}>로그아웃</Text>
           </TouchableOpacity>
         </View>
-      </View>
-
-      {/* TEMP */}
-      <View>
-        <Text>{date.toUTCString()}</Text>
-        {isPickerShow && (
-          <DateTimePicker
-            value={date}
-            mode="date"
-            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-            is24Hour
-            // onChange={onChange}
-            style={styles.datePicker}
-          />
-        )}
       </View>
 
       <View>
