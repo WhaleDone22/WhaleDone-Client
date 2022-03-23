@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import Svg, { Circle } from 'react-native-svg';
 import COLORS from '../styles/colors';
 
 type AudioRecorderProps = {
@@ -7,7 +8,12 @@ type AudioRecorderProps = {
 };
 
 const styles = StyleSheet.create({
-  wrapper: { flex: 1, alignItems: 'center', paddingTop: 20 },
+  wrapper: {
+    flex: 1,
+    alignItems: 'center',
+    paddingTop: 20,
+    paddingHorizontal: 16,
+  },
   upperText: {
     color: COLORS.THEME_PRIMARY,
     fontFamily: 'Pretendard-Bold',
@@ -22,7 +28,7 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     backgroundColor: COLORS.THEME_PRIMARY,
     justifyContent: 'center',
-    marginBottom: 12,
+    marginBottom: 32,
     alignItems: 'center',
   },
   timerWrapper: {
@@ -30,8 +36,10 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.BLUE_100,
     borderRadius: 10,
     justifyContent: 'center',
+    alignItems: 'center',
     marginTop: 22,
     marginBottom: 20,
+    width: '100%',
   },
   timerText: {
     fontFamily: 'Inter_200ExtraLight',
@@ -61,6 +69,29 @@ function AudioRecorder(props: AudioRecorderProps) {
     finished: IcRecordSend,
   };
   const [seconds, setSeconds] = useState(0);
+  const [displaySeconds, setDisplaySeconds] = useState(0);
+
+  useEffect(() => {
+    let recordDuration: NodeJS.Timer | undefined;
+    if (recordStatus === 'recording')
+      recordDuration = setInterval(() => {
+        setSeconds((prev) => {
+          if (prev >= 60) {
+            setRecordStatus('finished');
+            return prev;
+          }
+          return prev + 1;
+        });
+      }, 1000);
+    if (recordStatus === 'finished') setDisplaySeconds(60);
+    return () => {
+      if (recordDuration) clearInterval(recordDuration);
+    };
+  }, [recordStatus]);
+
+  useEffect(() => {
+    setDisplaySeconds(seconds);
+  }, [seconds]);
 
   return (
     <View style={styles.wrapper}>
@@ -92,12 +123,42 @@ function AudioRecorder(props: AudioRecorderProps) {
         <Image source={IcClose} style={styles.imageClose} />
       </Pressable>
       <View style={styles.timerWrapper}>
-        <Text style={styles.timerText}>{`${(seconds / 60)
+        <Text style={styles.timerText}>{`${Math.floor(seconds / 60)
           .toString()
           .padStart(2, '0')}:${(seconds % 60)
           .toString()
           .padStart(2, '0')}`}</Text>
       </View>
+      {recordStatus !== 'idle' && (
+        <Svg
+          width={62}
+          height={62}
+          viewBox="0 0 100 100"
+          style={{
+            position: 'absolute',
+            bottom: 25,
+            transform: [{ rotate: '270deg' }],
+          }}
+        >
+          <Circle
+            cx={50}
+            cy={50}
+            r={46}
+            stroke={COLORS.TEXT_DISABLED_GREY}
+            strokeWidth={6}
+          />
+          <Circle
+            cx={50}
+            cy={50}
+            r={46}
+            stroke={COLORS.THEME_PRIMARY}
+            strokeWidth={6}
+            strokeDasharray={`${(displaySeconds / 60) * Math.PI * 46 * 2} ${
+              ((60 - displaySeconds) / 60) * Math.PI * 46 * 2
+            }`}
+          />
+        </Svg>
+      )}
       <Pressable
         style={styles.pressableButton}
         onPress={() =>
