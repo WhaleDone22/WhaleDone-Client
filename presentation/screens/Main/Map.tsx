@@ -298,3 +298,4 @@ function MapScreen({ navigation }: MapScreenProp) {
 }
 
 export default MapScreen;
+
