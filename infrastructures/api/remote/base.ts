@@ -56,6 +56,7 @@ const sendRequestForData = ({
     headers: { ...baseHeaders, ...headers },
     body: JSON.stringify(data),
   }).then((response) => {
+    console.log(response);
     return response.json();
   });
 };

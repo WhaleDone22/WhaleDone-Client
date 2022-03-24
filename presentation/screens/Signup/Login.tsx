@@ -10,7 +10,7 @@ import {
   Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { privateAPI } from '../../../infrastructures/api/remote/base';
+import { publicAPI } from '../../../infrastructures/api/remote/base';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonBack from '../../components/ButtonBack';
 import ButtonNext from '../../components/ButtonNext';
@@ -59,13 +59,17 @@ function LoginScreen({ navigation }: LoginScreenProp) {
   const [password, setPassword] = useState('');
   const [isPasswordVisible, setIsPasswordVisible] = useState(true);
   const handleLogin = () => {
-    privateAPI
-      .post({ url: '/api/v1/user/sign-in', data: { email, password } })
+    publicAPI
+      .post({ url: 'api/v1/user/sign-in', data: { email, password } })
       .then((response) => {
         if (response.responseSuccess) {
-          navigation.push('Main', { screen: 'Home' });
-          AsyncStorage.setItem('token', response.singleData.jwtToken);
-          AsyncStorage.setItem('userID', response.singleData.jwtToken);
+          if (typeof response.singleData.jwtToken === 'string') {
+            AsyncStorage.setItem('token', response.singleData.jwtToken);
+            AsyncStorage.setItem('userID', response.singleData.jwtToken);
+            navigation.push('Main', { screen: 'Home' });
+          } else {
+            // 에러 띄우기
+          }
         } else {
           // 여기서 에러 띄우기
         }
