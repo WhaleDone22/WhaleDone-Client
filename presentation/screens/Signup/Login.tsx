@@ -90,7 +90,10 @@ function LoginScreen({ navigation }: LoginScreenProp) {
           />
         </TouchableOpacity>
       </View>
-      <ButtonNext onPress={() => navigation.push('Main')} isActivated />
+      <ButtonNext
+        onPress={() => navigation.push('Main', { screen: 'Home' })}
+        isActivated
+      />
     </SafeAreaView>
   );
 }
