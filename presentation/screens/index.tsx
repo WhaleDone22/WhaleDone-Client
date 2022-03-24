@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import BottomNavigation from './Main/BottomNavigation';
 import EditProfileScreen from './Main/EditProfile';
 import MapDetailScreen from './Main/MapDetail';
@@ -21,17 +22,35 @@ import OnboardingScreen from './AppInit/Onboarding';
 const Stack = createStackNavigator();
 
 function Screens() {
-  const isUserLoggedIn = false;
-  const isOnboardingUnseen = false;
+  const [userState, setUserState] = useState<{
+    isLoggedIn: boolean;
+    isOnboardingUnseen: boolean;
+  }>({
+    isLoggedIn: false,
+    isOnboardingUnseen: true,
+  });
+
+  useEffect(() => {
+    AsyncStorage.getItem('isOnboardingUnseen').then((seen) => {
+      setUserState((prev) => ({
+        ...prev,
+        isOnboardingUnseen: seen === null,
+      }));
+    });
+    AsyncStorage.getItem('token').then((token) => {
+      setUserState((prev) => ({ ...prev, isLoggedIn: token !== null }));
+    });
+  }, []);
+
   return (
     <Stack.Navigator
       screenOptions={{ headerShown: false }}
-      initialRouteName="Main"
+      initialRouteName="Onboarding"
     >
-      {!isOnboardingUnseen && (
+      {userState.isOnboardingUnseen && (
         <Stack.Screen name="Onboarding" component={OnboardingScreen} />
       )}
-      {!isUserLoggedIn && (
+      {!userState.isLoggedIn && (
         <>
           <Stack.Screen name="SignUpMain" component={SignUpMainScreen} />
           <Stack.Screen name="EmailInput" component={EmailInputScreen} />

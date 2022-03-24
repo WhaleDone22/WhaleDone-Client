@@ -3,6 +3,7 @@ import React, { useRef, useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Pages } from 'react-native-pages';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonBack from '../../components/ButtonBack';
 import ButtonNext from '../../components/ButtonNext';
@@ -84,14 +85,16 @@ function OnboardingScreen({ navigation }: OnboardingScreenProp) {
     if (currentIndex) setActiveIndex(currentIndex);
   };
 
+  const navigatePage = () => {
+    AsyncStorage.setItem('isOnboardingUnseen', 'false');
+    navigation.navigate('SignUpMain');
+  };
+
   return (
     <SafeAreaView style={commonStyles.container}>
       <View style={styles.header}>
-        <ButtonBack onPress={() => navigation.navigate('SignUpMain')} />
-        <Text
-          onPress={() => navigation.navigate('SignUpMain')}
-          style={styles.skipButton}
-        >
+        <ButtonBack onPress={navigatePage} />
+        <Text onPress={navigatePage} style={styles.skipButton}>
           건너뛰기
         </Text>
       </View>
@@ -111,10 +114,7 @@ function OnboardingScreen({ navigation }: OnboardingScreenProp) {
 
       <View style={{ marginBottom: 46, marginTop: 76 }}>
         {activeIndex === 2 ? (
-          <ButtonNext
-            isActivated
-            onPress={() => navigation.navigate('SignUpMain')}
-          />
+          <ButtonNext isActivated onPress={navigatePage} />
         ) : (
           <View style={{ height: 54 }} />
         )}
