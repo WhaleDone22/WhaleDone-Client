@@ -43,6 +43,7 @@ module.exports = {
   },
   globals: {
     NodeJS: true,
+    fetch: true,
   },
   plugins: ['prettier'],
 };
