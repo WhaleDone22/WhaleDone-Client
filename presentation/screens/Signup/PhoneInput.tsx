@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import {
   Text,
@@ -18,6 +18,7 @@ import ButtonNext from '../../components/ButtonNext';
 import COLORS from '../../styles/colors';
 import { Country } from '../../../infrastructures/types/country';
 import { commonStyles } from '../../styles/common';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type PhoneInputScreenProp = NativeStackScreenProps<
   NavigationStackParams,
@@ -94,7 +95,18 @@ function PhoneInputScreen({ navigation }: PhoneInputScreenProp) {
   const [selectedCountry, setSelectedCountry] = useState('KR');
   const [phone, setPhone] = useState('');
   const bottomSheetRef = useRef<any>(null);
+  const [userState, setUserState] = useState<{
+    isLoggedIn: boolean;
+  }>({
+    isLoggedIn: false,
+  });
 
+  useEffect(() => {
+    AsyncStorage.getItem('token').then((token) => {
+      setUserState((prev) => ({ ...prev, isLoggedIn: token !== null }));
+    });
+  }, [])
+  
   return (
     <SafeAreaView style={commonStyles.container}>
       <BottomSheet ref={bottomSheetRef} snapPoints={[700]} height={height - 93}>

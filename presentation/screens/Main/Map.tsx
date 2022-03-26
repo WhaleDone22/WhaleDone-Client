@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState, useRef } from 'react';
-import { Text, Image, StyleSheet, View } from 'react-native';
+import { Text, Image, StyleSheet, View, Pressable } from 'react-native';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import BottomSheet from 'react-native-gesture-bottom-sheet';
 import MapView, { PROVIDER_GOOGLE, Marker, Circle } from 'react-native-maps';
@@ -14,9 +14,11 @@ const styles = StyleSheet.create({
   headerContainer: {
     marginTop: 54,
     flexDirection: 'row',
-    marginStart: 24,
-    marginEnd: 15,
+    paddingStart: 24,
+    paddingEnd: 15,
     justifyContent: 'space-between',
+    position: 'absolute',
+    width: '100%',
   },
   headerTitle: {
     fontFamily: 'Pretendard-Bold',
@@ -129,6 +131,9 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
   },
+  map: {
+    ...StyleSheet.absoluteFillObject,
+  },
 });
 
 // Image
@@ -136,6 +141,7 @@ const defaultProfile = require('../../../assets/image-profile-default.png');
 const ex1Profile = require('../../../assets/image-profile-ex1.png');
 const ex2Profile = require('../../../assets/image-profile-ex2.png');
 const addFamily = require('../../../assets/ic-add-family.png');
+const ex2marker = require('../../../assets/image-marker-ex2.png');
 
 const IcNotice = require('../../../assets/ic-bell.png');
 const IcMyPage = require('../../../assets/ic-user-circle.png');
@@ -145,7 +151,7 @@ function MapScreen({ navigation }: MapScreenProp) {
   const bottomSheetRef = useRef<any>(null);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={[{ flex: 1 }]}>
       <BottomSheet
         ref={bottomSheetRef}
         hasDraggableIcon
@@ -235,76 +241,88 @@ function MapScreen({ navigation }: MapScreenProp) {
       </BottomSheet>
 
       <View
-        style={{
-          position: 'absolute',
+        style={[{
+          position: 'relative',
           top: 0,
           left: 0,
           width: '100%',
           height: '100%',
-        }}
+        }]}
       >
         <MapView
-          style={{ width: '100%', height: '100%' }}
+          style={[{ width: '100%', height: '100%' }]}
           provider={PROVIDER_GOOGLE}
           initialRegion={{
             latitude: 35.91395373474155,
             longitude: 127.73829440215488,
-            latitudeDelta: 80,
-            longitudeDelta: 80,
+            latitudeDelta: 70,
+            longitudeDelta: 70,
           }}
         >
           <Marker
-            coordinate={{ latitude: 37.56667, longitude: 126.97806 }}
-            image={ex1Profile}
+            coordinate={{ latitude: 35.91395373474155, longitude: 127.73829440215488 }}
+          >
+            <Image
+              source={{uri:'https://avatars.githubusercontent.com/u/98895272?s=200&v=4'}}
+              style={{width:48, height:48, resizeMode:'contain'}}
+            />
+          </Marker>
+          <Circle
+            center={{ latitude: 35.91395373474155, longitude: 127.73829440215488 }}
+            radius={1500}
+            fillColor="#000"
+            zIndex={99}
           />
-          {/* <Circle center={{ latitude: 43.604461, longitude: 1.444031 }} radius={1500} /> */}
         </MapView>
       </View>
-      <View style={{ justifyContent: 'space-between', flex: 1 }}>
-        <View style={styles.headerContainer}>
-          <Text style={styles.headerTitle}>마음거리</Text>
-          <View style={{ flexDirection: 'row' }}>
-            <TouchableOpacity onPress={() => navigation.navigate('Notice')}>
-              <Image source={IcNotice} style={styles.headerNotice} />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('MyPage')}>
-              <Image source={IcMyPage} style={styles.headerMyPage} />
-            </TouchableOpacity>
-          </View>
-        </View>
 
-        <TouchableOpacity
-          style={{
-            height: 68,
-            backgroundColor: '#FFFFFFE6',
-            borderTopLeftRadius: 25,
-            borderTopRightRadius: 25,
-            alignItems: 'center',
-          }}
-          onPress={() => bottomSheetRef.current?.show()}
-        >
-          <View
-            style={{
-              backgroundColor: COLORS.TEXT_DISABLED_GREY,
-              borderRadius: 100,
-              width: 76,
-              height: 5,
-              marginTop: 14,
-            }}
-          />
-          <View
-            style={[
-              styles.textWrapper1,
-              { paddingHorizontal: 18, paddingTop: 10, width: '100%' },
-            ]}
-          >
-            <Text style={styles.mainText}>가족 간 마음거리</Text>
-            <Text style={styles.subText}>
-              소통을 많이 할수록 원의 거리가 가까워져요
-            </Text>
-          </View>
-        </TouchableOpacity>
+      <View style={styles.headerContainer}>
+        <Text style={styles.headerTitle}>마음거리</Text>
+        <View style={{ flexDirection: 'row' }}>
+          <TouchableOpacity onPress={() => navigation.navigate('Notice')}>
+            <Image source={IcNotice} style={styles.headerNotice} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('MyPage')}>
+            <Image source={IcMyPage} style={styles.headerMyPage} />
+          </TouchableOpacity>
+        </View>
       </View>
+
+      <Pressable
+        style={{
+          height: 68,
+          backgroundColor: '#FFFFFFE6',
+          borderTopLeftRadius: 25,
+          borderTopRightRadius: 25,
+          alignItems: 'center',
+          zIndex: 999,
+          position: 'absolute',
+          bottom: 0,
+          width: '100%',
+        }}
+        onPress={() => bottomSheetRef.current?.show()}
+      >
+        <View
+          style={{
+            backgroundColor: COLORS.TEXT_DISABLED_GREY,
+            borderRadius: 100,
+            width: 76,
+            height: 5,
+            marginTop: 14,
+          }}
+        />
+        <View
+          style={[
+            styles.textWrapper1,
+            { paddingHorizontal: 18, paddingTop: 10, width: '100%'},
+          ]}
+        >
+          <Text style={styles.mainText}>가족 간 마음거리</Text>
+          <Text style={styles.subText}>
+            소통을 많이 할수록 원의 거리가 가까워져요
+          </Text>
+        </View>
+      </Pressable>
     </View>
   );
 }
