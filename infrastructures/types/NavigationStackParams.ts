@@ -21,4 +21,5 @@ export type NavigationStackParams = {
   Map: undefined;
   Feed: undefined;
   Onboarding: undefined;
+  PasswordFind: undefined;
 };

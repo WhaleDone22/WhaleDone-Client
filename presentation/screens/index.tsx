@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import BottomNavigation from './Main/BottomNavigation';
 import EditProfileScreen from './Main/EditProfile';
 import MapDetailScreen from './Main/MapDetail';
@@ -17,21 +18,40 @@ import PhoneAuthScreen from './Signup/PhoneAuth';
 import LoginScreen from './Signup/Login';
 import PhoneInputScreen from './Signup/PhoneInput';
 import OnboardingScreen from './AppInit/Onboarding';
+import PasswordFindScreen from './Signup/PasswordFind';
 
 const Stack = createStackNavigator();
 
 function Screens() {
-  const isUserLoggedIn = false;
-  const isOnboardingUnseen = false;
+  const [userState, setUserState] = useState<{
+    isLoggedIn: boolean;
+    isOnboardingUnseen: boolean;
+  }>({
+    isLoggedIn: false,
+    isOnboardingUnseen: true,
+  });
+
+  useEffect(() => {
+    AsyncStorage.getItem('isOnboardingUnseen').then((seen) => {
+      setUserState((prev) => ({
+        ...prev,
+        isOnboardingUnseen: seen === null,
+      }));
+    });
+    AsyncStorage.getItem('token').then((token) => {
+      setUserState((prev) => ({ ...prev, isLoggedIn: token !== null }));
+    });
+  }, []);
+
   return (
     <Stack.Navigator
       screenOptions={{ headerShown: false }}
-      initialRouteName="Main"
+      initialRouteName="Onboarding"
     >
-      {!isOnboardingUnseen && (
+      {userState.isOnboardingUnseen && (
         <Stack.Screen name="Onboarding" component={OnboardingScreen} />
       )}
-      {!isUserLoggedIn && (
+      {!userState.isLoggedIn && (
         <>
           <Stack.Screen name="SignUpMain" component={SignUpMainScreen} />
           <Stack.Screen name="EmailInput" component={EmailInputScreen} />
@@ -49,6 +69,7 @@ function Screens() {
           <Stack.Screen name="PhoneAuth" component={PhoneAuthScreen} />
           <Stack.Screen name="PhoneInput" component={PhoneInputScreen} />
           <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="PasswordFind" component={PasswordFindScreen} />
         </>
       )}
       <Stack.Screen name="Main" component={BottomNavigation} />

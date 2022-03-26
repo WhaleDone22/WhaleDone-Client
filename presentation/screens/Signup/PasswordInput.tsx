@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     top: 15,
   },
   hintText: {
-    color: COLORS.THEME_PRIMARY,
+    color: COLORS.TEXT_SECONDARY,
     fontFamily: 'Pretendard',
     fontSize: 12,
     paddingLeft: 12,
@@ -123,12 +123,10 @@ function PasswordInputScreen({ navigation }: PasswordInputScreenProp) {
 
       {isPasswordSame || password2.length === 0 ? (
         <Text style={styles.hintText}>
-          영문 대문자/소문자/숫자 3가지를 포함하여 입력하세요
+          영문 대문자/소문자/숫자 3가지를 포함하여 입력하세요.
         </Text>
       ) : (
-        <Text style={styles.errorText}>
-          비밀번호가 일치하지 않아요. 다시 입력하세요.
-        </Text>
+        <Text style={styles.errorText}>두 비밀번호가 달라요.</Text>
       )}
       <View style={{ marginTop: 22 }}>
         <ButtonNext

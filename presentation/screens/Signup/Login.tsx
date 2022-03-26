@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
 import {
@@ -9,6 +10,7 @@ import {
   Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { publicAPI } from '../../../infrastructures/api/remote/base';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonBack from '../../components/ButtonBack';
 import ButtonNext from '../../components/ButtonNext';
@@ -56,6 +58,26 @@ function LoginScreen({ navigation }: LoginScreenProp) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isPasswordVisible, setIsPasswordVisible] = useState(true);
+  const handleLogin = () => {
+    publicAPI
+      .post({ url: 'api/v1/user/sign-in', data: { email, password } })
+      .then((response) => {
+        if (response.responseSuccess) {
+          if (typeof response.singleData.jwtToken === 'string') {
+            AsyncStorage.setItem('token', response.singleData.jwtToken);
+            AsyncStorage.setItem('userID', response.singleData.jwtToken);
+            navigation.push('Main', { screen: 'Home' });
+          } else {
+            // 에러 띄우기
+          }
+        } else {
+          // 여기서 에러 띄우기
+        }
+      })
+      .catch((/* error */) => {
+        // 여기서도 에러 띄우기
+      });
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -91,9 +113,46 @@ function LoginScreen({ navigation }: LoginScreenProp) {
         </TouchableOpacity>
       </View>
       <ButtonNext
-        onPress={() => navigation.push('Main', { screen: 'Home' })}
-        isActivated
+        onPress={handleLogin}
+        isActivated={email !== '' && password !== ''}
       />
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginTop: 17,
+        }}
+      >
+        <Text
+          style={{
+            fontFamily: 'Pretendard',
+            fontSize: 14,
+            color: COLORS.TEXT_SECONDARY,
+            marginRight: 8,
+          }}
+        >
+          비밀번호를 잊으셨나요?
+        </Text>
+        <TouchableOpacity
+          style={{
+            borderBottomColor: COLORS.BLUE_500,
+            borderBottomWidth: 2,
+            paddingBottom: 2,
+          }}
+          onPress={() => navigation.navigate('PasswordFind')}
+        >
+          <Text
+            style={{
+              fontFamily: 'Pretendard-Bold',
+              fontSize: 14,
+              color: COLORS.BLUE_500,
+            }}
+          >
+            비밀번호 찾기
+          </Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 }
