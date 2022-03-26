@@ -4,16 +4,12 @@ import COLORS from '../styles/colors';
 
 type ProgressBarProps = {
   navigation: string;
-  distance1: string;
-  distance2: string;
+  distance1: Number;
+  distance2: Number;
   height: number;
   completedColor1: string;
   completedColor2: string;
 };
-
-const styles = StyleSheet.create({
-  ingBar: {},
-});
 
 function ProgressBar(props: ProgressBarProps) {
   const {
@@ -29,8 +25,6 @@ function ProgressBar(props: ProgressBarProps) {
   const [getheight, setHeight] = useState(height);
   const [getCompletedColor1, setCompletedColor1] = useState(completedColor1);
   const [getCompletedColor2, setCompletedColor2] = useState(completedColor2);
-
-  // setDistance1('20%')
 
   return (
     <View>
@@ -88,7 +82,7 @@ function ProgressBar(props: ProgressBarProps) {
               color: COLORS.BLUE_500,
             }}
           >
-            {distance1}
+            {distance1}km
           </Text>
         </View>
         {/* 2 */}
@@ -107,7 +101,7 @@ function ProgressBar(props: ProgressBarProps) {
               color: COLORS.BLUE_400,
             }}
           >
-            {distance2}
+            {distance2}km
           </Text>
         </View>
       </View>

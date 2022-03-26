@@ -3,7 +3,7 @@ import React, { useState, useRef } from 'react';
 import { Text, Image, StyleSheet, View } from 'react-native';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import BottomSheet from 'react-native-gesture-bottom-sheet';
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, Marker, Circle } from 'react-native-maps';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 
 import COLORS from '../../styles/colors';
@@ -122,6 +122,12 @@ const styles = StyleSheet.create({
   distnaceValue: {
     fontFamily: 'Pretendard-Bold',
     color: COLORS.BLUE_500,
+  },
+
+  //Marker
+  markerImg: {
+    width: 48,
+    height: 48,
   },
 });
 
@@ -246,7 +252,13 @@ function MapScreen({ navigation }: MapScreenProp) {
             latitudeDelta: 80,
             longitudeDelta: 80,
           }}
-        />
+        >
+          <Marker
+            coordinate={{ latitude: 37.56667, longitude: 126.97806 }}
+            image={ex1Profile}
+          />
+          {/* <Circle center={{ latitude: 43.604461, longitude: 1.444031 }} radius={1500} /> */}
+        </MapView>
       </View>
       <View style={{ justifyContent: 'space-between', flex: 1 }}>
         <View style={styles.headerContainer}>
@@ -298,4 +310,3 @@ function MapScreen({ navigation }: MapScreenProp) {
 }
 
 export default MapScreen;
-

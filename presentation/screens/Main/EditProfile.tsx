@@ -17,7 +17,7 @@ import ButtonBack from '../../components/ButtonBack';
 import PhotoSelectorModal from '../../components/PhotoSelectorModal';
 import COLORS from '../../styles/colors';
 import { commonStyles } from '../../styles/common';
-import MyPage from './Mypage'
+import MyPage from './Mypage';
 
 type EditProfileScreenProp = NativeStackScreenProps<
   NavigationStackParams,
