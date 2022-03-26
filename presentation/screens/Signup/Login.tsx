@@ -112,7 +112,47 @@ function LoginScreen({ navigation }: LoginScreenProp) {
           />
         </TouchableOpacity>
       </View>
-      <ButtonNext onPress={handleLogin} isActivated />
+      <ButtonNext
+        onPress={handleLogin}
+        isActivated={email !== '' && password !== ''}
+      />
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginTop: 17,
+        }}
+      >
+        <Text
+          style={{
+            fontFamily: 'Pretendard',
+            fontSize: 14,
+            color: COLORS.TEXT_SECONDARY,
+            marginRight: 8,
+          }}
+        >
+          비밀번호를 잊으셨나요?
+        </Text>
+        <TouchableOpacity
+          style={{
+            borderBottomColor: COLORS.BLUE_500,
+            borderBottomWidth: 2,
+            paddingBottom: 2,
+          }}
+          onPress={() => navigation.navigate('PasswordFind')}
+        >
+          <Text
+            style={{
+              fontFamily: 'Pretendard-Bold',
+              fontSize: 14,
+              color: COLORS.BLUE_500,
+            }}
+          >
+            비밀번호 찾기
+          </Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 }

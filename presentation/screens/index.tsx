@@ -18,6 +18,7 @@ import PhoneAuthScreen from './Signup/PhoneAuth';
 import LoginScreen from './Signup/Login';
 import PhoneInputScreen from './Signup/PhoneInput';
 import OnboardingScreen from './AppInit/Onboarding';
+import PasswordFindScreen from './Signup/PasswordFind';
 
 const Stack = createStackNavigator();
 
@@ -68,6 +69,7 @@ function Screens() {
           <Stack.Screen name="PhoneAuth" component={PhoneAuthScreen} />
           <Stack.Screen name="PhoneInput" component={PhoneInputScreen} />
           <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="PasswordFind" component={PasswordFindScreen} />
         </>
       )}
       <Stack.Screen name="Main" component={BottomNavigation} />

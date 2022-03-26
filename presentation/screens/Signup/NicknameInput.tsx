@@ -54,7 +54,16 @@ function NicknameInputScreen({ navigation }: NicknameInputScreenProp) {
         keyboardType="default"
         autoFocus
       />
-      <Text style={styles.hintText}>
+      <Text
+        style={[
+          styles.hintText,
+          {
+            color: isValidate
+              ? COLORS.TEXT_DISABLED_GREY
+              : COLORS.THEME_NEGATIVE,
+          },
+        ]}
+      >
         한글/영문/숫자/특수문자(*,._-+!?)까지 입력 가능해요
       </Text>
       <View style={{ marginTop: 22 }}>
