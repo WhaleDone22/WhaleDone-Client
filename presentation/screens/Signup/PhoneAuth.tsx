@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   hintText: {
-    color: COLORS.THEME_PRIMARY,
+    color: COLORS.TEXT_SECONDARY,
     fontFamily: 'Pretendard',
     fontSize: 12,
     paddingLeft: 12,
@@ -163,7 +163,7 @@ function PhoneAuthScreen({ navigation }: PhoneAuthScreenProp) {
         />
       </View>
       <Text style={styles.hintText}>
-        전송된 인증번호는 3분 안에 인증이 만료됩니다.
+        전송된 인증번호는 3분 동안만 입력 가능해요.
       </Text>
       <View style={{ marginTop: 22 }}>
         <ButtonNext

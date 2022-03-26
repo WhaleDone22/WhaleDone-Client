@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Text, StyleSheet, View } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -25,6 +25,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     borderColor: 'transparent',
   },
+  hintText: {
+    color: COLORS.TEXT_SECONDARY,
+    fontFamily: 'Pretendard',
+    fontSize: 12,
+    paddingLeft: 12,
+  },
   errorText: {
     color: COLORS.THEME_NEGATIVE,
     fontFamily: 'Pretendard',
@@ -35,10 +41,11 @@ const styles = StyleSheet.create({
 
 function EmailInputScreen({ navigation }: EmailInputScreenProp) {
   const [email, setEmail] = useState('');
-  const [isValidate, setIsValidate] = useState(false);
-  useEffect(() => {
-    setIsValidate(validateEmail(email));
-  }, [email]);
+  const [isValidate, setIsValidate] = useState(true);
+  const handleEmailInput = () => {
+    if (validateEmail(email)) navigation.navigate('PasswordInput');
+    else setIsValidate(false);
+  };
   return (
     <SafeAreaView style={commonStyles.container}>
       <ButtonBack onPress={() => navigation.goBack()} />
@@ -54,16 +61,14 @@ function EmailInputScreen({ navigation }: EmailInputScreenProp) {
         keyboardType="email-address"
         autoFocus
       />
-      {!isValidate && email !== '' && (
-        <Text style={styles.errorText}>
-          올바른 이메일 형태가 아니에요. 다시 입력하세요
-        </Text>
+
+      {isValidate ? (
+        <Text style={styles.hintText}>@.com 형식으로 입력하세요.</Text>
+      ) : (
+        <Text style={styles.errorText}>올바른 이메일 형태가 아니에요.</Text>
       )}
       <View style={{ marginTop: 22 }}>
-        <ButtonNext
-          onPress={() => navigation.navigate('PasswordInput')}
-          isActivated={isValidate}
-        />
+        <ButtonNext onPress={handleEmailInput} isActivated={email !== ''} />
       </View>
     </SafeAreaView>
   );
