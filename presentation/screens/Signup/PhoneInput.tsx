@@ -26,6 +26,7 @@ type PhoneInputScreenProp = NativeStackScreenProps<
 
 const countryCodeWithEmoji = require('../../../infrastructures/data/countryCodeWithEmoji.json');
 const countryCodeWithTelNumber: Country[] = require('../../../infrastructures/data/countryCodeWithTelNumber.json');
+const countryServiceActive: string[] = require('../../../infrastructures/data/serviceActiveCountries.json');
 const icToggleDown = require('../../../assets/ic-toggle-down.png');
 
 const { height } = Dimensions.get('window');
@@ -100,23 +101,25 @@ function PhoneInputScreen({ navigation }: PhoneInputScreenProp) {
       <BottomSheet ref={bottomSheetRef} snapPoints={[700]} height={height - 93}>
         <ScrollView>
           <Text style={styles.countryCodeSelectorTitleText}>국가 코드</Text>
-          {countryCodeWithTelNumber.map((country) => (
-            <TouchableOpacity
-              onPress={() => {
-                setSelectedCountry(country.countryCode);
-                bottomSheetRef.current?.close();
-              }}
-              key={country.countryCode}
-              style={styles.countryCodeSelectorWrapper}
-            >
-              <Text style={styles.countryCodeCountryNameText}>
-                {country.countryNameKR}
-              </Text>
-              <Text style={styles.countryCodeCountryCodeText}>
-                +{country.countryPhoneNumber}
-              </Text>
-            </TouchableOpacity>
-          ))}
+          {countryCodeWithTelNumber.map((country) =>
+            countryServiceActive.includes(country.countryCode) ? (
+              <TouchableOpacity
+                onPress={() => {
+                  setSelectedCountry(country.countryCode);
+                  bottomSheetRef.current?.close();
+                }}
+                key={country.countryCode}
+                style={styles.countryCodeSelectorWrapper}
+              >
+                <Text style={styles.countryCodeCountryNameText}>
+                  {country.countryNameKR}
+                </Text>
+                <Text style={styles.countryCodeCountryCodeText}>
+                  +{country.countryPhoneNumber}
+                </Text>
+              </TouchableOpacity>
+            ) : undefined,
+          )}
         </ScrollView>
       </BottomSheet>
       <ButtonBack onPress={() => navigation.goBack()} />
