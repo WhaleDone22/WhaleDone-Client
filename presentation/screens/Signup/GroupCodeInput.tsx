@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { privateAPI } from '../../../infrastructures/api/remote/base';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonBack from '../../components/ButtonBack';
 import COLORS from '../../styles/colors';
@@ -54,6 +55,7 @@ function GroupCodeInputScreen({ navigation }: GroupCodeInputScreenProp) {
   };
 
   // 코드 생성
+  /*
   const createCode = () => {
     const rawCode = Math.random().toString(36).substr(2, 6);
     const code: string[] = [];
@@ -62,12 +64,17 @@ function GroupCodeInputScreen({ navigation }: GroupCodeInputScreenProp) {
     }
     return code;
   };
+  */
 
   const onCreateCodePressed = () => {
-    const code: any = createCode();
-    setGroupCode(code);
-    setIsBtnActivated(false);
-    setIsFilled(true);
+    // const code: any = createCode();
+    privateAPI.post({ url: 'api/v1/family' }).then((response) => {
+      if (response.code === 'SUCCESS') {
+        setGroupCode(response.singleData.invitationCode);
+        setIsBtnActivated(false);
+        setIsFilled(true);
+      }
+    });
   };
 
   return (
@@ -175,10 +182,7 @@ function GroupCodeInputScreen({ navigation }: GroupCodeInputScreenProp) {
             }
             onPress={onCreateCodePressed}
           >
-            <Text style={styles.createCodeBtnTxt}>
-              {' '}
-              새로운 초대 코드 만들기
-            </Text>
+            <Text style={styles.createCodeBtnTxt}>새로운 초대 코드 만들기</Text>
           </TouchableOpacity>
         </View>
       </View>
