@@ -17,21 +17,23 @@ import { commonStyles } from '../../styles/common';
 import COLORS from '../../styles/colors';
 
 interface ImageItemProps {
-  icon: string;
+  icon: any;
   backgroundColor: string;
   width: number;
   height: number;
 }
-interface FixDataProps {
-  image: ImageItemProps;
+
+interface ItemProps {
+  title: string;
+  content: string;
   category: string;
-  backgroundColor: string;
+  image: ImageItemProps;
 }
 
-// interface RenderItemProps {
-//   // eslint-disable-next-line react/no-unused-prop-types
-//   item: ItemProps;
-// }
+interface RenderItemProps {
+  // eslint-disable-next-line react/no-unused-prop-types
+  item: ItemProps;
+}
 
 type HomeScreenProp = NativeStackScreenProps<NavigationStackParams, 'Home'>;
 
@@ -86,7 +88,7 @@ const styles = StyleSheet.create({
     },
   },
   questionText: {
-    color: '#000',
+    color: '#fff',
     fontFamily: 'Pretendard-Bold',
     fontSize: 16,
     textAlign: 'center',
@@ -97,9 +99,10 @@ const styles = StyleSheet.create({
     height: 45,
     backgroundColor: COLORS.BLUE_500,
     justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 5,
     marginBottom: 25,
-    marginLeft: 23,
+    marginHorizontal: 23,
   },
   answerTxt: {
     color: '#fff',
@@ -162,7 +165,7 @@ const imageItem: ImageItemProps[] = [
   },
   {
     icon: IcRelationship,
-    backgroundColor: COLORS.BLUE_400,
+    backgroundColor: COLORS.BLUE_300,
     width: 308,
     height: 413,
   },
@@ -174,7 +177,7 @@ const imageItem: ImageItemProps[] = [
   },
   {
     icon: IcHealth,
-    backgroundColor: COLORS.BLUE_400,
+    backgroundColor: COLORS.BLUE_300,
     width: 308,
     height: 413,
   },
@@ -186,34 +189,6 @@ const imageItem: ImageItemProps[] = [
   },
 ];
 
-const fixData: FixDataProps[] = [
-  {
-    image: imageItem[0],
-    backgroundColor: COLORS.BLUE_400,
-    category: 'work',
-  },
-  {
-    image: imageItem[1],
-    category: 'relationship',
-    backgroundColor: COLORS.BLUE_300,
-  },
-  {
-    image: imageItem[2],
-    category: 'daily',
-    backgroundColor: COLORS.BLUE_400,
-  },
-  {
-    image: imageItem[3],
-    category: 'health',
-    backgroundColor: COLORS.BLUE_300,
-  },
-  {
-    image: imageItem[4],
-    category: 'tmi',
-    backgroundColor: COLORS.BLUE_400,
-  },
-];
-
 function HomeScreen({ navigation }: HomeScreenProp) {
   const carouselRef = useRef<any>(null);
   const [activeIndex, setActiveIndex] = useState<number>(0);
@@ -221,10 +196,16 @@ function HomeScreen({ navigation }: HomeScreenProp) {
   const [week1, setWeek1] = useState('');
   const [week2, setWeek2] = useState('');
 
-  const renderItem = useCallback(() => {
+  // useEffect(() => {
+  //   console.log(carouselItems)
+  // }, [carouselItems]);
+
+  const renderItem = useCallback(({ item }: RenderItemProps) => {
     return (
-      <View style={styles.carouselWrapper} key={fixData.category}>
-        <View style={[styles.card, { backgroundColor: fixData.backgroundColor }]}>
+      <View style={styles.carouselWrapper} key={item.category}>
+        <View
+          style={[styles.card, { backgroundColor: item.image.backgroundColor }]}
+        >
           <ImageBackground
             style={{
               flex: 1,
@@ -232,16 +213,16 @@ function HomeScreen({ navigation }: HomeScreenProp) {
               // width: 308,
               // height: 413,
             }}
-            source={fixData.image}
+            source={item.image.icon}
             resizeMode="contain"
           >
-            <Text style={styles.questionText}>{carouselItems[1]}</Text>
+            <Text style={styles.questionText}>{item.content}</Text>
             <TouchableOpacity
               style={styles.answerBtn}
               onPress={() =>
                 navigation.navigate('Record', {
-                  category: carouselItems[0],
-                  question: carouselItems[1],
+                  category: item.category,
+                  question: item.content,
                 })
               }
             >
@@ -276,8 +257,12 @@ function HomeScreen({ navigation }: HomeScreenProp) {
       .get({ url: 'api/v1/questions' })
       .then((response) => {
         if (response.responseSuccess) {
-          console.log(response.multipleData);
-          setCarouselItems(response.multipleData);
+          // console.log(response.multipleData);
+          setCarouselItems(
+            response.multipleData.map((item: any, index: number) => {
+              return { ...item, image: imageItem[index] };
+            }),
+          );
         } else {
           // 여기서 에러 띄우기
         }
