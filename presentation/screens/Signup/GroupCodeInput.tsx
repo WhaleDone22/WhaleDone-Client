@@ -34,9 +34,9 @@ function GroupCodeInputScreen({ navigation }: GroupCodeInputScreenProp) {
     '',
     '',
   ]);
-  const [isBtnActivated, setIsBtnActivated] = useState(true);
   const [isFilled, setIsFilled] = useState(false);
   const [groupCode, setGroupCode] = useState<string[]>([]);
+  const [isCreated, setIsCreated] = useState(false);
 
   useEffect(() => {
     if (filledTexts.filter((text) => text === '').length === 0) {
@@ -70,11 +70,23 @@ function GroupCodeInputScreen({ navigation }: GroupCodeInputScreenProp) {
     // const code: any = createCode();
     privateAPI.post({ url: 'api/v1/family' }).then((response) => {
       if (response.code === 'SUCCESS') {
-        setGroupCode(response.singleData.invitationCode);
-        setIsBtnActivated(false);
-        setIsFilled(true);
+        navigation.navigate('GroupCodeShare', {
+          code: response.singleData.invitationCode,
+        });
       }
     });
+  };
+
+  const onEnterFamilyPressed = () => {
+    privateAPI
+      .post({
+        url: 'api/v1/family/validation/invitationCode',
+        data: { invitationCode: filledTexts.join('').toLowerCase() },
+      })
+      .then((response) => {
+        if (response.code === 'SUCCESS')
+          navigation.push('Main', { screen: 'Home' });
+      });
   };
 
   return (
@@ -168,7 +180,7 @@ function GroupCodeInputScreen({ navigation }: GroupCodeInputScreenProp) {
                 ? styles.inactivatedEntranceBtnWrapper
                 : styles.entranceBtnWrapper
             }
-            onPress={() => navigation.push('Main', { screen: 'Home' })}
+            onPress={onEnterFamilyPressed}
           >
             <Text style={styles.entranceBtnText}>입장하기</Text>
           </TouchableOpacity>
@@ -176,14 +188,27 @@ function GroupCodeInputScreen({ navigation }: GroupCodeInputScreenProp) {
 
         <View>
           <Text style={styles.createTxt}>아직 초대 코드가 없으신가요?</Text>
-          <TouchableOpacity
-            style={
-              !isFilled ? styles.createCodeBtn : styles.inactivatedCreateCodeBtn
-            }
-            onPress={onCreateCodePressed}
-          >
-            <Text style={styles.createCodeBtnTxt}>새로운 초대 코드 만들기</Text>
-          </TouchableOpacity>
+          {!isCreated ? (
+            <TouchableOpacity
+              style={
+                !isFilled
+                  ? styles.createCodeBtn
+                  : styles.inactivatedCreateCodeBtn
+              }
+              onPress={onCreateCodePressed}
+            >
+              <Text style={styles.createCodeBtnTxt}>
+                새로운 초대 코드 만들기
+              </Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={styles.createCodeBtn}
+              onPress={onCreateCodePressed}
+            >
+              <Text style={styles.createCodeBtnTxt}>초대 코드 공유하기</Text>
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     </SafeAreaView>
