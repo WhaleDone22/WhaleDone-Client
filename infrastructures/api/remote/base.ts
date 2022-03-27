@@ -57,13 +57,11 @@ const sendRequestForData = async ({
 }: RequestWithData) => {
   const basePrivateHeaders = await getBasePrivateHeaders();
   const baseHeaders = isPrivate ? basePrivateHeaders : basePublicHeaders;
-  console.warn(baseHeaders);
   return fetch(BASEURL + url, {
     method,
     headers: { ...baseHeaders, ...headers },
     body: JSON.stringify(data),
   }).then((response) => {
-    console.warn(response);
     return response.json();
   });
 };

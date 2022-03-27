@@ -22,6 +22,7 @@ import ButtonNext from '../../components/ButtonNext';
 import COLORS from '../../styles/colors';
 import { Country } from '../../../infrastructures/types/country';
 import { commonStyles } from '../../styles/common';
+import { publicAPI } from '../../../infrastructures/api/remote/base';
 
 type PhoneInputScreenProp = NativeStackScreenProps<
   NavigationStackParams,
@@ -117,6 +118,30 @@ function PhoneInputScreen({ navigation }: PhoneInputScreenProp) {
       setUserState((prev) => ({ ...prev, isLoggedIn: token !== null }));
     });
   }, []);
+
+  const postPhoneAuth = () => {
+    if (phone === '') return;
+    publicAPI
+      .post({
+        url: 'api/v1/sms/code',
+        data: {
+          countryCode:
+            countryCodeWithTelNumber.find(
+              (country: Country) => country.countryCode === selectedCountry,
+            )?.countryPhoneNumber ?? '',
+          recipientPhoneNumber: phone,
+        },
+      })
+      .then((response) => {
+        if (response.responseSuccess)
+          navigation.navigate('PhoneAuth', {
+            phoneNumber: phone,
+            countryCode: selectedCountry,
+            alarmStatus: alertChecked,
+          });
+      });
+  };
+
   return (
     <SafeAreaView style={commonStyles.container}>
       <BottomSheet ref={bottomSheetRef} snapPoints={[700]} height={height - 93}>
@@ -260,7 +285,7 @@ function PhoneInputScreen({ navigation }: PhoneInputScreenProp) {
       </View>
       <View style={{ marginTop: 22 }}>
         <ButtonNext
-          onPress={() => navigation.navigate('PhoneAuth')}
+          onPress={postPhoneAuth}
           isActivated={phone !== '' && selectedCountry !== null && termsChecked}
         />
       </View>

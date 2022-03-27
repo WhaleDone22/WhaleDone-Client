@@ -7,6 +7,7 @@ import { NavigationStackParams } from '../../../infrastructures/types/Navigation
 import COLORS from '../../styles/colors';
 import ButtonNext from '../../components/ButtonNext';
 import { commonStyles } from '../../styles/common';
+import { publicAPI } from '../../../infrastructures/api/remote/base';
 
 type PhoneAuthScreenProp = NativeStackScreenProps<
   NavigationStackParams,
@@ -52,7 +53,8 @@ const styles = StyleSheet.create({
   },
 });
 
-function PhoneAuthScreen({ navigation }: PhoneAuthScreenProp) {
+function PhoneAuthScreen({ navigation, route }: PhoneAuthScreenProp) {
+  const { phoneNumber, countryCode, alarmStatus } = route.params;
   const inputRef1 = useRef<TextInput | null>(null);
   const inputRef2 = useRef<TextInput | null>(null);
   const inputRef3 = useRef<TextInput | null>(null);
@@ -65,7 +67,6 @@ function PhoneAuthScreen({ navigation }: PhoneAuthScreenProp) {
     '',
     '',
   ]);
-  const [isValidate, setIsValidate] = useState(false);
   const [minutes, setMinutes] = useState(3);
   const [seconds, setSeconds] = useState(0);
   const resetTime = () => {
@@ -90,17 +91,30 @@ function PhoneAuthScreen({ navigation }: PhoneAuthScreenProp) {
     return () => clearInterval(countdown);
   }, [minutes, seconds]);
 
-  useEffect(() => {
-    const answerText = 'ABCDE';
-    setIsValidate(answerText === filledTexts.join(''));
-  }, [filledTexts]);
-
   const insertText = (text: string, index: number) => {
     setFilledTexts((prev) => {
       const newFilledTexts = [...prev];
       newFilledTexts[index] = text;
       return newFilledTexts;
     });
+  };
+
+  const postPhoneAuth = () => {
+    publicAPI
+      .post({
+        url: 'api/v1/sms/validation/code',
+        data: { smsCode: filledTexts.join('').toLowerCase(), phoneNumber },
+      })
+      .then((response) => {
+        if (typeof response.code === 'string') {
+          if (response.code === 'SUCCESS')
+            navigation.navigate('EmailInput', {
+              phoneNumber,
+              countryCode,
+              alarmStatus,
+            });
+        }
+      });
   };
 
   return (
@@ -166,10 +180,7 @@ function PhoneAuthScreen({ navigation }: PhoneAuthScreenProp) {
         전송된 인증번호는 3분 동안만 입력 가능해요.
       </Text>
       <View style={{ marginTop: 22 }}>
-        <ButtonNext
-          onPress={() => navigation.navigate('EmailInput')}
-          isActivated={isValidate}
-        />
+        <ButtonNext onPress={postPhoneAuth} isActivated />
       </View>
       <View style={styles.resendContainer}>
         <Text style={styles.resendTimerText}>

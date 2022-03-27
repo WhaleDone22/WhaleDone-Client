@@ -39,11 +39,18 @@ const styles = StyleSheet.create({
   },
 });
 
-function EmailInputScreen({ navigation }: EmailInputScreenProp) {
+function EmailInputScreen({ navigation, route }: EmailInputScreenProp) {
+  const { phoneNumber, countryCode, alarmStatus } = route.params;
   const [email, setEmail] = useState('');
   const [isValidate, setIsValidate] = useState(true);
   const handleEmailInput = () => {
-    if (validateEmail(email)) navigation.navigate('PasswordInput');
+    if (validateEmail(email))
+      navigation.navigate('PasswordInput', {
+        phoneNumber,
+        countryCode,
+        email,
+        alarmStatus,
+      });
     else setIsValidate(false);
   };
   return (
