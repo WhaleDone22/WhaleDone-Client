@@ -3,6 +3,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Text, View, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TextInput } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import ButtonBack from '../../components/ButtonBack';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import COLORS from '../../styles/colors';
@@ -58,8 +59,20 @@ function NicknameInputScreen({ navigation, route }: NicknameInputScreenProp) {
       })
       .then((response) => {
         if (response.responseSuccess) {
-          if (typeof response.code === 'string' && response.code === 'SUCCESS')
+          if (
+            typeof response.code === 'string' &&
+            response.code === 'SUCCESS'
+          ) {
+            AsyncStorage.setItem(
+              'token',
+              response.singleData.jwtToken.split(' ')[1],
+            );
+            AsyncStorage.setItem(
+              'userID',
+              response.singleData.userId.toString(),
+            );
             navigation.navigate('Greet', { nickname: nickName });
+          }
         }
       });
   };
