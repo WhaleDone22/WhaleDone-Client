@@ -2,13 +2,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const BASEURL =
   'http://ec2-3-37-42-113.ap-northeast-2.compute.amazonaws.com:8080/';
-const getAccessToken = () => AsyncStorage.getItem('token') ?? '';
+const getAccessToken = () =>
+  AsyncStorage.getItem('token').then((token) => token ?? '');
 
-const getBasePrivateHeaders = () => ({
-  Accept: `*/*`,
-  'Content-Type': `application/json`,
-  'X-AUTH-TOKEN': getAccessToken(),
-});
+const getBasePrivateHeaders = async () => {
+  const accessToken = await getAccessToken();
+  return {
+    Accept: `*/*`,
+    'Content-Type': `application/json`,
+    'X-AUTH-TOKEN': accessToken,
+  };
+};
 
 const basePublicHeaders = {
   Accept: `*/*`,
@@ -30,33 +34,36 @@ interface RequestWithData extends Request {
   data?: object;
 }
 
-const sendRequest = ({
+const sendRequest = async ({
   url,
   method,
   headers,
   isPrivate,
 }: RequestWithParams) => {
-  const baseHeaders = isPrivate ? getBasePrivateHeaders() : basePublicHeaders;
+  const basePrivateHeaders = await getBasePrivateHeaders();
+  const baseHeaders = isPrivate ? basePrivateHeaders : basePublicHeaders;
   return fetch(BASEURL + url, {
     method,
     headers: { ...baseHeaders, ...headers },
   }).then((response) => response.json());
 };
 
-const sendRequestForData = ({
+const sendRequestForData = async ({
   url,
   method,
   headers,
   isPrivate,
   data,
 }: RequestWithData) => {
-  const baseHeaders = isPrivate ? getBasePrivateHeaders() : basePublicHeaders;
+  const basePrivateHeaders = await getBasePrivateHeaders();
+  const baseHeaders = isPrivate ? basePrivateHeaders : basePublicHeaders;
+  console.warn(baseHeaders);
   return fetch(BASEURL + url, {
     method,
     headers: { ...baseHeaders, ...headers },
     body: JSON.stringify(data),
   }).then((response) => {
-    console.log(response);
+    console.warn(response);
     return response.json();
   });
 };
