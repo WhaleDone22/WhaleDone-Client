@@ -16,6 +16,7 @@ import { commonStyles } from '../../styles/common';
 import COLORS from '../../styles/colors';
 
 interface ItemProps {
+  id: number;
   icon: any;
   title: string;
   category: string;
@@ -153,30 +154,35 @@ const weekTxt2 = [
 
 const mainCarouselData = [
   {
+    id: 1,
     icon: IcWork,
     title: '나의 10년의 플랜을 공유하자면?',
     category: 'work',
     backgroundColor: COLORS.BLUE_400,
   },
   {
+    id: 2,
     icon: IcRelationship,
     title: '오늘 하루 가장 많은 대화를 나눈 사람은?',
     category: 'relationship',
     backgroundColor: COLORS.BLUE_300,
   },
   {
+    id: 3,
     icon: IcDaily,
     title: '오늘의 OOTD를 소개하자면?\n(OOTD: 오늘의 패션)',
     category: 'daily',
     backgroundColor: COLORS.BLUE_400,
   },
   {
+    id: 4,
     icon: IcHealth,
     title: '가족에게 소개하고 싶은 운동 한 가지는?',
     category: 'health',
     backgroundColor: COLORS.BLUE_300,
   },
   {
+    id: 5,
     icon: IcTmi,
     title: '평생 한 나이로 산다면 몇 살로 살고 싶은지?',
     category: 'tmi',
@@ -195,13 +201,24 @@ function HomeScreen({ navigation }: HomeScreenProp) {
         <View style={[styles.card, { backgroundColor: item.backgroundColor }]}>
           <ImageBackground
             source={item.icon}
-            style={{ flex: 1, justifyContent: 'flex-end', width: 308, height: 413 }}
+            style={{
+              flex: 1,
+              justifyContent: 'flex-end',
+              width: 308,
+              height: 413,
+            }}
             resizeMode="contain"
           >
             <Text style={styles.questionText}>{item.title}</Text>
             <TouchableOpacity
               style={styles.answerBtn}
-              onPress={() => navigation.navigate('Record')}
+              onPress={() =>
+                navigation.navigate('Record', {
+                  category: item.category,
+                  question: item.title,
+                  questionID: item.id,
+                })
+              }
             >
               <Text style={styles.answerTxt}>답변하기</Text>
             </TouchableOpacity>
@@ -284,14 +301,13 @@ function HomeScreen({ navigation }: HomeScreenProp) {
 
       {/* Button */}
       <Text style={styles.subTxt}>잠깐, 답변할 질문이 없으신가요?</Text>
-      <View>
-        <TouchableOpacity
-          style={styles.myQBtn}
-          onPress={() => navigation.navigate('Record')}
-        >
-          <Text style={styles.myQText}>내 질문으로 작성하기</Text>
-        </TouchableOpacity>
-      </View>
+
+      <TouchableOpacity
+        style={styles.myQBtn}
+        onPress={() => navigation.navigate('Record')}
+      >
+        <Text style={styles.myQText}>내 질문으로 작성하기</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }

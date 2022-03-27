@@ -8,18 +8,20 @@ import {
   Dimensions,
   TouchableOpacity,
   Platform,
+  Modal,
+  Pressable,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import BottomSheet from 'react-native-gesture-bottom-sheet';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import WebView from 'react-native-webview';
 import ButtonBack from '../../components/ButtonBack';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonNext from '../../components/ButtonNext';
 import COLORS from '../../styles/colors';
 import { Country } from '../../../infrastructures/types/country';
 import { commonStyles } from '../../styles/common';
-
 
 type PhoneInputScreenProp = NativeStackScreenProps<
   NavigationStackParams,
@@ -32,6 +34,7 @@ const countryServiceActive: string[] = require('../../../infrastructures/data/se
 const icToggleDown = require('../../../assets/ic-toggle-down.png');
 const icCheckboxCheckedTrue = require('../../../assets/ic-checkbox-checked-true.png');
 const icCheckboxCheckedFalse = require('../../../assets/ic-checkbox-checked-false.png');
+const icCloseTerms = require('../../../assets/ic-close-terms.png');
 
 const { height } = Dimensions.get('window');
 
@@ -100,6 +103,8 @@ function PhoneInputScreen({ navigation }: PhoneInputScreenProp) {
   const [phone, setPhone] = useState('');
   const [termsChecked, setTermsChecked] = useState(false);
   const [alertChecked, setAlertChecked] = useState(false);
+  const [termsOpened, setTermsOpened] = useState(false);
+  const [policyOpened, setPolicyOpened] = useState(false);
   const bottomSheetRef = useRef<any>(null);
   const [userState, setUserState] = useState<{
     isLoggedIn: boolean;
@@ -187,6 +192,7 @@ function PhoneInputScreen({ navigation }: PhoneInputScreenProp) {
           </TouchableOpacity>
           <TouchableOpacity
             style={{ borderBottomColor: COLORS.BLUE_500, borderBottomWidth: 1 }}
+            onPress={() => setTermsOpened(true)}
           >
             <Text
               style={{
@@ -210,6 +216,7 @@ function PhoneInputScreen({ navigation }: PhoneInputScreenProp) {
           </Text>
           <TouchableOpacity
             style={{ borderBottomColor: COLORS.BLUE_500, borderBottomWidth: 1 }}
+            onPress={() => setPolicyOpened(true)}
           >
             <Text
               style={{
@@ -257,6 +264,86 @@ function PhoneInputScreen({ navigation }: PhoneInputScreenProp) {
           isActivated={phone !== '' && selectedCountry !== null && termsChecked}
         />
       </View>
+      <Modal
+        transparent
+        visible={termsOpened}
+        onRequestClose={() => {
+          setTermsOpened(false);
+        }}
+      >
+        <Pressable
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgba(0,0,0,0.5)',
+          }}
+          onPress={() => {
+            setTermsOpened(false);
+          }}
+        >
+          <Pressable
+            style={{ width: '96%', height: 500, borderRadius: 20 }}
+            onPress={() => {}}
+          >
+            <WebView
+              automaticallyAdjustContentInsets={false}
+              source={{
+                uri: 'https://whaledone.notion.site/a2748049efa04450a091964ea2e5985b',
+              }}
+              style={{ borderRadius: 12 }}
+            />
+          </Pressable>
+          <Pressable
+            onPress={() => {
+              setTermsOpened(false);
+            }}
+            style={{ position: 'absolute', bottom: 40 }}
+          >
+            <Image source={icCloseTerms} style={{ width: 24, height: 24 }} />
+          </Pressable>
+        </Pressable>
+      </Modal>
+      <Modal
+        transparent
+        visible={policyOpened}
+        onRequestClose={() => {
+          setPolicyOpened(false);
+        }}
+      >
+        <Pressable
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgba(0,0,0,0.5)',
+          }}
+          onPress={() => {
+            setPolicyOpened(false);
+          }}
+        >
+          <Pressable
+            style={{ width: '96%', height: 500, borderRadius: 20 }}
+            onPress={() => {}}
+          >
+            <WebView
+              automaticallyAdjustContentInsets={false}
+              source={{
+                uri: 'https://whaledone.notion.site/3cbfb15005f345d6ab924dd22935e5d3',
+              }}
+              style={{ borderRadius: 12 }}
+            />
+          </Pressable>
+          <Pressable
+            onPress={() => {
+              setPolicyOpened(false);
+            }}
+            style={{ position: 'absolute', bottom: 70 }}
+          >
+            <Image source={icCloseTerms} style={{ width: 24, height: 24 }} />
+          </Pressable>
+        </Pressable>
+      </Modal>
     </SafeAreaView>
   );
 }

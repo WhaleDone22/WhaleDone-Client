@@ -16,7 +16,9 @@ export type NavigationStackParams = {
   MapDetail: undefined;
   MyPage: undefined;
   Notice: undefined;
-  Record: undefined;
+  Record:
+    | undefined
+    | { category: string; question: string; questionID: number };
   Home: undefined;
   Map: undefined;
   Feed: undefined;
