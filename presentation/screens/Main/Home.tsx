@@ -16,8 +16,14 @@ import { NavigationStackParams } from '../../../infrastructures/types/Navigation
 import { commonStyles } from '../../styles/common';
 import COLORS from '../../styles/colors';
 
-interface FixDataProps {
+interface ImageItemProps {
   icon: string;
+  backgroundColor: string;
+  width: number;
+  height: number;
+}
+interface FixDataProps {
+  image: ImageItemProps;
   category: string;
   backgroundColor: string;
 }
@@ -147,7 +153,7 @@ const weekTxt2 = [
   '소중한 시간을 가족과 나눠 보세요',
 ];
 
-const imageItem = [
+const imageItem: ImageItemProps[] = [
   {
     icon: IcWork,
     backgroundColor: COLORS.BLUE_400,
@@ -180,29 +186,29 @@ const imageItem = [
   },
 ];
 
-const fixData: FixDataProps = [
+const fixData: FixDataProps[] = [
   {
-    image: imageItem,
+    image: imageItem[0],
     backgroundColor: COLORS.BLUE_400,
     category: 'work',
   },
   {
-    icon: IcRelationship,
+    image: imageItem[1],
     category: 'relationship',
     backgroundColor: COLORS.BLUE_300,
   },
   {
-    icon: IcDaily,
+    image: imageItem[2],
     category: 'daily',
     backgroundColor: COLORS.BLUE_400,
   },
   {
-    icon: IcHealth,
+    image: imageItem[3],
     category: 'health',
     backgroundColor: COLORS.BLUE_300,
   },
   {
-    icon: IcTmi,
+    image: imageItem[4],
     category: 'tmi',
     backgroundColor: COLORS.BLUE_400,
   },
@@ -226,7 +232,7 @@ function HomeScreen({ navigation }: HomeScreenProp) {
               // width: 308,
               // height: 413,
             }}
-            source={fixData.icon}
+            source={fixData.image}
             resizeMode="contain"
           >
             <Text style={styles.questionText}>{carouselItems[1]}</Text>
