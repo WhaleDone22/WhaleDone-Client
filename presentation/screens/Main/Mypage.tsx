@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Pretendard-Bold',
     fontSize: 16,
   },
-  membershipIcon: {
+  membershipArrowIcon: {
     width: 7,
     height: 14,
   },
@@ -138,8 +138,8 @@ function MyPageScreen({ navigation, route }: MyPageScreenProp) {
   const openModal = () => setIsModalVisible(true);
   const closeModal = () => setIsModalVisible(false);
 
-  const onSharePressed = () => {
-    console.log('onSharePressed');
+  const onMembershipPressed = () => {
+    console.log('onMembershipPressed');
   };
 
   // useEffect(() => {
@@ -243,11 +243,14 @@ function MyPageScreen({ navigation, route }: MyPageScreenProp) {
       </View>
 
       <View>
-        <TouchableOpacity style={styles.membershipBtn} onPress={onSharePressed}>
+        <TouchableOpacity
+          style={styles.membershipBtn}
+          onPress={onMembershipPressed}
+        >
           <Text style={styles.membershipTxt}>
             웨일던 프라이빗 지금 시작하세요!
           </Text>
-          <Image source={IcArrowRight} style={styles.membershipIcon} />
+          <Image source={IcArrowRight} style={styles.membershipArrowIcon} />
         </TouchableOpacity>
         <Text
           style={styles.withdrawTxt}

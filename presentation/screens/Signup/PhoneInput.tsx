@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import {
   Text,
@@ -14,6 +14,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import BottomSheet from 'react-native-gesture-bottom-sheet';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import WebView from 'react-native-webview';
 import ButtonBack from '../../components/ButtonBack';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
@@ -105,7 +106,17 @@ function PhoneInputScreen({ navigation }: PhoneInputScreenProp) {
   const [termsOpened, setTermsOpened] = useState(false);
   const [policyOpened, setPolicyOpened] = useState(false);
   const bottomSheetRef = useRef<any>(null);
+  const [userState, setUserState] = useState<{
+    isLoggedIn: boolean;
+  }>({
+    isLoggedIn: false,
+  });
 
+  useEffect(() => {
+    AsyncStorage.getItem('token').then((token) => {
+      setUserState((prev) => ({ ...prev, isLoggedIn: token !== null }));
+    });
+  }, []);
   return (
     <SafeAreaView style={commonStyles.container}>
       <BottomSheet ref={bottomSheetRef} snapPoints={[700]} height={height - 93}>

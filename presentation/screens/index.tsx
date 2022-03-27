@@ -78,6 +78,12 @@ function Screens() {
       <Stack.Screen name="MyPage" component={MyPageScreen} />
       <Stack.Screen name="Notice" component={NoticeScreen} />
       <Stack.Screen name="Record" component={RecordScreen} />
+      <Stack.Screen name="PhoneAuthFromMypage" component={PhoneAuthScreen} />
+      <Stack.Screen name="PhoneInputFromMypage" component={PhoneInputScreen} />
+      <Stack.Screen
+        name="GroupCodeShareFromMap"
+        component={GroupCodeShareScreen}
+      />
     </Stack.Navigator>
   );
 }

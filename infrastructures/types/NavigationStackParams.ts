@@ -24,4 +24,7 @@ export type NavigationStackParams = {
   Feed: undefined;
   Onboarding: undefined;
   PasswordFind: undefined;
+  PhoneAuthFromMypage: undefined;
+  PhoneInputFromMypage: undefined;
+  GroupCodeShareFromMap: undefined;
 };

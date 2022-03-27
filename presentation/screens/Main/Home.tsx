@@ -34,21 +34,25 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
   headerLogo: {
-    marginStart: 8,
-    marginRight: 190,
     width: 118,
     height: 27,
+    marginBottom: 14,
+  },
+  headerIconWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
   },
   headerNotice: {
     width: 24,
     height: 24,
-    marginRight: 19,
   },
   headerMyPage: {
     width: 24,
     height: 24,
+    marginLeft: 16,
   },
 
   title: {
@@ -57,22 +61,22 @@ const styles = StyleSheet.create({
     lineHeight: 30, // 22
   },
   titleWrapper: {
-    paddingVertical: 20,
     paddingHorizontal: 10,
   },
 
   // carousel
   carouselWrapper: {
-    flex: 1,
+    // flex: 1,
     alignItems: 'center',
     paddingVertical: 15,
     width: 240,
   },
   card: {
-    flex: 1,
+    // flex: 1,
     borderRadius: 10,
-    alignItems: 'center',
-    width: 308,
+    // alignItems: 'center',
+    // width: 308,
+    height: 413,
     shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowOffset: {
@@ -85,13 +89,12 @@ const styles = StyleSheet.create({
     fontFamily: 'Pretendard-Bold',
     fontSize: 16,
     textAlign: 'center',
-    marginBottom: 20,
+    paddingBottom: 20,
   },
   answerBtn: {
     width: 260,
     height: 45,
     backgroundColor: COLORS.BLUE_500,
-    alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 5,
     marginBottom: 25,
@@ -104,8 +107,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   paginationWrapper: {
-    paddingBottom: 10,
-    bottom: 25,
     justifyContent: 'center',
   },
 
@@ -115,15 +116,14 @@ const styles = StyleSheet.create({
     fontSize: 12,
     textAlign: 'center',
     color: COLORS.BLUE_300,
-    marginBottom: 8,
-    top: Platform.OS === 'ios' ? 33 : 0,
+    bottom: Platform.OS === 'ios' ? 0 : 16,
   },
   myQBtn: {
     backgroundColor: COLORS.BLUE_100,
-    paddingVertical: 17,
-    marginBottom: 10,
+    height: 58,
+    justifyContent: 'center',
     borderRadius: 5,
-    top: Platform.OS === 'ios' ? 33 : 0,
+    top: Platform.OS === 'ios' ? 13 : 0,
   },
   myQText: {
     color: COLORS.THEME_PRIMARY,
@@ -254,13 +254,15 @@ function HomeScreen({ navigation }: HomeScreenProp) {
       <View style={styles.headerContainer}>
         <Image source={Logo} style={styles.headerLogo} />
 
-        <TouchableOpacity onPress={() => navigation.navigate('Notice')}>
-          <Image source={IcNotice} style={styles.headerNotice} />
-        </TouchableOpacity>
+        <View style={styles.headerIconWrapper}>
+          <TouchableOpacity onPress={() => navigation.navigate('Notice')}>
+            <Image source={IcNotice} style={styles.headerNotice} />
+          </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate('MyPage')}>
-          <Image source={IcMyPage} style={styles.headerMyPage} />
-        </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('MyPage')}>
+            <Image source={IcMyPage} style={styles.headerMyPage} />
+          </TouchableOpacity>
+        </View>
       </View>
 
       {/* Title */}

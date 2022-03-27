@@ -1,9 +1,9 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState, useRef } from 'react';
-import { Text, Image, StyleSheet, View } from 'react-native';
+import { Text, Image, StyleSheet, View, Pressable } from 'react-native';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import BottomSheet from 'react-native-gesture-bottom-sheet';
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, Marker, Circle } from 'react-native-maps';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 
 import COLORS from '../../styles/colors';
@@ -14,9 +14,11 @@ const styles = StyleSheet.create({
   headerContainer: {
     marginTop: 54,
     flexDirection: 'row',
-    marginStart: 24,
-    marginEnd: 15,
+    paddingStart: 24,
+    paddingEnd: 15,
     justifyContent: 'space-between',
+    position: 'absolute',
+    width: '100%',
   },
   headerTitle: {
     fontFamily: 'Pretendard-Bold',
@@ -90,6 +92,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Pretendard',
     fontSize: 12,
     color: COLORS.TEXT_SECONDARY,
+    textAlign: 'center',
   },
   editText: {
     color: COLORS.BLUE_500,
@@ -123,6 +126,25 @@ const styles = StyleSheet.create({
     fontFamily: 'Pretendard-Bold',
     color: COLORS.BLUE_500,
   },
+
+  //Marker
+  markerImg: {
+    width: 48,
+    height: 48,
+    resizeMode: 'contain',
+    borderRadius: 48,
+  },
+  markerCircle: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 200,
+    height: 200,
+    borderRadius: 100,
+    borderWidth: 1,
+    borderColor: COLORS.THEME_PRIMARY,
+    backgroundColor: 'rgba(68,107,255,0.25)',
+  },
 });
 
 // Image
@@ -130,16 +152,18 @@ const defaultProfile = require('../../../assets/image-profile-default.png');
 const ex1Profile = require('../../../assets/image-profile-ex1.png');
 const ex2Profile = require('../../../assets/image-profile-ex2.png');
 const addFamily = require('../../../assets/ic-add-family.png');
+const ex2marker = require('../../../assets/image-marker-ex2.png');
 
 const IcNotice = require('../../../assets/ic-bell.png');
 const IcMyPage = require('../../../assets/ic-user-circle.png');
 
-function MapScreen({ navigation }: MapScreenProp) {
+function MapScreen({ navigation, route }: MapScreenProp) {
+  // const { code } = route.params;
   const [selectedCountry, setSelectedCountry] = useState(true);
   const bottomSheetRef = useRef<any>(null);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={[{ flex: 1 }]}>
       <BottomSheet
         ref={bottomSheetRef}
         hasDraggableIcon
@@ -179,17 +203,17 @@ function MapScreen({ navigation }: MapScreenProp) {
             </View>
 
             <View style={styles.profileWrapper}>
-              <TouchableOpacity
+              <Pressable
                 onPress={() => {
                   bottomSheetRef.current?.close();
-                  navigation.navigate('MapDetail');
+                  navigation.navigate('GroupCodeShareFromMap');
                 }}
               >
                 <Image source={addFamily} style={styles.imgWrapper} />
                 <Text style={[styles.subText, { color: COLORS.BLUE_500 }]}>
                   가족 추가
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
             </View>
           </View>
 
@@ -230,7 +254,6 @@ function MapScreen({ navigation }: MapScreenProp) {
 
       <View
         style={{
-          position: 'absolute',
           top: 0,
           left: 0,
           width: '100%',
@@ -238,61 +261,73 @@ function MapScreen({ navigation }: MapScreenProp) {
         }}
       >
         <MapView
-          style={{ width: '100%', height: '100%' }}
+          style={[{ width: '100%', height: '100%' }]}
           provider={PROVIDER_GOOGLE}
           initialRegion={{
             latitude: 35.91395373474155,
             longitude: 127.73829440215488,
-            latitudeDelta: 80,
-            longitudeDelta: 80,
+            latitudeDelta: 70,
+            longitudeDelta: 70,
+          }}
+        >
+          <Marker coordinate={{ latitude: 37.487935, longitude: 126.857758 }}>
+            <View style={styles.markerCircle}>
+              <Image
+                source={{uri:'https://avatars.githubusercontent.com/u/98895272?s=200&v=4'}}
+                style={styles.markerImg}
+              />
+            </View>
+          </Marker>
+        </MapView>
+      </View>
+
+      <View style={styles.headerContainer}>
+        <Text style={styles.headerTitle}>마음거리</Text>
+        <View style={{ flexDirection: 'row' }}>
+          <TouchableOpacity onPress={() => navigation.navigate('Notice')}>
+            <Image source={IcNotice} style={styles.headerNotice} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('MyPage')}>
+            <Image source={IcMyPage} style={styles.headerMyPage} />
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      <Pressable
+        style={{
+          height: 68,
+          backgroundColor: '#FFFFFFE6',
+          borderTopLeftRadius: 25,
+          borderTopRightRadius: 25,
+          alignItems: 'center',
+          zIndex: 999,
+          position: 'absolute',
+          bottom: 0,
+          width: '100%',
+        }}
+        onPress={() => bottomSheetRef.current?.show()}
+      >
+        <View
+          style={{
+            backgroundColor: COLORS.TEXT_DISABLED_GREY,
+            borderRadius: 100,
+            width: 76,
+            height: 5,
+            marginTop: 14,
           }}
         />
-      </View>
-      <View style={{ justifyContent: 'space-between', flex: 1 }}>
-        <View style={styles.headerContainer}>
-          <Text style={styles.headerTitle}>마음거리</Text>
-          <View style={{ flexDirection: 'row' }}>
-            <TouchableOpacity onPress={() => navigation.navigate('Notice')}>
-              <Image source={IcNotice} style={styles.headerNotice} />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('MyPage')}>
-              <Image source={IcMyPage} style={styles.headerMyPage} />
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        <TouchableOpacity
-          style={{
-            height: 68,
-            backgroundColor: '#FFFFFFE6',
-            borderTopLeftRadius: 25,
-            borderTopRightRadius: 25,
-            alignItems: 'center',
-          }}
-          onPress={() => bottomSheetRef.current?.show()}
+        <View
+          style={[
+            styles.textWrapper1,
+            { paddingHorizontal: 18, paddingTop: 10, width: '100%'},
+          ]}
         >
-          <View
-            style={{
-              backgroundColor: COLORS.TEXT_DISABLED_GREY,
-              borderRadius: 100,
-              width: 76,
-              height: 5,
-              marginTop: 14,
-            }}
-          />
-          <View
-            style={[
-              styles.textWrapper1,
-              { paddingHorizontal: 18, paddingTop: 10, width: '100%' },
-            ]}
-          >
-            <Text style={styles.mainText}>가족 간 마음거리</Text>
-            <Text style={styles.subText}>
-              소통을 많이 할수록 원의 거리가 가까워져요
-            </Text>
-          </View>
-        </TouchableOpacity>
-      </View>
+          <Text style={styles.mainText}>가족 간 마음거리</Text>
+          <Text style={styles.subText}>
+            소통을 많이 할수록 원의 거리가 가까워져요
+          </Text>
+        </View>
+      </Pressable>
     </View>
   );
 }
