@@ -176,10 +176,9 @@ function EditProfileScreen({ navigation, route }: EditProfileScreenProp) {
         {/* 국가 */}
         <View style={styles.eachSettings}>
           <Text style={styles.settingTxt}>국가</Text>
-          {/* 그냥 PhoneInput으로 넘어가면 그 뒤로 계속 회원가입 진행. 어떻게 하면 좋을까 */}
           <Text
             style={styles.settingValueTxt}
-            onPress={() => navigation.navigate('PhoneInput')}
+            onPress={() => navigation.navigate('PhoneInputFromMypage')}
           >
             +82 010-7979-8282
           </Text>

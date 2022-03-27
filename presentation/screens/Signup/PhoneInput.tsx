@@ -12,13 +12,14 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import BottomSheet from 'react-native-gesture-bottom-sheet';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import ButtonBack from '../../components/ButtonBack';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonNext from '../../components/ButtonNext';
 import COLORS from '../../styles/colors';
 import { Country } from '../../../infrastructures/types/country';
 import { commonStyles } from '../../styles/common';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 type PhoneInputScreenProp = NativeStackScreenProps<
   NavigationStackParams,
@@ -110,8 +111,7 @@ function PhoneInputScreen({ navigation }: PhoneInputScreenProp) {
     AsyncStorage.getItem('token').then((token) => {
       setUserState((prev) => ({ ...prev, isLoggedIn: token !== null }));
     });
-  }, [])
-  
+  }, []);
   return (
     <SafeAreaView style={commonStyles.container}>
       <BottomSheet ref={bottomSheetRef} snapPoints={[700]} height={height - 93}>

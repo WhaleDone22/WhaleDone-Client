@@ -243,7 +243,10 @@ function MyPageScreen({ navigation, route }: MyPageScreenProp) {
       </View>
 
       <View>
-        <TouchableOpacity style={styles.membershipBtn} onPress={onMembershipPressed}>
+        <TouchableOpacity
+          style={styles.membershipBtn}
+          onPress={onMembershipPressed}
+        >
           <Text style={styles.membershipTxt}>
             웨일던 프라이빗 지금 시작하세요!
           </Text>

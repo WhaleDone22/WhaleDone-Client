@@ -92,6 +92,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Pretendard',
     fontSize: 12,
     color: COLORS.TEXT_SECONDARY,
+    textAlign: 'center',
   },
   editText: {
     color: COLORS.BLUE_500,
@@ -130,9 +131,19 @@ const styles = StyleSheet.create({
   markerImg: {
     width: 48,
     height: 48,
+    resizeMode: 'contain',
+    borderRadius: 48,
   },
-  map: {
-    ...StyleSheet.absoluteFillObject,
+  markerCircle: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 200,
+    height: 200,
+    borderRadius: 100,
+    borderWidth: 1,
+    borderColor: COLORS.THEME_PRIMARY,
+    backgroundColor: 'rgba(68,107,255,0.25)',
   },
 });
 
@@ -146,7 +157,8 @@ const ex2marker = require('../../../assets/image-marker-ex2.png');
 const IcNotice = require('../../../assets/ic-bell.png');
 const IcMyPage = require('../../../assets/ic-user-circle.png');
 
-function MapScreen({ navigation }: MapScreenProp) {
+function MapScreen({ navigation, route }: MapScreenProp) {
+  // const { code } = route.params;
   const [selectedCountry, setSelectedCountry] = useState(true);
   const bottomSheetRef = useRef<any>(null);
 
@@ -191,17 +203,17 @@ function MapScreen({ navigation }: MapScreenProp) {
             </View>
 
             <View style={styles.profileWrapper}>
-              <TouchableOpacity
+              <Pressable
                 onPress={() => {
                   bottomSheetRef.current?.close();
-                  navigation.navigate('MapDetail');
+                  navigation.navigate('GroupCodeShareFromMap');
                 }}
               >
                 <Image source={addFamily} style={styles.imgWrapper} />
                 <Text style={[styles.subText, { color: COLORS.BLUE_500 }]}>
                   가족 추가
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
             </View>
           </View>
 
@@ -241,13 +253,12 @@ function MapScreen({ navigation }: MapScreenProp) {
       </BottomSheet>
 
       <View
-        style={[{
-          position: 'relative',
+        style={{
           top: 0,
           left: 0,
           width: '100%',
           height: '100%',
-        }]}
+        }}
       >
         <MapView
           style={[{ width: '100%', height: '100%' }]}
@@ -259,20 +270,14 @@ function MapScreen({ navigation }: MapScreenProp) {
             longitudeDelta: 70,
           }}
         >
-          <Marker
-            coordinate={{ latitude: 35.91395373474155, longitude: 127.73829440215488 }}
-          >
-            <Image
-              source={{uri:'https://avatars.githubusercontent.com/u/98895272?s=200&v=4'}}
-              style={{width:48, height:48, resizeMode:'contain'}}
-            />
+          <Marker coordinate={{ latitude: 37.487935, longitude: 126.857758 }}>
+            <View style={styles.markerCircle}>
+              <Image
+                source={{uri:'https://avatars.githubusercontent.com/u/98895272?s=200&v=4'}}
+                style={styles.markerImg}
+              />
+            </View>
           </Marker>
-          <Circle
-            center={{ latitude: 35.91395373474155, longitude: 127.73829440215488 }}
-            radius={1500}
-            fillColor="#000"
-            zIndex={99}
-          />
         </MapView>
       </View>
 
