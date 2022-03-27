@@ -51,8 +51,8 @@ function Screens() {
       {userState.isOnboardingUnseen && (
         <Stack.Screen name="Onboarding" component={OnboardingScreen} />
       )}
-      {!userState.isLoggedIn && (
-        <>
+      {
+        /*! userState.isLoggedIn && */ <>
           <Stack.Screen name="SignUpMain" component={SignUpMainScreen} />
           <Stack.Screen name="EmailInput" component={EmailInputScreen} />
           <Stack.Screen name="Greet" component={GreetScreen} />
@@ -71,7 +71,7 @@ function Screens() {
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="PasswordFind" component={PasswordFindScreen} />
         </>
-      )}
+      }
       <Stack.Screen name="Main" component={BottomNavigation} />
       <Stack.Screen name="EditProfile" component={EditProfileScreen} />
       <Stack.Screen name="MapDetail" component={MapDetailScreen} />
