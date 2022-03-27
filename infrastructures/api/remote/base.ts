@@ -7,7 +7,7 @@ const getAccessToken = () => AsyncStorage.getItem('token') ?? '';
 const getBasePrivateHeaders = () => ({
   Accept: `*/*`,
   'Content-Type': `application/json`,
-  accesstoken: getAccessToken(),
+  'X-AUTH-TOKEN': getAccessToken(),
 });
 
 const basePublicHeaders = {

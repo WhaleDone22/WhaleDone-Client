@@ -64,8 +64,11 @@ function LoginScreen({ navigation }: LoginScreenProp) {
       .then((response) => {
         if (response.responseSuccess) {
           if (typeof response.singleData.jwtToken === 'string') {
-            AsyncStorage.setItem('token', response.singleData.jwtToken);
-            AsyncStorage.setItem('userID', response.singleData.jwtToken);
+            AsyncStorage.setItem(
+              'token',
+              response.singleData.jwtToken.split(' ')[1],
+            );
+            AsyncStorage.setItem('userID', response.singleData.userId);
             navigation.push('Main', { screen: 'Home' });
           } else {
             // 에러 띄우기
