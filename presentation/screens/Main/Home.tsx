@@ -11,22 +11,21 @@ import {
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { privateAPI } from '../../../infrastructures/api/remote/base';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import { commonStyles } from '../../styles/common';
 import COLORS from '../../styles/colors';
 
-interface ItemProps {
-  id: number;
-  icon: any;
-  title: string;
+interface FixDataProps {
+  icon: string;
   category: string;
   backgroundColor: string;
 }
 
-interface RenderItemProps {
-  // eslint-disable-next-line react/no-unused-prop-types
-  item: ItemProps;
-}
+// interface RenderItemProps {
+//   // eslint-disable-next-line react/no-unused-prop-types
+//   item: ItemProps;
+// }
 
 type HomeScreenProp = NativeStackScreenProps<NavigationStackParams, 'Home'>;
 
@@ -66,16 +65,12 @@ const styles = StyleSheet.create({
 
   // carousel
   carouselWrapper: {
-    // flex: 1,
     alignItems: 'center',
     paddingVertical: 15,
     width: 240,
   },
   card: {
-    // flex: 1,
     borderRadius: 10,
-    // alignItems: 'center',
-    // width: 308,
     height: 413,
     shadowColor: '#000',
     shadowOpacity: 0.1,
@@ -85,7 +80,7 @@ const styles = StyleSheet.create({
     },
   },
   questionText: {
-    color: '#fff',
+    color: '#000',
     fontFamily: 'Pretendard-Bold',
     fontSize: 16,
     textAlign: 'center',
@@ -152,39 +147,62 @@ const weekTxt2 = [
   '소중한 시간을 가족과 나눠 보세요',
 ];
 
-const mainCarouselData = [
+const imageItem = [
   {
-    id: 1,
     icon: IcWork,
-    title: '나의 10년의 플랜을 공유하자면?',
-    category: 'work',
     backgroundColor: COLORS.BLUE_400,
+    width: 308,
+    height: 413,
   },
   {
-    id: 2,
     icon: IcRelationship,
-    title: '오늘 하루 가장 많은 대화를 나눈 사람은?',
+    backgroundColor: COLORS.BLUE_400,
+    width: 308,
+    height: 413,
+  },
+  {
+    icon: IcDaily,
+    backgroundColor: COLORS.BLUE_400,
+    width: 308,
+    height: 413,
+  },
+  {
+    icon: IcHealth,
+    backgroundColor: COLORS.BLUE_400,
+    width: 308,
+    height: 413,
+  },
+  {
+    icon: IcTmi,
+    backgroundColor: COLORS.BLUE_400,
+    width: 308,
+    height: 413,
+  },
+];
+
+const fixData: FixDataProps = [
+  {
+    image: imageItem,
+    backgroundColor: COLORS.BLUE_400,
+    category: 'work',
+  },
+  {
+    icon: IcRelationship,
     category: 'relationship',
     backgroundColor: COLORS.BLUE_300,
   },
   {
-    id: 3,
     icon: IcDaily,
-    title: '오늘의 OOTD를 소개하자면?\n(OOTD: 오늘의 패션)',
     category: 'daily',
     backgroundColor: COLORS.BLUE_400,
   },
   {
-    id: 4,
     icon: IcHealth,
-    title: '가족에게 소개하고 싶은 운동 한 가지는?',
     category: 'health',
     backgroundColor: COLORS.BLUE_300,
   },
   {
-    id: 5,
     icon: IcTmi,
-    title: '평생 한 나이로 산다면 몇 살로 살고 싶은지?',
     category: 'tmi',
     backgroundColor: COLORS.BLUE_400,
   },
@@ -193,30 +211,31 @@ const mainCarouselData = [
 function HomeScreen({ navigation }: HomeScreenProp) {
   const carouselRef = useRef<any>(null);
   const [activeIndex, setActiveIndex] = useState<number>(0);
-  const [carouselItems, setCarouselItems] = useState(mainCarouselData);
+  const [carouselItems, setCarouselItems] = useState([]);
+  const [week1, setWeek1] = useState('');
+  const [week2, setWeek2] = useState('');
 
-  const renderItem = useCallback(({ item }: RenderItemProps) => {
+  const renderItem = useCallback(() => {
     return (
-      <View style={styles.carouselWrapper} key={item.category}>
-        <View style={[styles.card, { backgroundColor: item.backgroundColor }]}>
+      <View style={styles.carouselWrapper} key={fixData.category}>
+        <View style={[styles.card, { backgroundColor: fixData.backgroundColor }]}>
           <ImageBackground
-            source={item.icon}
             style={{
               flex: 1,
               justifyContent: 'flex-end',
-              width: 308,
-              height: 413,
+              // width: 308,
+              // height: 413,
             }}
+            source={fixData.icon}
             resizeMode="contain"
           >
-            <Text style={styles.questionText}>{item.title}</Text>
+            <Text style={styles.questionText}>{carouselItems[1]}</Text>
             <TouchableOpacity
               style={styles.answerBtn}
               onPress={() =>
                 navigation.navigate('Record', {
-                  category: item.category,
-                  question: item.title,
-                  questionID: item.id,
+                  category: carouselItems[0],
+                  question: carouselItems[1],
                 })
               }
             >
@@ -227,9 +246,6 @@ function HomeScreen({ navigation }: HomeScreenProp) {
       </View>
     );
   }, []);
-
-  const [week1, setWeek1] = useState('');
-  const [week2, setWeek2] = useState('');
 
   useEffect(() => {
     const now = new Date();
@@ -247,6 +263,22 @@ function HomeScreen({ navigation }: HomeScreenProp) {
     const dayOfWeek2 = weekTxt2[now.getDay()];
     setWeek1(dayOfWeek1);
     setWeek2(dayOfWeek2);
+  }, []);
+
+  useEffect(() => {
+    privateAPI
+      .get({ url: 'api/v1/questions' })
+      .then((response) => {
+        if (response.responseSuccess) {
+          console.log(response.multipleData);
+          setCarouselItems(response.multipleData);
+        } else {
+          // 여기서 에러 띄우기
+        }
+      })
+      .catch((/* error */) => {
+        // 여기서도 에러 띄우기
+      });
   }, []);
 
   return (

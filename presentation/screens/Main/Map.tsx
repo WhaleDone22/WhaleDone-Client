@@ -135,7 +135,6 @@ const styles = StyleSheet.create({
     borderRadius: 48,
   },
   markerCircle: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     width: 200,

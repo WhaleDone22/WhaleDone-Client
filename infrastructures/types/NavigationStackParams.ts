@@ -16,9 +16,7 @@ export type NavigationStackParams = {
   MapDetail: undefined;
   MyPage: undefined;
   Notice: undefined;
-  Record:
-    | undefined
-    | { category: string; question: string; questionID: number };
+  Record: undefined | { category: string; question: string };
   Home: undefined;
   Map: undefined;
   Feed: undefined;
@@ -28,3 +26,4 @@ export type NavigationStackParams = {
   PhoneInputFromMypage: undefined;
   GroupCodeShareFromMap: undefined;
 };
+// questionID: number
