@@ -109,7 +109,8 @@ const styles = StyleSheet.create({
   },
 });
 
-function RecordScreen({ navigation }: RecordScreenProp) {
+function RecordScreen({ navigation, route }: RecordScreenProp) {
+  const routeParams = route.params;
   const [mode, setMode] = useState<'TEXT' | 'IMAGE' | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [pickedImagePath, setPickedImagePath] = useState('');
@@ -132,7 +133,9 @@ function RecordScreen({ navigation }: RecordScreenProp) {
       />
       <View style={styles.headerContainer}>
         <ButtonBack onPress={() => navigation.goBack()} />
-        <Text style={styles.headerTitle}>일상 공유 제목</Text>
+        <Text style={styles.headerTitle}>
+          {routeParams?.category ?? '내 질문으로 일상공유'}
+        </Text>
         <TouchableOpacity
           onPress={() => navigation.push('Main', { screen: 'Feed' })}
           disabled={!isUploadable}
@@ -150,7 +153,16 @@ function RecordScreen({ navigation }: RecordScreenProp) {
         </TouchableOpacity>
       </View>
       <View style={styles.bodyContainer}>
-        <Text style={styles.questionText}>질문질문?</Text>
+        {routeParams === undefined ? (
+          <TextInput
+            style={styles.questionText}
+            placeholder="질문을 입력하세요"
+            autoFocus
+          />
+        ) : (
+          <Text style={styles.questionText}>{routeParams.question}</Text>
+        )}
+
         {mode && mode === 'TEXT' ? (
           <View>
             <Text style={styles.answerTextCount}>({text.length}/180자)</Text>
