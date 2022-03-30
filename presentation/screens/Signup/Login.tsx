@@ -72,7 +72,17 @@ function LoginScreen({ navigation }: LoginScreenProp) {
               'userID',
               response.singleData.userId.toString(),
             );
-            navigation.push('Main', { screen: 'Home' });
+            if (typeof response.singleData.familyId === 'string') {
+              AsyncStorage.setItem(
+                'familyID',
+                response.singleData.familyId.toString(),
+              );
+              navigation.push('Main', { screen: 'Home' });
+            } else {
+              navigation.push('Greet', {
+                nickname: response.singleData.nickName,
+              });
+            }
           } else {
             // 에러 띄우기
           }
@@ -95,6 +105,7 @@ function LoginScreen({ navigation }: LoginScreenProp) {
         style={styles.textInput}
         placeholderTextColor={COLORS.TEXT_DISABLED_GREY}
         placeholder="이메일을 입력하세요"
+        keyboardType="email-address"
         autoFocus
       />
       <View style={{ marginBottom: 48 }}>

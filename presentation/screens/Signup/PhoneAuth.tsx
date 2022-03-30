@@ -103,7 +103,10 @@ function PhoneAuthScreen({ navigation, route }: PhoneAuthScreenProp) {
     publicAPI
       .post({
         url: 'api/v1/sms/validation/code',
-        data: { smsCode: filledTexts.join('').toLowerCase(), phoneNumber },
+        data: {
+          smsCode: filledTexts.join('').toLowerCase(),
+          phoneNumber,
+        },
       })
       .then((response) => {
         if (typeof response.code === 'string') {

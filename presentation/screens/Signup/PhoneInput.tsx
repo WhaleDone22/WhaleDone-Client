@@ -130,6 +130,7 @@ function PhoneInputScreen({ navigation }: PhoneInputScreenProp) {
               (country: Country) => country.countryCode === selectedCountry,
             )?.countryPhoneNumber ?? '',
           recipientPhoneNumber: phone,
+          smsType: 'SIGNUP', // 비밀번호 변경 시에는 PW여야 함
         },
       })
       .then((response) => {

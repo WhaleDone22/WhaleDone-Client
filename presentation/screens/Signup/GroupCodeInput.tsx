@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState, useRef, useEffect } from 'react';
 import {
@@ -70,6 +71,14 @@ function GroupCodeInputScreen({ navigation }: GroupCodeInputScreenProp) {
     // const code: any = createCode();
     privateAPI.post({ url: 'api/v1/family' }).then((response) => {
       if (response.code === 'SUCCESS') {
+        privateAPI
+          .get({ url: 'api/v1/users/auth' })
+          .then((userResponse) =>
+            AsyncStorage.setItem(
+              'familyID',
+              userResponse.singleData.familyId.toString(),
+            ),
+          );
         navigation.navigate('GroupCodeShare', {
           code: response.singleData.invitationCode,
         });
@@ -79,13 +88,19 @@ function GroupCodeInputScreen({ navigation }: GroupCodeInputScreenProp) {
 
   const onEnterFamilyPressed = () => {
     privateAPI
-      .post({
+      .patch({
         url: 'api/v1/family/validation/invitationCode',
         data: { invitationCode: filledTexts.join('').toLowerCase() },
       })
       .then((response) => {
-        if (response.code === 'SUCCESS')
+        console.warn(response);
+        if (response.code === 'SUCCESS') {
+          AsyncStorage.setItem(
+            'familyID',
+            response.singleData.familyId.toString(),
+          );
           navigation.push('Main', { screen: 'Home' });
+        }
       });
   };
 
