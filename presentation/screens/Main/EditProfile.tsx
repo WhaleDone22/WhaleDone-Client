@@ -110,11 +110,8 @@ const IcProfileImageEdit = require('../../../assets/ic-profile-image-edit.png');
 const ProfileImageDefault = require('../../../assets/profile-image-default.png');
 const mypageLine = require('../../../assets/mypage-line.png');
 
-function EditProfileScreen({ navigation }: EditProfileScreenProp) {
-  const getFamilyID = async () => {
-    const familyID = await AsyncStorage.getItem('familyID');
-    return familyID;
-  };
+function EditProfileScreen({ navigation, route }: EditProfileScreenProp) {
+  const { nickname } = route.params;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [pickedImagePath, setPickedImagePath] = useState('');
 
@@ -124,10 +121,10 @@ function EditProfileScreen({ navigation }: EditProfileScreenProp) {
   const [show, setShow] = useState(false);
 
   const [countryCode, setCountryCode] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('01012345656');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [familyName, setFamilyName] = useState('');
   const [alarmStatus, setAlarmStatus] = useState(false);
-  const [alarmTime, setAlarmTime] = useState('tt');
+  const [alarmTime, setAlarmTime] = useState('');
   const [familyId, setFamilyId] = useState('');
   const [updateName, setUpdateName] = useState('');
 
@@ -144,7 +141,29 @@ function EditProfileScreen({ navigation }: EditProfileScreenProp) {
     setShow(true);
   };
 
+  useEffect(() => {
+    privateAPI
+      .get({ url: 'api/v1/users/auth' })
+      .then((response) => {
+        console.log('1', response);
+        if (response.responseSuccess) {
+          // console.log(response);
+          setCountryCode(response.singleData.countryCode);
+          setPhoneNumber(response.singleData.phoneNumber);
+          setAlarmStatus(response.singleData.alarmStatus);
+          setAlarmTime(response.singleData.alarmTime);
+          setFamilyId(response.singleData.familyId);
+        } else {
+          // 여기서 에러 띄우기
+        }
+      })
+      .catch((/* error */) => {
+        // 여기서도 에러 띄우기
+      });
+  }, []);
+  
   const editProfileHandler = () => {
+    console.log({ countryCode, phoneNumber, familyName, alarmStatus, alarmTime});
     privateAPI
       .patch({
         url: 'api/v1/users/auth/information',
@@ -153,7 +172,7 @@ function EditProfileScreen({ navigation }: EditProfileScreenProp) {
       .then((response) => {
         // eslint-disable-next-line no-constant-condition
         if (typeof response.responseSuccess) {
-          console.log(response.familyName);
+          console.log(response);
           setCountryCode(response.countryCode);
           setPhoneNumber(response.phoneNumber);
           setFamilyName(response.familyName);
@@ -168,11 +187,6 @@ function EditProfileScreen({ navigation }: EditProfileScreenProp) {
         // 여기서도 에러 띄우기
       });
   };
-
-  useEffect(async () => {
-    const familyID = await getFamilyID();
-    console.log(familyName);
-  }, []);
 
   return (
     <SafeAreaView style={commonStyles.container}>
@@ -199,7 +213,7 @@ function EditProfileScreen({ navigation }: EditProfileScreenProp) {
             <Avatar.Accessory size={20} source={IcProfileImageEdit} />
           </Avatar>
         </TouchableOpacity>
-        <Text style={styles.userName}>user1 님</Text>
+        <Text style={styles.userName}>{nickname} 님</Text>
       </View>
 
       {/* 각각 설정 항목 */}
@@ -211,7 +225,7 @@ function EditProfileScreen({ navigation }: EditProfileScreenProp) {
             style={styles.settingValueTxt}
             onPress={() => navigation.navigate('PhoneInputFromMypage')}
           >
-            +82 010-1212-5656
+            +82 01012345678
           </Text>
         </View>
         <Image source={mypageLine} style={styles.lineImage} />
@@ -223,7 +237,7 @@ function EditProfileScreen({ navigation }: EditProfileScreenProp) {
             value={familyName}
             style={styles.settingValueTxt}
             placeholder="웨일던, 칭찬하는 가족"
-            onChangeText={setFamilyName}
+            onChangeText={(text) => setFamilyName(text)}
           />
         </View>
         <Image source={mypageLine} style={styles.lineImage} />

@@ -13,6 +13,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Avatar, Switch } from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { privateAPI } from '../../../infrastructures/api/remote/base';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonBack from '../../components/ButtonBack';
 import PhotoSelectorModal from '../../components/PhotoSelectorModal';
@@ -134,11 +135,12 @@ function MyPageScreen({ navigation }: MyPageScreenProp) {
   const [pickedImagePath, setPickedImagePath] = useState('');
   const [isSetAlarm, setIsSetAlarm] = useState(true);
 
-  const [countryCode, setCountryCode] = useState('KR');
-  const [phoneNumber, setPhoneNumber] = useState('01012345656');
+  const [nickName, setNickName] = useState('');
+  const [countryCode, setCountryCode] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [familyName, setFamilyName] = useState('');
   const [alarmStatus, setAlarmStatus] = useState(false);
-  const [alarmTime, setAlarmTime] = useState('tt');
+  const [alarmTime, setAlarmTime] = useState('');
   const [familyId, setFamilyId] = useState('');
 
   const openModal = () => setIsModalVisible(true);
@@ -147,6 +149,30 @@ function MyPageScreen({ navigation }: MyPageScreenProp) {
   // const onMembershipPressed = () => {
   //   console.log('onMembershipPressed');
   // };
+
+  useEffect(() => {
+    privateAPI
+      .get({ url: 'api/v1/users/auth' })
+      .then((response) => {
+        if (response.responseSuccess) {
+          setNickName(response.singleData.nickName);
+          setCountryCode(response.singleData.countryCode);
+          setPhoneNumber(response.singleData.phoneNumber);
+          setAlarmStatus(response.singleData.alarmStatus);
+          setAlarmTime(response.singleData.alarmTime);
+          setFamilyId(response.singleData.familyId);
+        } else {
+          // 여기서 에러 띄우기
+        }
+      })
+      .catch((/* error */) => {
+        // 여기서도 에러 띄우기
+      });
+  }, []);
+
+  useEffect(() => {
+    setFamilyName('웨일던, 칭찬하는 가족');
+  }, []);
 
   return (
     <SafeAreaView style={commonStyles.container}>
@@ -161,7 +187,9 @@ function MyPageScreen({ navigation }: MyPageScreenProp) {
         <ButtonBack onPress={() => navigation.goBack()} />
         <Text style={styles.headerTitle}>마이페이지</Text>
         <TouchableOpacity
-          onPress={() => navigation.navigate('EditProfile')}
+          onPress={() =>
+            navigation.navigate('EditProfile', { nickname: nickName })
+          }
           disabled={!isEditable}
         >
           <Text
@@ -178,7 +206,7 @@ function MyPageScreen({ navigation }: MyPageScreenProp) {
       {/* Profile Wrapper */}
       <View style={styles.profileWrapper}>
         <Avatar size={60} rounded source={ProfileImageDefault} />
-        <Text style={styles.userName}>nickname 님</Text>
+        <Text style={styles.userName}>{nickName} 님</Text>
       </View>
 
       {/* 각각 설정 항목 */}
@@ -186,7 +214,7 @@ function MyPageScreen({ navigation }: MyPageScreenProp) {
         {/* 국가 */}
         <View style={styles.eachSettings}>
           <Text style={styles.settingTxt}>국가</Text>
-          <Text style={styles.settingValueTxt}>+82 010-7979-8282</Text>
+          <Text style={styles.settingValueTxt}>+82 {phoneNumber}</Text>
         </View>
         <Image source={mypageLine} style={styles.lineImage} />
 
@@ -194,12 +222,12 @@ function MyPageScreen({ navigation }: MyPageScreenProp) {
         <View style={styles.eachSettings}>
           <Text style={styles.settingTxt}>가족 채널</Text>
           <TextInput
+            value={familyName}
             editable={false}
             maxLength={15}
             style={styles.settingValueTxt}
-          >
-            웨일던, 칭찬하는 가족
-          </TextInput>
+            placeholder={familyName}
+          />
         </View>
         <Image source={mypageLine} style={styles.lineImage} />
 

@@ -241,7 +241,7 @@ function MapScreen({ navigation }: MapScreenProp) {
           </View>
 
           {/* 마음 거리 */}
-          <View style={styles.distanceWrapper}>
+          {/* <View style={styles.distanceWrapper}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Image source={defaultProfile} style={styles.distanceProfile} />
               <Text style={styles.distanceText}>user님과의 마음거리</Text>
@@ -271,7 +271,7 @@ function MapScreen({ navigation }: MapScreenProp) {
             >
               9999km {'>'}
             </Text>
-          </View>
+          </View> */}
         </ScrollView>
       </BottomSheet>
 
