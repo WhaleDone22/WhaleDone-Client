@@ -9,10 +9,12 @@ import {
   TextInput,
   TouchableOpacity,
   Button,
+  Modal,
+  Pressable,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Avatar, Switch } from 'react-native-elements';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import WebView from 'react-native-webview';
 import { privateAPI } from '../../../infrastructures/api/remote/base';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonBack from '../../components/ButtonBack';
@@ -25,6 +27,7 @@ type MyPageScreenProp = NativeStackScreenProps<NavigationStackParams, 'MyPage'>;
 const ProfileImageDefault = require('../../../assets/profile-image-default.png');
 const mypageLine = require('../../../assets/mypage-line.png');
 const IcArrowRight = require('../../../assets/ic-arrow-right.png');
+const icCloseTerms = require('../../../assets/ic-close-terms.png');
 
 const styles = StyleSheet.create({
   headerContainer: {
@@ -142,6 +145,7 @@ function MyPageScreen({ navigation }: MyPageScreenProp) {
   const [alarmStatus, setAlarmStatus] = useState(false);
   const [alarmTime, setAlarmTime] = useState('');
   const [familyId, setFamilyId] = useState('');
+  const [termsOpened, setTermsOpened] = useState(false);
 
   const openModal = () => setIsModalVisible(true);
   const closeModal = () => setIsModalVisible(false);
@@ -250,16 +254,18 @@ function MyPageScreen({ navigation }: MyPageScreenProp) {
 
         {/* 약관동의/정책 */}
         <View style={styles.eachSettings}>
-          <Text style={styles.settingTxt}>약관동의/정책</Text>
+          <Pressable onPress={() => setTermsOpened(true)}>
+            <Text style={styles.settingTxt}>약관동의/정책</Text>
+          </Pressable>
         </View>
         <Image source={mypageLine} style={styles.lineImage} />
 
         {/* 로그아웃 */}
-        <View style={styles.eachSettings}>
+        {/* <View style={styles.eachSettings}>
           <TouchableOpacity>
             <Text style={[styles.settingTxt, styles.logout]}>로그아웃</Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
       </View>
 
       <View>
@@ -272,13 +278,53 @@ function MyPageScreen({ navigation }: MyPageScreenProp) {
           </Text>
           <Image source={IcArrowRight} style={styles.membershipArrowIcon} />
         </TouchableOpacity> */}
-        <Text
+        {/* <Text
           style={styles.withdrawTxt}
           onPress={() => navigation.navigate('Home')}
         >
           탈퇴하기
-        </Text>
+        </Text> */}
       </View>
+      <Modal
+        transparent
+        visible={termsOpened}
+        onRequestClose={() => {
+          setTermsOpened(false);
+        }}
+      >
+        <Pressable
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgba(0,0,0,0.5)',
+          }}
+          onPress={() => {
+            setTermsOpened(false);
+          }}
+        >
+          <Pressable
+            style={{ width: '96%', height: 500, borderRadius: 20 }}
+            onPress={() => {}}
+          >
+            <WebView
+              automaticallyAdjustContentInsets={false}
+              source={{
+                uri: 'https://whaledone.notion.site/a2748049efa04450a091964ea2e5985b',
+              }}
+              style={{ borderRadius: 12 }}
+            />
+          </Pressable>
+          <Pressable
+            onPress={() => {
+              setTermsOpened(false);
+            }}
+            style={{ position: 'absolute', bottom: 40 }}
+          >
+            <Image source={icCloseTerms} style={{ width: 24, height: 24 }} />
+          </Pressable>
+        </Pressable>
+      </Modal>
     </SafeAreaView>
   );
 }

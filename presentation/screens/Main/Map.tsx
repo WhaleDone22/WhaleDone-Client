@@ -3,12 +3,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Text, Image, StyleSheet, View, Pressable } from 'react-native';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import BottomSheet from 'react-native-gesture-bottom-sheet';
-import MapView, { PROVIDER_GOOGLE, Marker, Circle } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { privateAPI } from '../../../infrastructures/api/remote/base';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 
 import COLORS from '../../styles/colors';
+import { FamilyProfile } from '../../../infrastructures/types/map';
 
 type MapScreenProp = NativeStackScreenProps<NavigationStackParams, 'Map'>;
 
@@ -160,30 +161,26 @@ const IcMyPage = require('../../../assets/ic-user-circle.png');
 
 function MapScreen({ navigation }: MapScreenProp) {
   const bottomSheetRef = useRef<any>(null);
-  const [familyProfile, setFamilyProfile] = useState([]);
+  const [familyProfile, setFamilyProfile] = useState<FamilyProfile[]>([]);
 
   useEffect(() => {
-    privateAPI
-      .get({ url: 'api/v1/families/{familyID}/users' })
-      .then((response) => {
-        if (response.responseSuccess) {
-          console.log(response.multipleData);
-          setFamilyProfile(
-            response.multipleData.map((item: any, index: number) => {
-              console.log({ ...item });
-              return { ...item };
-            }),
-          );
-        } else {
-          // 여기서 에러 띄우기
-        }
-      })
-      .catch((/* error */) => {
-        // 여기서도 에러 띄우기
-      });
+    AsyncStorage.getItem('familyID').then((value) => {
+      if (!value) return;
+      privateAPI
+        .get({ url: `api/v1/families/${value}/users` })
+        .then((response) => {
+          if (response.responseSuccess) {
+            console.warn(response);
+            setFamilyProfile(response.multipleData);
+          } else {
+            // 여기서 에러 띄우기
+          }
+        })
+        .catch((/* error */) => {
+          // 여기서도 에러 띄우기
+        });
+    });
   }, []);
-
-  // AsyncStorage.getItem('familyID').then((v) => console.warn(v));
 
   useEffect(() => {
     privateAPI
@@ -225,20 +222,15 @@ function MapScreen({ navigation }: MapScreenProp) {
 
           {/* Profile */}
           <View style={styles.userWrapper}>
-            <View style={styles.profileWrapper}>
-              <Image source={defaultProfile} style={styles.imgWrapper} />
-              <Text style={styles.subText}> user1 </Text>
-            </View>
-
-            <View style={styles.profileWrapper}>
-              <Image source={ex1Profile} style={styles.imgWrapper} />
-              <Text style={styles.subText}> user2 </Text>
-            </View>
-
-            <View style={styles.profileWrapper}>
-              <Image source={ex2Profile} style={styles.imgWrapper} />
-              <Text style={styles.subText}> user3 </Text>
-            </View>
+            {familyProfile.map((family) => (
+              <View style={styles.profileWrapper}>
+                <Image
+                  source={{ uri: family.profileImgUrl }}
+                  style={styles.imgWrapper}
+                />
+                <Text style={styles.subText}>{family.nickName}</Text>
+              </View>
+            ))}
 
             <View style={styles.profileWrapper}>
               <Pressable
