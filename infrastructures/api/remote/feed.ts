@@ -37,9 +37,6 @@ export function feedRemote(): FeedService {
             }),
           })),
         }));
-      })
-      .catch((error) => {
-        console.error(error);
       });
   };
 
@@ -74,9 +71,6 @@ export function feedRemote(): FeedService {
               timeDelta: time.timeDelta - mine.timeDelta,
             })),
         };
-      })
-      .catch((error) => {
-        console.error(error);
       });
   };
 
