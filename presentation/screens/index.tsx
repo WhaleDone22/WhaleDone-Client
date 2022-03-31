@@ -57,29 +57,10 @@ function Screens() {
         <Stack.Screen name="Onboarding" component={OnboardingScreen} />
       )}
       {!userState.isLoggedIn && (
-        <>
-          <Stack.Screen name="SignUpMain" component={SignUpMainScreen} />
-          <Stack.Screen name="EmailInput" component={EmailInputScreen} />
-          <Stack.Screen name="NicknameInput" component={NicknameInputScreen} />
-          <Stack.Screen name="PasswordInput" component={PasswordInputScreen} />
-          <Stack.Screen name="PhoneAuth" component={PhoneAuthScreen} />
-          <Stack.Screen name="PhoneInput" component={PhoneInputScreen} />
-          <Stack.Screen name="Login" component={LoginScreen} />
-        </>
+        <Stack.Screen name="SignUpMain" component={SignUpMainScreen} />
       )}
       {!userState.isJoinedFamily && (
-        <>
-          <Stack.Screen name="Greet" component={GreetScreen} />
-          <Stack.Screen
-            name="GroupCodeInput"
-            component={GroupCodeInputScreen}
-          />
-          <Stack.Screen
-            name="GroupCodeShare"
-            component={GroupCodeShareScreen}
-          />
-          <Stack.Screen name="PasswordFind" component={PasswordFindScreen} />
-        </>
+        <Stack.Screen name="Greet" component={GreetScreen} />
       )}
       <Stack.Screen name="Main" component={BottomNavigation} />
       <Stack.Screen name="EditProfile" component={EditProfileScreen} />
@@ -93,6 +74,15 @@ function Screens() {
         name="GroupCodeShareFromMap"
         component={GroupCodeShareScreen}
       />
+      <Stack.Screen name="EmailInput" component={EmailInputScreen} />
+      <Stack.Screen name="NicknameInput" component={NicknameInputScreen} />
+      <Stack.Screen name="PasswordInput" component={PasswordInputScreen} />
+      <Stack.Screen name="PhoneAuth" component={PhoneAuthScreen} />
+      <Stack.Screen name="PhoneInput" component={PhoneInputScreen} />
+      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="GroupCodeInput" component={GroupCodeInputScreen} />
+      <Stack.Screen name="GroupCodeShare" component={GroupCodeShareScreen} />
+      <Stack.Screen name="PasswordFind" component={PasswordFindScreen} />
     </Stack.Navigator>
   );
 }
