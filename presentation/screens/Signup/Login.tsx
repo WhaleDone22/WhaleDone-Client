@@ -72,7 +72,7 @@ function LoginScreen({ navigation }: LoginScreenProp) {
               'userID',
               response.singleData.userId.toString(),
             );
-            if (typeof response.singleData.familyId === 'string') {
+            if (typeof response.singleData.familyId === 'number') {
               AsyncStorage.setItem(
                 'familyID',
                 response.singleData.familyId.toString(),

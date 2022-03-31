@@ -27,7 +27,7 @@ export type NavigationStackParams = {
   PhoneInput: undefined;
   PhoneAuth: { phoneNumber: string; countryCode: string; alarmStatus: boolean };
   Main: { screen: 'Home' | 'Map' | 'Feed' };
-  EditProfile: undefined;
+  EditProfile: { nickname: string };
   MapDetail: undefined;
   MyPage: undefined;
   Notice: undefined;
@@ -39,5 +39,5 @@ export type NavigationStackParams = {
   PasswordFind: undefined;
   PhoneAuthFromMypage: undefined;
   PhoneInputFromMypage: undefined;
-  GroupCodeShareFromMap: undefined;
+  GroupCodeShareFromMap: undefined | { code: string };
 };
