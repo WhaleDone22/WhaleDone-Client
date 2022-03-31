@@ -9,6 +9,7 @@ export type Feed = {
   writerID: number;
   writerThumbnail?: string;
   title: string;
+  type: 'TEXT' | 'IMAGE';
   body: string;
   reactions: Reaction[];
 };

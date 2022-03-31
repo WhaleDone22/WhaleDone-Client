@@ -3,7 +3,6 @@ import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import COLORS from '../styles/colors';
-import { fileURItoBLOB } from '../../infrastructures/utils/images';
 
 type PhotoSelectorModalProp = {
   isModalVisible: boolean;
@@ -47,17 +46,16 @@ function PhotoSelectorModal(props: PhotoSelectorModalProp) {
 
   const uploadPhoto = async (imagePath: string) => {
     try {
-      const fileName = `${new Date()
-        .toLocaleString()
-        .replaceAll(' ', '')
-        .replaceAll('.', '')
-        .replaceAll(':', '')}.png`;
       const formData = new FormData();
-      const imageBLOB = await fileURItoBLOB(imagePath);
-      const imageFile = new File([imageBLOB], fileName);
+      formData.append('multipartFile', {
+        uri: imagePath, // 에러 표시되지만 잘 작동합니다.
+        name: imagePath.split('/').pop(),
+        type: `image/${imagePath.split('.').pop()}`,
+      });
+
       const myToken = await AsyncStorage.getItem('token');
       if (!myToken) return;
-      formData.append('multipartFile', imageFile);
+
       const uploadRequest = await fetch(
         'http://ec2-3-37-42-113.ap-northeast-2.compute.amazonaws.com:8080/api/v1/content',
         {
@@ -68,10 +66,10 @@ function PhotoSelectorModal(props: PhotoSelectorModalProp) {
       );
 
       const uploadResponse = await uploadRequest.json();
+      console.warn(uploadResponse);
 
       if (typeof uploadResponse.singleData.url === 'string') {
         setPickedImagePath(uploadResponse.singleData.url);
-        console.warn(uploadResponse.singleData.url);
       }
     } catch (e) {
       console.error(e);

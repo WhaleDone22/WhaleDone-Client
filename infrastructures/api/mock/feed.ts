@@ -18,5 +18,9 @@ export function feedMock(): FeedService {
     return FEED_DATA.GET_REACTIONS;
   };
 
-  return { createFeed, getAllFeed, getTime, getReactions };
+  const createReaction = async () => {
+    return { isSuccess: true };
+  };
+
+  return { createFeed, getAllFeed, getTime, getReactions, createReaction };
 }
