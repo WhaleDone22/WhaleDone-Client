@@ -138,11 +138,10 @@ function RecordScreen({ navigation, route }: RecordScreenProp) {
         .createFeed(
           routeParams?.question ?? title,
           mode === 'IMAGE' ? pickedImagePath : text,
-          mode === 'TEXT' ? 0 : 1,
+          mode,
         )
         .then(({ isSuccess }) => {
           if (isSuccess) navigation.push('Main', { screen: 'Feed' });
-          console.warn(isSuccess);
         });
     }
   };

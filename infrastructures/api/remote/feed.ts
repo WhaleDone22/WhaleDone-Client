@@ -5,42 +5,54 @@ import { FeedService } from '../feed';
 import { privateAPI } from './base';
 
 export function feedRemote(): FeedService {
-  const createFeed = async (title: string, content: string, type: 0 | 1) => {
+  const createFeed = async (
+    title: string,
+    content: string,
+    type: 'TEXT' | 'IMAGE',
+  ) => {
     return privateAPI
       .post({
         url: 'api/v1/users/auth/post',
-        data: { title, question: content, type },
+        data: { title, content, type },
       })
-      .then((data) => ({ isSuccess: data.responseSuccess ?? false }));
+      .then((data) => {
+        if (data.code === 'SUCCESS') return { isSuccess: true };
+        return {
+          isSuccess: false,
+        };
+      });
   };
 
   const getAllFeed = async () => {
     return privateAPI
       .get({ url: 'api/v1/users/auth/family-posts' })
       .then((response) => {
-        return Object.keys(response.singleData.result).map((date) => ({
-          date,
-          feeds: response.singleData.result.date.map((feed: any) => ({
-            id: feed.id,
-            writer: feed.authorName,
-            writerID: feed.authorIdx,
-            writerThumbnail: feed.profileImgUrl,
-            title: feed.title,
-            body: feed.contents,
-            reactions: feed.reactionCount.map((reaction: any) => {
-              if (reaction.type === 'TEXT') return reaction;
-              if (reaction.type === 'IMAGE')
-                return { type: 'EMOJI', count: reaction.count };
-              if (reaction.type === 'AUDIO')
-                return { type: 'RECORD', count: reaction.count };
-              return reaction;
-            }),
-          })),
-        }));
+        return Object.keys(response.singleData.result).map((date) => {
+          return {
+            date,
+            feeds: response.singleData.result[date].map((feed: any) => ({
+              id: feed.id,
+              writer: feed.authorName,
+              writerID: feed.authorIdx,
+              writerThumbnail: feed.profileImgUrl,
+              title: feed.title,
+              body: feed.contents,
+              reactions: feed.reactionCount.map((reaction: any) => {
+                if (reaction.type === 'TEXT') return reaction;
+                if (reaction.type === 'IMAGE')
+                  return { type: 'EMOJI', count: reaction.count };
+                if (reaction.type === 'AUDIO')
+                  return { type: 'RECORD', count: reaction.count };
+                return reaction;
+              }),
+            })),
+          };
+        });
       });
   };
 
-  const getTime = async (familyID: number) => {
+  const getTime = async () => {
+    const familyID = await AsyncStorage.getItem('familyID');
     const myID = await AsyncStorage.getItem('userID');
     return privateAPI
       .get({
@@ -77,7 +89,7 @@ export function feedRemote(): FeedService {
   const getReactions = async (feedID: number) => {
     return privateAPI
       .get({
-        url: `/api/v1/posts/${feedID}/reactions`,
+        url: `api/v1/posts/${feedID}/reactions`,
       })
       .then((response) => {
         return response.multipleData.map((reaction: any) => ({
@@ -95,5 +107,26 @@ export function feedRemote(): FeedService {
       });
   };
 
-  return { createFeed, getAllFeed, getTime, getReactions };
+  const createReaction = async (
+    postID: number,
+    content: string,
+    type: 'TEXT' | 'EMOJI' | 'RECORD',
+  ) => {
+    const clientTypeToServerType = {
+      TEXT: 'TEXT',
+      EMOJI: 'IMAGE',
+      RECORD: 'AUDIO',
+    };
+    return privateAPI
+      .post({
+        url: `api/v1/posts/${postID}/reaction`,
+        data: { content, type: clientTypeToServerType[type] },
+      })
+      .then((response) => {
+        if (response.responseSuccess === 'SUCCESS') return { isSuccess: true };
+        return { isSuccess: false };
+      });
+  };
+
+  return { createFeed, getAllFeed, getTime, getReactions, createReaction };
 }

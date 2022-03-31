@@ -155,10 +155,7 @@ function FeedScreen({ navigation }: FeedScreenProp) {
   }, []);
 
   useEffect(() => {
-    AsyncStorage.getItem('familyID').then((value) => {
-      if (!value || Number.isNaN(+value)) return;
-      api.feedService.getTime(+value).then((response) => setTimes(response));
-    });
+    api.feedService.getTime().then((response) => setTimes(response));
   }, []);
 
   useEffect(() => {
