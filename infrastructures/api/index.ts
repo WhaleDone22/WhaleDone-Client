@@ -1,7 +1,7 @@
 import { FeedService } from './feed';
-import { feedMock } from './mock/feed';
 import { noticeMock } from './mock/notice';
 import { NoticeService } from './notice';
+import { feedRemote } from './remote/feed';
 
 export interface APIService {
   noticeService: NoticeService;
@@ -10,7 +10,7 @@ export interface APIService {
 
 function provideMockAPIService(): APIService {
   const noticeService = noticeMock();
-  const feedService = feedMock();
+  const feedService = feedRemote();
 
   return { noticeService, feedService };
 }

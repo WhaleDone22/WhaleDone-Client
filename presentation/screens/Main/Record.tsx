@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { api } from '../../../infrastructures/api';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonBack from '../../components/ButtonBack';
 import PhotoSelectorModal from '../../components/PhotoSelectorModal';
@@ -114,6 +115,7 @@ function RecordScreen({ navigation, route }: RecordScreenProp) {
   const [mode, setMode] = useState<'TEXT' | 'IMAGE' | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [pickedImagePath, setPickedImagePath] = useState('');
+  const [title, setTitle] = useState('');
   const [text, setText] = useState('');
   const [isUploadable, setIsUploadable] = useState(false);
 
@@ -123,6 +125,27 @@ function RecordScreen({ navigation, route }: RecordScreenProp) {
 
   const openModal = () => setIsModalVisible(true);
   const closeModal = () => setIsModalVisible(false);
+
+  const onSubmitFeed = () => {
+    if (
+      !(
+        mode === null ||
+        (mode === 'TEXT' && text === '') ||
+        (mode === 'IMAGE' && pickedImagePath === '')
+      )
+    ) {
+      api.feedService
+        .createFeed(
+          routeParams?.question ?? title,
+          mode === 'IMAGE' ? pickedImagePath : text,
+          mode === 'TEXT' ? 0 : 1,
+        )
+        .then(({ isSuccess }) => {
+          if (isSuccess) navigation.push('Main', { screen: 'Feed' });
+          console.warn(isSuccess);
+        });
+    }
+  };
 
   return (
     <SafeAreaView style={commonStyles.container}>
@@ -136,10 +159,7 @@ function RecordScreen({ navigation, route }: RecordScreenProp) {
         <Text style={styles.headerTitle}>
           {`${routeParams?.category} 일상공유` ?? '내 질문으로 일상공유'}
         </Text>
-        <TouchableOpacity
-          onPress={() => navigation.push('Main', { screen: 'Feed' })}
-          disabled={!isUploadable}
-        >
+        <TouchableOpacity onPress={onSubmitFeed} disabled={!isUploadable}>
           <Text
             style={[
               styles.uploadText,
@@ -157,6 +177,7 @@ function RecordScreen({ navigation, route }: RecordScreenProp) {
           <TextInput
             style={styles.questionText}
             placeholder="질문을 입력하세요"
+            onChangeText={(input) => setTitle(input)}
             autoFocus
           />
         ) : (

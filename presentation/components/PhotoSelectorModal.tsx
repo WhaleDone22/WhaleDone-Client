@@ -1,7 +1,9 @@
 import React, { useCallback } from 'react';
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import COLORS from '../styles/colors';
+import { fileURItoBLOB } from '../../infrastructures/utils/images';
 
 type PhotoSelectorModalProp = {
   isModalVisible: boolean;
@@ -42,11 +44,47 @@ const styles = StyleSheet.create({
 
 function PhotoSelectorModal(props: PhotoSelectorModalProp) {
   const { isModalVisible, closeModal, setPickedImagePath } = props;
+
+  const uploadPhoto = async (imagePath: string) => {
+    try {
+      const fileName = `${new Date()
+        .toLocaleString()
+        .replaceAll(' ', '')
+        .replaceAll('.', '')
+        .replaceAll(':', '')}.png`;
+      const formData = new FormData();
+      const imageBLOB = await fileURItoBLOB(imagePath);
+      const imageFile = new File([imageBLOB], fileName);
+      const myToken = await AsyncStorage.getItem('token');
+      if (!myToken) return;
+      formData.append('multipartFile', imageFile);
+      const uploadRequest = await fetch(
+        'http://ec2-3-37-42-113.ap-northeast-2.compute.amazonaws.com:8080/api/v1/content',
+        {
+          method: 'POST',
+          body: formData,
+          headers: { 'X-AUTH-TOKEN': myToken },
+        },
+      );
+
+      const uploadResponse = await uploadRequest.json();
+
+      if (typeof uploadResponse.singleData.url === 'string') {
+        setPickedImagePath(uploadResponse.singleData.url);
+        console.warn(uploadResponse.singleData.url);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   const takePhoto = useCallback(async () => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
     if (!permissionResult.granted) return;
     const result = await ImagePicker.launchCameraAsync();
-    if (!result.cancelled) setPickedImagePath(result.uri);
+    if (!result.cancelled) {
+      uploadPhoto(result.uri);
+    }
     closeModal();
   }, []);
 
@@ -55,7 +93,9 @@ function PhotoSelectorModal(props: PhotoSelectorModalProp) {
       await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!permissionResult.granted) return;
     const result = await ImagePicker.launchImageLibraryAsync();
-    if (!result.cancelled) setPickedImagePath(result.uri);
+    if (!result.cancelled) {
+      uploadPhoto(result.uri);
+    }
     closeModal();
   }, []);
 
