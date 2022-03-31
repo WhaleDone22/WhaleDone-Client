@@ -24,6 +24,6 @@ export type NavigationStackParams = {
   PasswordFind: undefined;
   PhoneAuthFromMypage: undefined;
   PhoneInputFromMypage: undefined;
-  GroupCodeShareFromMap: undefined;
+  GroupCodeShareFromMap: undefined | { code: string };
 };
 // questionID: number

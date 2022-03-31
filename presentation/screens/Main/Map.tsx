@@ -1,9 +1,10 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Text, Image, StyleSheet, View, Pressable } from 'react-native';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import BottomSheet from 'react-native-gesture-bottom-sheet';
-import MapView, { PROVIDER_GOOGLE, Marker, Circle } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import { privateAPI } from '../../../infrastructures/api/remote/base';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 
 import COLORS from '../../styles/colors';
@@ -127,7 +128,6 @@ const styles = StyleSheet.create({
     color: COLORS.BLUE_500,
   },
 
-  //Marker
   markerImg: {
     width: 48,
     height: 48,
@@ -151,15 +151,35 @@ const defaultProfile = require('../../../assets/image-profile-default.png');
 const ex1Profile = require('../../../assets/image-profile-ex1.png');
 const ex2Profile = require('../../../assets/image-profile-ex2.png');
 const addFamily = require('../../../assets/ic-add-family.png');
-const ex2marker = require('../../../assets/image-marker-ex2.png');
 
 const IcNotice = require('../../../assets/ic-bell.png');
 const IcMyPage = require('../../../assets/ic-user-circle.png');
 
-function MapScreen({ navigation, route }: MapScreenProp) {
-  // const { code } = route.params;
-  const [selectedCountry, setSelectedCountry] = useState(true);
+function MapScreen({ navigation }: MapScreenProp) {
   const bottomSheetRef = useRef<any>(null);
+  const [familyProfile, setFamilyProfile] = useState([]);
+
+  useEffect(() => {
+    privateAPI
+      .get({ url: 'api/v1/families/{familyId}/users' })
+      .then((response) => {
+        if (response.responseSuccess) {
+          console.log(response.multipleData);
+          // setFamilyProfile(
+          //   response.multipleData.map((item: any, index: number) => {
+          //     console.log({ ...item });
+          //     return { ...item };
+          //   }),
+          // );
+        } else {
+          // 여기서 에러 띄우기
+        }
+      })
+      .catch((/* error */) => {
+        // 여기서도 에러 띄우기
+      });
+  }, []);
+  
 
   return (
     <View style={[{ flex: 1 }]}>
@@ -263,8 +283,8 @@ function MapScreen({ navigation, route }: MapScreenProp) {
           style={[{ width: '100%', height: '100%' }]}
           provider={PROVIDER_GOOGLE}
           initialRegion={{
-            latitude: 35.91395373474155,
-            longitude: 127.73829440215488,
+            latitude: 37.487935,
+            longitude: 126.857758,
             latitudeDelta: 70,
             longitudeDelta: 70,
           }}
@@ -272,7 +292,9 @@ function MapScreen({ navigation, route }: MapScreenProp) {
           <Marker coordinate={{ latitude: 37.487935, longitude: 126.857758 }}>
             <View style={styles.markerCircle}>
               <Image
-                source={{uri:'https://avatars.githubusercontent.com/u/98895272?s=200&v=4'}}
+                source={{
+                  uri: 'https://avatars.githubusercontent.com/u/98895272?s=200&v=4',
+                }}
                 style={styles.markerImg}
               />
             </View>
@@ -318,7 +340,7 @@ function MapScreen({ navigation, route }: MapScreenProp) {
         <View
           style={[
             styles.textWrapper1,
-            { paddingHorizontal: 18, paddingTop: 10, width: '100%'},
+            { paddingHorizontal: 18, paddingTop: 10, width: '100%' },
           ]}
         >
           <Text style={styles.mainText}>가족 간 마음거리</Text>

@@ -20,7 +20,6 @@ import { commonStyles } from '../../styles/common';
 
 type MyPageScreenProp = NativeStackScreenProps<NavigationStackParams, 'MyPage'>;
 
-
 const ProfileImageDefault = require('../../../assets/profile-image-default.png');
 const mypageLine = require('../../../assets/mypage-line.png');
 const IcArrowRight = require('../../../assets/ic-arrow-right.png');
@@ -127,31 +126,18 @@ const styles = StyleSheet.create({
   },
 });
 
-function MyPageScreen({ navigation, route }: MyPageScreenProp) {
+function MyPageScreen({ navigation }: MyPageScreenProp) {
   const [isEditable, setIsEditable] = useState(true);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [pickedImagePath, setPickedImagePath] = useState('');
-  const [channelName, setChannelName] = useState('');
-  const [text, setText] = useState('');
   const [isSetAlarm, setIsSetAlarm] = useState(true);
 
   const openModal = () => setIsModalVisible(true);
   const closeModal = () => setIsModalVisible(false);
 
-  const onMembershipPressed = () => {
-    console.log('onMembershipPressed');
-  };
-
-  // useEffect(() => {
-  //   setIsUploadable(text.length > 10 || pickedImagePath !== '');
-  // }, [text, pickedImagePath]);
-
-  // 수정페이지에 일단 들어간 다음에 거기서 저장으로 다시 Mypage에 들어올 때 route.params를 받아와야 함
-  // const { newChannelName } = route.params;
-  // console.log(newChannelName)
-  // useEffect(() => {
-  //   //
-  // }, [newChannelName])
+  // const onMembershipPressed = () => {
+  //   console.log('onMembershipPressed');
+  // };
 
   return (
     <SafeAreaView style={commonStyles.container}>
@@ -182,9 +168,7 @@ function MyPageScreen({ navigation, route }: MyPageScreenProp) {
 
       {/* Profile Wrapper */}
       <View style={styles.profileWrapper}>
-        <Avatar size={60} rounded source={ProfileImageDefault}>
-          {/* <Avatar.Accessory size={20} source={IcProfileImageEdit} /> */}
-        </Avatar>
+        <Avatar size={60} rounded source={ProfileImageDefault} />
         <Text style={styles.userName}>user1 님</Text>
       </View>
 
@@ -203,8 +187,6 @@ function MyPageScreen({ navigation, route }: MyPageScreenProp) {
           <TextInput
             editable={false}
             maxLength={15}
-            // value={channelName}
-            // onChangeText={setChannelName}
             style={styles.settingValueTxt}
           >
             웨일던, 칭찬하는 가족
@@ -245,7 +227,7 @@ function MyPageScreen({ navigation, route }: MyPageScreenProp) {
       <View>
         <TouchableOpacity
           style={styles.membershipBtn}
-          onPress={onMembershipPressed}
+          // onPress={onMembershipPressed}
         >
           <Text style={styles.membershipTxt}>
             웨일던 프라이빗 지금 시작하세요!
