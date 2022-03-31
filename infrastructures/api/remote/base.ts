@@ -1,7 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const BASEURL =
-  'http://ec2-3-37-42-113.ap-northeast-2.compute.amazonaws.com:8080/';
+const BASEURL = 'http://www.whaledone.site/';
 const getAccessToken = () =>
   AsyncStorage.getItem('token').then((token) => token ?? '');
 
