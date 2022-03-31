@@ -1,10 +1,11 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Text, Image, StyleSheet, View, Pressable } from 'react-native';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import BottomSheet from 'react-native-gesture-bottom-sheet';
 import MapView, { PROVIDER_GOOGLE, Marker, Circle } from 'react-native-maps';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { privateAPI } from '../../../infrastructures/api/remote/base';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 
 import COLORS from '../../styles/colors';
@@ -78,6 +79,7 @@ const styles = StyleSheet.create({
   userWrapper: {
     flexDirection: 'row',
     paddingBottom: 28,
+    paddingTop: 22,
   },
   profileWrapper: {
     alignItems: 'center',
@@ -157,12 +159,26 @@ const ex2marker = require('../../../assets/image-marker-ex2.png');
 const IcNotice = require('../../../assets/ic-bell.png');
 const IcMyPage = require('../../../assets/ic-user-circle.png');
 
-function MapScreen({ navigation, route }: MapScreenProp) {
-  // const { code } = route.params;
+function MapScreen({ navigation }: MapScreenProp) {
   const [selectedCountry, setSelectedCountry] = useState(true);
   const bottomSheetRef = useRef<any>(null);
 
   AsyncStorage.getItem('familyID').then((v) => console.warn(v));
+
+  useEffect(() => {
+    privateAPI
+      .get({ url: 'api/v1/families/{familyID}/users' })
+      .then((response) => {
+        if (response.responseSuccess) {
+          // console.log(response.multipleData);
+        } else {
+          // 여기서 에러 띄우기
+        }
+      })
+      .catch((/* error */) => {
+        // 여기서도 에러 띄우기
+      });
+  }, []);
 
   return (
     <View style={[{ flex: 1 }]}>
@@ -180,12 +196,12 @@ function MapScreen({ navigation, route }: MapScreenProp) {
               소통을 많이 할수록 원의 거리가 가까워져요
             </Text>
           </View>
-          <View style={[styles.textWrapper1, styles.textWrapper2]}>
+          {/* <View style={[styles.textWrapper1, styles.textWrapper2]}>
             <Text style={styles.subText}>가족 채널명</Text>
             <TouchableOpacity>
               <Text style={styles.editText}>수정 {'>'} </Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
 
           {/* Profile */}
           <View style={styles.userWrapper}>
@@ -211,16 +227,16 @@ function MapScreen({ navigation, route }: MapScreenProp) {
                   navigation.navigate('GroupCodeShareFromMap');
                 }}
               >
-                <Image source={addFamily} style={styles.imgWrapper} />
+                {/* <Image source={addFamily} style={styles.imgWrapper} />
                 <Text style={[styles.subText, { color: COLORS.BLUE_500 }]}>
                   가족 추가
-                </Text>
+                </Text> */}
               </Pressable>
             </View>
           </View>
 
           {/* 마음 거리 */}
-          <View style={styles.distanceWrapper}>
+          {/* <View style={styles.distanceWrapper}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Image source={defaultProfile} style={styles.distanceProfile} />
               <Text style={styles.distanceText}>user님과의 마음거리</Text>
@@ -250,7 +266,7 @@ function MapScreen({ navigation, route }: MapScreenProp) {
             >
               9999km {'>'}
             </Text>
-          </View>
+          </View> */}
         </ScrollView>
       </BottomSheet>
 
