@@ -25,9 +25,11 @@ const Stack = createStackNavigator();
 function Screens() {
   const [userState, setUserState] = useState<{
     isLoggedIn: boolean;
+    isJoinedFamily: boolean;
     isOnboardingUnseen: boolean;
   }>({
     isLoggedIn: false,
+    isJoinedFamily: false,
     isOnboardingUnseen: true,
   });
 
@@ -41,6 +43,9 @@ function Screens() {
     AsyncStorage.getItem('token').then((token) => {
       setUserState((prev) => ({ ...prev, isLoggedIn: token !== null }));
     });
+    AsyncStorage.getItem('familyID').then((familyID) => {
+      setUserState((prev) => ({ ...prev, isJoinedFamily: familyID !== null }));
+    });
   }, []);
 
   return (
@@ -51,10 +56,19 @@ function Screens() {
       {userState.isOnboardingUnseen && (
         <Stack.Screen name="Onboarding" component={OnboardingScreen} />
       )}
-      {
-        /*! userState.isLoggedIn && */ <>
+      {!userState.isLoggedIn && (
+        <>
           <Stack.Screen name="SignUpMain" component={SignUpMainScreen} />
           <Stack.Screen name="EmailInput" component={EmailInputScreen} />
+          <Stack.Screen name="NicknameInput" component={NicknameInputScreen} />
+          <Stack.Screen name="PasswordInput" component={PasswordInputScreen} />
+          <Stack.Screen name="PhoneAuth" component={PhoneAuthScreen} />
+          <Stack.Screen name="PhoneInput" component={PhoneInputScreen} />
+          <Stack.Screen name="Login" component={LoginScreen} />
+        </>
+      )}
+      {!userState.isJoinedFamily && (
+        <>
           <Stack.Screen name="Greet" component={GreetScreen} />
           <Stack.Screen
             name="GroupCodeInput"
@@ -64,14 +78,9 @@ function Screens() {
             name="GroupCodeShare"
             component={GroupCodeShareScreen}
           />
-          <Stack.Screen name="NicknameInput" component={NicknameInputScreen} />
-          <Stack.Screen name="PasswordInput" component={PasswordInputScreen} />
-          <Stack.Screen name="PhoneAuth" component={PhoneAuthScreen} />
-          <Stack.Screen name="PhoneInput" component={PhoneInputScreen} />
-          <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="PasswordFind" component={PasswordFindScreen} />
         </>
-      }
+      )}
       <Stack.Screen name="Main" component={BottomNavigation} />
       <Stack.Screen name="EditProfile" component={EditProfileScreen} />
       <Stack.Screen name="MapDetail" component={MapDetailScreen} />

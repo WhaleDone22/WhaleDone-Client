@@ -1,7 +1,8 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { privateAPI } from '../../../infrastructures/api/remote/base';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonBack from '../../components/ButtonBack';
 // import greetIcon from '../../../assets/greetIcon.png'
@@ -13,7 +14,20 @@ const IcGreet = require('../../../assets/ic-greet.png');
 type GreetScreenProp = NativeStackScreenProps<NavigationStackParams, 'Greet'>;
 
 function GreetScreen({ navigation, route }: GreetScreenProp) {
-  const { nickname } = route.params;
+  const routeParams = route.params;
+  const [nickname, setNickname] = useState('');
+
+  useEffect(() => {
+    if (routeParams) setNickname(routeParams.nickname);
+    else {
+      privateAPI.get({ url: 'api/v1/users/auth' }).then((response) => {
+        if (typeof response.singleData.nickName === 'string') {
+          setNickname(response.singleData.nickName);
+        }
+      });
+    }
+  }, []);
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.safeAreaContainer}>

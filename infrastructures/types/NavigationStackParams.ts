@@ -8,7 +8,7 @@ export type NavigationStackParams = {
     countryCode: string;
     alarmStatus: boolean;
   };
-  Greet: { nickname: string };
+  Greet: { nickname: string } | undefined;
   GroupCodeInput: undefined;
   GroupCodeShare: { code: string };
   NicknameInput: {
