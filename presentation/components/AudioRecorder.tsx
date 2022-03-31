@@ -59,7 +59,6 @@ const IcRecordStart = require('../../assets/ic-record-start.png');
 function AudioRecorder(props: AudioRecorderProps) {
   const { setReactionMode, sendRecordReaction } = props;
   const [recording, setRecording] = useState<Audio.Recording | null>(null);
-  const [audioURI, setAudioURI] = useState<string | null>(null);
 
   const [recordStatus, setRecordStatus] = useState<
     'idle' | 'recording' | 'finished'
@@ -125,7 +124,6 @@ function AudioRecorder(props: AudioRecorderProps) {
 
     await recording.stopAndUnloadAsync();
     const recordingURI = recording.getURI();
-    setAudioURI(recordingURI);
     setRecording(null);
     if (!recordingURI) return;
     uploadRecord(recordingURI);
