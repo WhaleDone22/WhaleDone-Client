@@ -130,7 +130,20 @@ function FeedItem({
           onPress={onBubbleClicked}
         >
           <Text style={styles.titleText}>{feed.title}</Text>
-          <Text style={styles.bodyText}>{feed.body}</Text>
+          {feed.type === 'TEXT' && (
+            <Text style={styles.bodyText}>{feed.body}</Text>
+          )}
+          {feed.type === 'IMAGE' && (
+            <Image
+              source={{ uri: feed.body }}
+              style={{
+                width: 235,
+                height: 332,
+                marginTop: 16,
+                borderRadius: 16,
+              }}
+            />
+          )}
           <View style={styles.feedReactions}>
             {feed.reactions.map((reaction) => (
               <TouchableOpacity key={reaction.type} style={styles.reactionBox}>

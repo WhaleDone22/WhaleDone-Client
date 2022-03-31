@@ -36,6 +36,7 @@ export function feedRemote(): FeedService {
               writerID: feed.authorIdx,
               writerThumbnail: feed.profileImgUrl,
               title: feed.title,
+              type: feed.type,
               body: feed.contents,
               reactions: feed.reactionCount.map((reaction: any) => {
                 if (reaction.type === 'TEXT') return reaction;
