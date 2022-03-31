@@ -1,4 +1,4 @@
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useEffect, useState } from 'react';
 import {
@@ -110,8 +110,11 @@ const IcProfileImageEdit = require('../../../assets/ic-profile-image-edit.png');
 const ProfileImageDefault = require('../../../assets/profile-image-default.png');
 const mypageLine = require('../../../assets/mypage-line.png');
 
-async function EditProfileScreen({ navigation }: EditProfileScreenProp) {
-  // const familyID = await AsyncStorage.getItem('familyID');
+function EditProfileScreen({ navigation }: EditProfileScreenProp) {
+  const getFamilyID = async () => {
+    const familyID = await AsyncStorage.getItem('familyID');
+    return familyID;
+  };
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [pickedImagePath, setPickedImagePath] = useState('');
 
@@ -120,11 +123,11 @@ async function EditProfileScreen({ navigation }: EditProfileScreenProp) {
   const [mode, setMode] = useState('time');
   const [show, setShow] = useState(false);
 
-  const [countryCode, setCountryCode] = useState('KR');
+  const [countryCode, setCountryCode] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('01012345656');
-  const [familyName, setFamilyName] = useState('웨일던, 칭찬하는 가족');
+  const [familyName, setFamilyName] = useState('');
   const [alarmStatus, setAlarmStatus] = useState(false);
-  const [alarmTime, setAlarmTime] = useState('');
+  const [alarmTime, setAlarmTime] = useState('tt');
   const [familyId, setFamilyId] = useState('');
   const [updateName, setUpdateName] = useState('');
 
@@ -150,26 +153,13 @@ async function EditProfileScreen({ navigation }: EditProfileScreenProp) {
       .then((response) => {
         // eslint-disable-next-line no-constant-condition
         if (typeof response.responseSuccess) {
-          // console.log(response.familyName);
+          console.log(response.familyName);
+          setCountryCode(response.countryCode);
+          setPhoneNumber(response.phoneNumber);
+          setFamilyName(response.familyName);
+          setAlarmStatus(response.alarmStatus);
+          setAlarmTime(response.alarmTime);
           navigation.navigate('MyPage');
-        } else {
-          // 에러
-        }
-      })
-      .catch((/* error */) => {
-        // 여기서도 에러 띄우기
-      });
-
-    // 가족 채널 이름 변경 API
-    privateAPI
-      .patch({
-        url: 'api/v1/families/familyID/name',
-        data: { familyId },
-      })
-      .then((response) => {
-        // eslint-disable-next-line no-constant-condition
-        if (typeof response.responseSuccess) {
-          // console.log(response.updateName);
         } else {
           // 에러
         }
@@ -179,9 +169,10 @@ async function EditProfileScreen({ navigation }: EditProfileScreenProp) {
       });
   };
 
-  // useEffect(() => {
-  //   console.log(familyID);
-  // }, []);
+  useEffect(async () => {
+    const familyID = await getFamilyID();
+    console.log(familyName);
+  }, []);
 
   return (
     <SafeAreaView style={commonStyles.container}>
@@ -229,10 +220,10 @@ async function EditProfileScreen({ navigation }: EditProfileScreenProp) {
         <View style={styles.eachSettings}>
           <Text style={styles.settingTxt}>가족 채널</Text>
           <TextInput
-            value={updateName}
+            value={familyName}
             style={styles.settingValueTxt}
-            placeholder="가족"
-            onChangeText={setUpdateName}
+            placeholder="웨일던, 칭찬하는 가족"
+            onChangeText={setFamilyName}
           />
         </View>
         <Image source={mypageLine} style={styles.lineImage} />

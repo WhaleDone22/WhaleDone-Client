@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Avatar, Switch } from 'react-native-elements';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonBack from '../../components/ButtonBack';
 import PhotoSelectorModal from '../../components/PhotoSelectorModal';
@@ -127,10 +128,18 @@ const styles = StyleSheet.create({
 });
 
 function MyPageScreen({ navigation }: MyPageScreenProp) {
+  // AsyncStorage.getItem('token')
   const [isEditable, setIsEditable] = useState(true);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [pickedImagePath, setPickedImagePath] = useState('');
   const [isSetAlarm, setIsSetAlarm] = useState(true);
+
+  const [countryCode, setCountryCode] = useState('KR');
+  const [phoneNumber, setPhoneNumber] = useState('01012345656');
+  const [familyName, setFamilyName] = useState('');
+  const [alarmStatus, setAlarmStatus] = useState(false);
+  const [alarmTime, setAlarmTime] = useState('tt');
+  const [familyId, setFamilyId] = useState('');
 
   const openModal = () => setIsModalVisible(true);
   const closeModal = () => setIsModalVisible(false);
@@ -169,7 +178,7 @@ function MyPageScreen({ navigation }: MyPageScreenProp) {
       {/* Profile Wrapper */}
       <View style={styles.profileWrapper}>
         <Avatar size={60} rounded source={ProfileImageDefault} />
-        <Text style={styles.userName}>user1 님</Text>
+        <Text style={styles.userName}>nickname 님</Text>
       </View>
 
       {/* 각각 설정 항목 */}

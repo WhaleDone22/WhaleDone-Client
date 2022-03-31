@@ -158,21 +158,22 @@ const IcNotice = require('../../../assets/ic-bell.png');
 const IcMyPage = require('../../../assets/ic-user-circle.png');
 
 function MapScreen({ navigation }: MapScreenProp) {
+  // const familyID = await AsyncStorage.getItem("familyID");
   const bottomSheetRef = useRef<any>(null);
   const [familyProfile, setFamilyProfile] = useState([]);
 
   useEffect(() => {
     privateAPI
-      .get({ url: 'api/v1/families/{familyId}/users' })
+      .get({ url: 'api/v1/families/{familyID}/users' })
       .then((response) => {
         if (response.responseSuccess) {
           console.log(response.multipleData);
-          // setFamilyProfile(
-          //   response.multipleData.map((item: any, index: number) => {
-          //     console.log({ ...item });
-          //     return { ...item };
-          //   }),
-          // );
+          setFamilyProfile(
+            response.multipleData.map((item: any, index: number) => {
+              console.log({ ...item });
+              return { ...item };
+            }),
+          );
         } else {
           // 여기서 에러 띄우기
         }
@@ -182,7 +183,7 @@ function MapScreen({ navigation }: MapScreenProp) {
       });
   }, []);
 
-  AsyncStorage.getItem('familyID').then((v) => console.warn(v));
+  // AsyncStorage.getItem('familyID').then((v) => console.warn(v));
 
   return (
     <View style={[{ flex: 1 }]}>
