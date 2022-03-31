@@ -145,7 +145,7 @@ function EditProfileScreen({ navigation, route }: EditProfileScreenProp) {
     privateAPI
       .get({ url: 'api/v1/users/auth' })
       .then((response) => {
-        console.log('1', response);
+        // console.log('1', response);
         if (response.responseSuccess) {
           // console.log(response);
           setCountryCode(response.singleData.countryCode);
@@ -225,7 +225,7 @@ function EditProfileScreen({ navigation, route }: EditProfileScreenProp) {
             style={styles.settingValueTxt}
             onPress={() => navigation.navigate('PhoneInputFromMypage')}
           >
-            +82 01012345678
+            +82 {phoneNumber}
           </Text>
         </View>
         <Image source={mypageLine} style={styles.lineImage} />

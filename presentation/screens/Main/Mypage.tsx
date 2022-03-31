@@ -138,7 +138,7 @@ function MyPageScreen({ navigation }: MyPageScreenProp) {
   const [nickName, setNickName] = useState('');
   const [countryCode, setCountryCode] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [familyName, setFamilyName] = useState('');
+  const [familyName, setFamilyName] = useState('웨일던, 칭찬하는 가족');
   const [alarmStatus, setAlarmStatus] = useState(false);
   const [alarmTime, setAlarmTime] = useState('');
   const [familyId, setFamilyId] = useState('');
@@ -161,6 +161,7 @@ function MyPageScreen({ navigation }: MyPageScreenProp) {
           setAlarmStatus(response.singleData.alarmStatus);
           setAlarmTime(response.singleData.alarmTime);
           setFamilyId(response.singleData.familyId);
+          setFamilyName(response.singleData.groupName);
         } else {
           // 여기서 에러 띄우기
         }
