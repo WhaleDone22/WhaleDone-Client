@@ -23,7 +23,7 @@ interface Request {
   url: string;
   headers?: object;
   isPrivate: boolean;
-  method: 'get' | 'post' | 'put' | 'delete';
+  method: 'get' | 'post' | 'put' | 'delete' | 'patch';
 }
 
 interface RequestWithParams extends Request {
@@ -97,6 +97,18 @@ export const privateAPI = {
       headers,
       isPrivate: true,
     }),
+  patch: ({
+    url,
+    data,
+    headers,
+  }: Omit<RequestWithData, 'isPrivate' | 'method'>) =>
+    sendRequestForData({
+      url,
+      data,
+      method: 'patch',
+      headers,
+      isPrivate: true,
+    }),
   delete: ({
     url,
     params,
@@ -133,6 +145,18 @@ export const publicAPI = {
       url,
       data,
       method: 'put',
+      headers,
+      isPrivate: false,
+    }),
+  patch: ({
+    url,
+    data,
+    headers,
+  }: Omit<RequestWithData, 'isPrivate' | 'method'>) =>
+    sendRequestForData({
+      url,
+      data,
+      method: 'patch',
       headers,
       isPrivate: false,
     }),

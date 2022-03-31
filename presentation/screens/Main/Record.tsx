@@ -162,7 +162,7 @@ function RecordScreen({ navigation, route }: RecordScreenProp) {
       <View style={styles.headerContainer}>
         <ButtonBack onPress={() => navigation.goBack()} />
         <Text style={styles.headerTitle}>
-          {routeParams?.category ?? '내 질문으로 일상공유'}
+          {`${routeParams?.category} 일상공유` ?? '내 질문으로 일상공유'}
         </Text>
         <TouchableOpacity onPress={onSubmitFeed} disabled={!isUploadable}>
           <Text

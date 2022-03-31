@@ -3,22 +3,35 @@
 export type NavigationStackParams = {
   SignUpMain: undefined;
   Login: undefined;
-  EmailInput: undefined;
+  EmailInput: {
+    phoneNumber: string;
+    countryCode: string;
+    alarmStatus: boolean;
+  };
   Greet: { nickname: string };
   GroupCodeInput: undefined;
   GroupCodeShare: { code: string };
-  NicknameInput: undefined;
-  PasswordInput: undefined;
+  NicknameInput: {
+    phoneNumber: string;
+    countryCode: string;
+    email: string;
+    password: string;
+    alarmStatus: boolean;
+  };
+  PasswordInput: {
+    phoneNumber: string;
+    countryCode: string;
+    email: string;
+    alarmStatus: boolean;
+  };
   PhoneInput: undefined;
-  PhoneAuth: undefined;
+  PhoneAuth: { phoneNumber: string; countryCode: string; alarmStatus: boolean };
   Main: { screen: 'Home' | 'Map' | 'Feed' };
   EditProfile: undefined;
   MapDetail: undefined;
   MyPage: undefined;
   Notice: undefined;
-  Record:
-    | undefined
-    | { category: string; question: string; questionID: number };
+  Record: undefined | { category: string; question: string };
   Home: undefined;
   Map: undefined;
   Feed: undefined;
@@ -28,3 +41,4 @@ export type NavigationStackParams = {
   PhoneInputFromMypage: undefined;
   GroupCodeShareFromMap: undefined;
 };
+// questionID: number

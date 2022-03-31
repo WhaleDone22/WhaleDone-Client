@@ -4,6 +4,7 @@ import { Text, Image, StyleSheet, View, Pressable } from 'react-native';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import BottomSheet from 'react-native-gesture-bottom-sheet';
 import MapView, { PROVIDER_GOOGLE, Marker, Circle } from 'react-native-maps';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 
 import COLORS from '../../styles/colors';
@@ -127,7 +128,7 @@ const styles = StyleSheet.create({
     color: COLORS.BLUE_500,
   },
 
-  //Marker
+  // Marker
   markerImg: {
     width: 48,
     height: 48,
@@ -135,7 +136,6 @@ const styles = StyleSheet.create({
     borderRadius: 48,
   },
   markerCircle: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     width: 200,
@@ -161,6 +161,8 @@ function MapScreen({ navigation, route }: MapScreenProp) {
   // const { code } = route.params;
   const [selectedCountry, setSelectedCountry] = useState(true);
   const bottomSheetRef = useRef<any>(null);
+
+  AsyncStorage.getItem('familyID').then((v) => console.warn(v));
 
   return (
     <View style={[{ flex: 1 }]}>
@@ -273,7 +275,9 @@ function MapScreen({ navigation, route }: MapScreenProp) {
           <Marker coordinate={{ latitude: 37.487935, longitude: 126.857758 }}>
             <View style={styles.markerCircle}>
               <Image
-                source={{uri:'https://avatars.githubusercontent.com/u/98895272?s=200&v=4'}}
+                source={{
+                  uri: 'https://avatars.githubusercontent.com/u/98895272?s=200&v=4',
+                }}
                 style={styles.markerImg}
               />
             </View>
@@ -319,7 +323,7 @@ function MapScreen({ navigation, route }: MapScreenProp) {
         <View
           style={[
             styles.textWrapper1,
-            { paddingHorizontal: 18, paddingTop: 10, width: '100%'},
+            { paddingHorizontal: 18, paddingTop: 10, width: '100%' },
           ]}
         >
           <Text style={styles.mainText}>가족 간 마음거리</Text>
