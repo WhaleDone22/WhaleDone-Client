@@ -41,4 +41,3 @@ export type NavigationStackParams = {
   PhoneInputFromMypage: undefined;
   GroupCodeShareFromMap: undefined | { code: string };
 };
-// questionID: number

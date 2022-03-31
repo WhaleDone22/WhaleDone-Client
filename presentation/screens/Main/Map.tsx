@@ -5,6 +5,7 @@ import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import BottomSheet from 'react-native-gesture-bottom-sheet';
 import MapView, { PROVIDER_GOOGLE, Marker, Circle } from 'react-native-maps';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { privateAPI } from '../../../infrastructures/api/remote/base';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 
 import COLORS from '../../styles/colors';

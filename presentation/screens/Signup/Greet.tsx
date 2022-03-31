@@ -4,7 +4,6 @@ import { Text, View, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonBack from '../../components/ButtonBack';
-// import greetIcon from '../../../assets/greetIcon.png'
 
 import COLORS from '../../styles/colors';
 
@@ -14,6 +13,7 @@ type GreetScreenProp = NativeStackScreenProps<NavigationStackParams, 'Greet'>;
 
 function GreetScreen({ navigation, route }: GreetScreenProp) {
   const { nickname } = route.params;
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.safeAreaContainer}>

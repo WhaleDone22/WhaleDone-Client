@@ -1,3 +1,4 @@
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useEffect, useState } from 'react';
 import {
@@ -109,8 +110,8 @@ const IcProfileImageEdit = require('../../../assets/ic-profile-image-edit.png');
 const ProfileImageDefault = require('../../../assets/profile-image-default.png');
 const mypageLine = require('../../../assets/mypage-line.png');
 
-function EditProfileScreen({ navigation }: EditProfileScreenProp) {
-  const [newChannelName, setNewChannelName] = useState('');
+async function EditProfileScreen({ navigation }: EditProfileScreenProp) {
+  // const familyID = await AsyncStorage.getItem('familyID');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [pickedImagePath, setPickedImagePath] = useState('');
 
@@ -119,11 +120,12 @@ function EditProfileScreen({ navigation }: EditProfileScreenProp) {
   const [mode, setMode] = useState('time');
   const [show, setShow] = useState(false);
 
-  const [countryCode, setCountryCode] = useState('82');
-  const [phoneNumber, setPhoneNumber] = useState('01012345678');
-  const [familyName, setFamilyName] = useState('aa');
+  const [countryCode, setCountryCode] = useState('KR');
+  const [phoneNumber, setPhoneNumber] = useState('01012345656');
+  const [familyName, setFamilyName] = useState('웨일던, 칭찬하는 가족');
   const [alarmStatus, setAlarmStatus] = useState(false);
   const [alarmTime, setAlarmTime] = useState('');
+  const [familyId, setFamilyId] = useState('');
   const [updateName, setUpdateName] = useState('');
 
   const openModal = () => setIsModalVisible(true);
@@ -148,9 +150,7 @@ function EditProfileScreen({ navigation }: EditProfileScreenProp) {
       .then((response) => {
         // eslint-disable-next-line no-constant-condition
         if (typeof response.responseSuccess) {
-          // SERVER001 ?
-          // console.log(response.code);
-          // console.log(response.message);
+          // console.log(response.familyName);
           navigation.navigate('MyPage');
         } else {
           // 에러
@@ -163,15 +163,13 @@ function EditProfileScreen({ navigation }: EditProfileScreenProp) {
     // 가족 채널 이름 변경 API
     privateAPI
       .patch({
-        url: 'api/v1/families/{familyId}/name',
-        data: { updateName },
+        url: 'api/v1/families/familyID/name',
+        data: { familyId },
       })
       .then((response) => {
         // eslint-disable-next-line no-constant-condition
         if (typeof response.responseSuccess) {
-          // SERVER001 ?
-          // console.log(response.code);
-          // console.log(response.message);
+          // console.log(response.updateName);
         } else {
           // 에러
         }
@@ -180,6 +178,10 @@ function EditProfileScreen({ navigation }: EditProfileScreenProp) {
         // 여기서도 에러 띄우기
       });
   };
+
+  // useEffect(() => {
+  //   console.log(familyID);
+  // }, []);
 
   return (
     <SafeAreaView style={commonStyles.container}>
@@ -218,7 +220,7 @@ function EditProfileScreen({ navigation }: EditProfileScreenProp) {
             style={styles.settingValueTxt}
             onPress={() => navigation.navigate('PhoneInputFromMypage')}
           >
-            +82 010-7979-8282
+            +82 010-1212-5656
           </Text>
         </View>
         <Image source={mypageLine} style={styles.lineImage} />
@@ -227,10 +229,10 @@ function EditProfileScreen({ navigation }: EditProfileScreenProp) {
         <View style={styles.eachSettings}>
           <Text style={styles.settingTxt}>가족 채널</Text>
           <TextInput
-            value={newChannelName}
+            value={updateName}
             style={styles.settingValueTxt}
-            placeholder="가족어쩌구"
-            onChangeText={setNewChannelName}
+            placeholder="가족"
+            onChangeText={setUpdateName}
           />
         </View>
         <Image source={mypageLine} style={styles.lineImage} />

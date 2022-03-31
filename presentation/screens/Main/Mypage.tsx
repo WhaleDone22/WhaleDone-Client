@@ -225,7 +225,7 @@ function MyPageScreen({ navigation }: MyPageScreenProp) {
       </View>
 
       <View>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.membershipBtn}
           // onPress={onMembershipPressed}
         >
@@ -233,7 +233,7 @@ function MyPageScreen({ navigation }: MyPageScreenProp) {
             웨일던 프라이빗 지금 시작하세요!
           </Text>
           <Image source={IcArrowRight} style={styles.membershipArrowIcon} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <Text
           style={styles.withdrawTxt}
           onPress={() => navigation.navigate('Home')}
