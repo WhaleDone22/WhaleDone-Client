@@ -1,4 +1,5 @@
-import React from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Feed } from '../../infrastructures/types/feed';
 import COLORS from '../styles/colors';
@@ -33,7 +34,10 @@ function FeedsPerDay({
   selectedFeedID: number | undefined;
   setSelectedFeedY: (y: number) => void;
 }) {
-  const myID = 4;
+  const [myID, setMyID] = useState(0);
+  useEffect(() => {
+    AsyncStorage.getItem('userID').then((value) => setMyID(+(value ?? 0)));
+  }, []);
   return (
     <>
       <View style={{ alignItems: 'center' }}>
