@@ -44,6 +44,8 @@ module.exports = {
   globals: {
     NodeJS: true,
     fetch: true,
+    FormData: true,
+    File: true,
   },
   plugins: ['prettier'],
 };

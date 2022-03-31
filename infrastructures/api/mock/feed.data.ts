@@ -94,10 +94,10 @@ export const FEED_DATA: {
     },
   ],
   GET_TIME: {
-    my: { countryCode: 'KR', timeDelta: 0 },
+    my: { id: 1, countryCode: 'KR', timeDelta: 0 },
     families: [
-      { countryCode: 'KR', timeDelta: 0 },
-      { countryCode: 'CN', timeDelta: -1 },
+      { id: 2, countryCode: 'KR', timeDelta: 0 },
+      { id: 3, countryCode: 'CN', timeDelta: -1 },
     ],
   },
   GET_REACTIONS: [

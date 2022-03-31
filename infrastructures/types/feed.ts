@@ -1,3 +1,8 @@
+export type Reaction = {
+  type: 'EMOJI' | 'TEXT' | 'RECORD';
+  count: number;
+};
+
 export type Feed = {
   id: number;
   writer: string;
@@ -6,11 +11,6 @@ export type Feed = {
   title: string;
   body: string;
   reactions: Reaction[];
-};
-
-export type Reaction = {
-  type: 'EMOJI' | 'TEXT' | 'RECORD';
-  count: number;
 };
 
 const IcEmoji = require('../../assets/ic-reaction-emoji.png');
@@ -24,6 +24,7 @@ export const reactionToIcon = {
 };
 
 export type ClockTime = {
+  id?: number;
   countryCode: string;
   timeDelta: number;
 };

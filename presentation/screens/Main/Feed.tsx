@@ -12,6 +12,8 @@ import { FlatList, ScrollView, TextInput } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Swiper from 'react-native-swiper';
 import BottomSheet from 'react-native-gesture-bottom-sheet';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { api } from '../../../infrastructures/api';
 import {
   ClockTime,
@@ -24,6 +26,7 @@ import COLORS from '../../styles/colors';
 import { commonStyles } from '../../styles/common';
 import ReactionItem from '../../components/ReactionItem';
 import AudioRecorder from '../../components/AudioRecorder';
+import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 
 const { width } = Dimensions.get('window');
 const reactionEmojis: string[] = require('../../../infrastructures/data/reactionEmoji.json');
@@ -109,6 +112,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.GREY_030,
   },
+  previewText: {
+    color: COLORS.TEXT_DISABLED_GREY,
+    fontSize: 14,
+    fontFamily: 'Pretendard',
+  },
 });
 
 const IcSwiperNext = require('../../../assets/ic-swiper-next.png');
@@ -118,7 +126,9 @@ const IcEmojiSelectedTrue = require('../../../assets/ic-emoji-selected-true.png'
 const IcMikeSelectedFalse = require('../../../assets/ic-mike-selected-false.png');
 const IcMikeSelectedTrue = require('../../../assets/ic-mike-selected-true.png');
 
-function FeedScreen() {
+type FeedScreenProp = NativeStackScreenProps<NavigationStackParams, 'Feed'>;
+
+function FeedScreen({ navigation }: FeedScreenProp) {
   const [feeds, setFeeds] = useState<{ date: string; feeds: Feed[] }[]>([]);
   const [times, setTimes] = useState<{
     my: ClockTime;
@@ -145,7 +155,10 @@ function FeedScreen() {
   }, []);
 
   useEffect(() => {
-    api.feedService.getTime().then((response) => setTimes(response));
+    AsyncStorage.getItem('familyID').then((value) => {
+      if (!value || Number.isNaN(+value)) return;
+      api.feedService.getTime(+value).then((response) => setTimes(response));
+    });
   }, []);
 
   useEffect(() => {
@@ -294,30 +307,57 @@ function FeedScreen() {
           </View>
         </Pressable>
       </BottomSheet>
-      <ScrollView stickyHeaderIndices={[1]} ref={scrollViewRef}>
+      <ScrollView
+        stickyHeaderIndices={[1]}
+        ref={scrollViewRef}
+        contentContainerStyle={{ flexGrow: 1 }}
+      >
         <View style={styles.timeContainer}>
           <View style={commonStyles.titleWrapper}>
             <Text style={commonStyles.title}>소통함</Text>
           </View>
           <View style={styles.timeWrapper}>
             <View style={[styles.timeChild, styles.rightBorder]}>
-              <Text style={styles.timeTitle}>지금 내 시간</Text>
+              <Text style={styles.timeTitle}>지금 나의 시간</Text>
               <ClockItem clock={times.my} />
             </View>
             <View style={styles.timeChild}>
-              <Text style={styles.timeTitle}>지금 가족 시간</Text>
-              <Swiper
-                showsButtons={times.families.length > 1}
-                nextButton={<Image source={IcSwiperNext} style={styles.icon} />}
-                prevButton={<Image source={IcSwiperPrev} style={styles.icon} />}
-                showsPagination={false}
-                buttonWrapperStyle={styles.timeSwiperButtonWrapper}
-                height={60}
-              >
-                {times.families.map((time) => (
-                  <ClockItem key={time.countryCode} clock={time} />
-                ))}
-              </Swiper>
+              {times.families.length > 0 ? (
+                <>
+                  <Text style={styles.timeTitle}>지금 가족 시간</Text>
+                  <Swiper
+                    showsButtons={times.families.length > 1}
+                    nextButton={
+                      <Image source={IcSwiperNext} style={styles.icon} />
+                    }
+                    prevButton={
+                      <Image source={IcSwiperPrev} style={styles.icon} />
+                    }
+                    showsPagination={false}
+                    buttonWrapperStyle={styles.timeSwiperButtonWrapper}
+                    height={60}
+                  >
+                    {times.families.map((time) => (
+                      <ClockItem key={time.countryCode} clock={time} />
+                    ))}
+                  </Swiper>
+                </>
+              ) : (
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text style={[styles.previewText, { fontSize: 12 }]}>
+                    가족을 초대하면
+                  </Text>
+                  <Text style={[styles.previewText, { fontSize: 12 }]}>
+                    시간을 비교할 수 있어요!
+                  </Text>
+                </View>
+              )}
             </View>
           </View>
         </View>
@@ -344,20 +384,57 @@ function FeedScreen() {
             </View>
           </View>
         </View>
-        <View
-          style={[styles.feedsWrapper, { paddingBottom: viewPaddingBottom }]}
-        >
-          {feeds.map((feed) => (
-            <FeedsPerDay
-              key={feed.date}
-              {...feed}
-              isAll={isAll}
-              setSelectedFeedID={setSelectedFeedID}
-              selectedFeedID={selectedFeedID}
-              setSelectedFeedY={setSelectedFeedY}
-            />
-          ))}
-        </View>
+
+        {feeds.length > 0 ? (
+          <View
+            style={[styles.feedsWrapper, { paddingBottom: viewPaddingBottom }]}
+          >
+            {feeds.map((feed) => (
+              <FeedsPerDay
+                key={feed.date}
+                {...feed}
+                isAll={isAll}
+                setSelectedFeedID={setSelectedFeedID}
+                selectedFeedID={selectedFeedID}
+                setSelectedFeedY={setSelectedFeedY}
+              />
+            ))}
+          </View>
+        ) : (
+          <>
+            <View style={{ marginTop: 100, alignItems: 'center' }}>
+              <Text style={styles.previewText}>아직 이곳은 조용하네요.</Text>
+              <Text style={styles.previewText}>
+                지금 바로 나의 일상을 가족과 공유해 보세요!
+              </Text>
+            </View>
+            <Pressable
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                paddingVertical: 17,
+                backgroundColor: COLORS.BLUE_500,
+                borderRadius: 5,
+                position: 'absolute',
+                bottom: 24,
+                width: '90%',
+                right: '5%',
+                left: '5%',
+              }}
+              onPress={() => navigation.navigate('Home')}
+            >
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontFamily: 'Pretendard-Bold',
+                  color: 'white',
+                }}
+              >
+                오늘 일상공유 하기
+              </Text>
+            </Pressable>
+          </>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
