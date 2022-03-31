@@ -40,7 +40,10 @@ function NoticeScreen({ navigation }: NoticeScreenProp) {
 
   return (
     <SafeAreaView style={commonStyles.container}>
-      <ScrollView stickyHeaderIndices={[0]} contentContainerStyle={{ flex: 1 }}>
+      <ScrollView
+        stickyHeaderIndices={[0]}
+        contentContainerStyle={{ flexGrow: 1 }}
+      >
         <View>
           <View style={styles.headerContainer}>
             <ButtonBack onPress={() => navigation.goBack()} />
