@@ -13,7 +13,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Swiper from 'react-native-swiper';
 import BottomSheet from 'react-native-gesture-bottom-sheet';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { api } from '../../../infrastructures/api';
 import {
   ClockTime,
@@ -150,6 +149,40 @@ function FeedScreen({ navigation }: FeedScreenProp) {
   const [viewPaddingBottom, setViewPaddingBottom] = useState(40);
   const [reactions, setReactions] = useState<ReactionItemType[]>([]);
 
+  const sendTextReaction = () => {
+    if (!selectedFeedID) return;
+    api.feedService
+      .createReaction(selectedFeedID, typedText, 'TEXT')
+      .then((response) => {
+        if (response.isSuccess) {
+          setTypedText('');
+          setBottomSheetMode('reaction');
+        }
+      });
+  };
+
+  const sendEmojiReaction = (emoji: string) => {
+    if (!selectedFeedID) return;
+    api.feedService
+      .createReaction(selectedFeedID, emoji, 'EMOJI')
+      .then((response) => {
+        if (response.isSuccess) {
+          setBottomSheetMode('reaction');
+        }
+      });
+  };
+
+  const sendRecordReaction = (recordPath: string) => {
+    if (!selectedFeedID) return;
+    api.feedService
+      .createReaction(selectedFeedID, recordPath, 'RECORD')
+      .then((response) => {
+        if (response.isSuccess) {
+          setBottomSheetMode('reaction');
+        }
+      });
+  };
+
   useEffect(() => {
     api.feedService.getAllFeed().then((response) => setFeeds(response));
   }, []);
@@ -241,7 +274,7 @@ function FeedScreen({ navigation }: FeedScreenProp) {
                 </Pressable>
               </>
             ) : (
-              <Pressable>
+              <Pressable onPress={sendTextReaction}>
                 <Text
                   style={[
                     styles.sendButton,
@@ -285,11 +318,13 @@ function FeedScreen({ navigation }: FeedScreenProp) {
                 <FlatList
                   data={reactionEmojis}
                   renderItem={({ item }) => (
-                    <Image
-                      key={item}
-                      source={{ uri: item }}
-                      style={{ width: width / 3, height: width / 3 }}
-                    />
+                    <Pressable onPress={() => sendEmojiReaction(item)}>
+                      <Image
+                        key={item}
+                        source={{ uri: item }}
+                        style={{ width: width / 3, height: width / 3 }}
+                      />
+                    </Pressable>
                   )}
                   numColumns={3}
                   keyExtractor={(item) => item}
@@ -299,6 +334,7 @@ function FeedScreen({ navigation }: FeedScreenProp) {
             {bottomSheetMode === 'record' && (
               <AudioRecorder
                 setReactionMode={() => setBottomSheetMode('reaction')}
+                sendRecordReaction={sendRecordReaction}
               />
             )}
           </View>

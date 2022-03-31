@@ -123,7 +123,7 @@ export function feedRemote(): FeedService {
         data: { content, type: clientTypeToServerType[type] },
       })
       .then((response) => {
-        if (response.responseSuccess === 'SUCCESS') return { isSuccess: true };
+        if (response.code === 'SUCCESS') return { isSuccess: true };
         return { isSuccess: false };
       });
   };

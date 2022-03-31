@@ -1,3 +1,5 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Audio } from 'expo-av';
 import React, { useState, useEffect } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
@@ -5,6 +7,7 @@ import COLORS from '../styles/colors';
 
 type AudioRecorderProps = {
   setReactionMode: () => void;
+  sendRecordReaction: (recordPath: string) => void;
 };
 
 const styles = StyleSheet.create({
@@ -54,7 +57,10 @@ const IcRecordSend = require('../../assets/ic-record-send.png');
 const IcRecordStart = require('../../assets/ic-record-start.png');
 
 function AudioRecorder(props: AudioRecorderProps) {
-  const { setReactionMode } = props;
+  const { setReactionMode, sendRecordReaction } = props;
+  const [recording, setRecording] = useState<Audio.Recording | null>(null);
+  const [audioURI, setAudioURI] = useState<string | null>(null);
+
   const [recordStatus, setRecordStatus] = useState<
     'idle' | 'recording' | 'finished'
   >('idle');
@@ -71,9 +77,63 @@ function AudioRecorder(props: AudioRecorderProps) {
   const [seconds, setSeconds] = useState(0);
   const [displaySeconds, setDisplaySeconds] = useState(0);
 
+  const uploadRecord = async (recordPath: string) => {
+    const formData = new FormData();
+
+    formData.append('multipartFile', {
+      uri: recordPath, // 에러 표시되지만 잘 작동합니다.
+      name: recordPath.split('/').pop(),
+      type: `audio/${recordPath.split('.').pop()}`,
+    });
+    const myToken = await AsyncStorage.getItem('token');
+    if (!myToken) return;
+
+    const uploadRequest = await fetch(
+      'http://ec2-3-37-42-113.ap-northeast-2.compute.amazonaws.com:8080/api/v1/content',
+      {
+        method: 'POST',
+        body: formData,
+        headers: { 'X-AUTH-TOKEN': myToken },
+      },
+    );
+
+    const uploadResponse = await uploadRequest.json();
+
+    if (typeof uploadResponse.singleData.url === 'string') {
+      sendRecordReaction(uploadResponse.singleData.url);
+    }
+  };
+
+  const startRecord = async () => {
+    try {
+      await Audio.requestPermissionsAsync();
+      await Audio.setAudioModeAsync({
+        allowsRecordingIOS: true,
+        playsInSilentModeIOS: true,
+      });
+      const { recording: AudioRecording } = await Audio.Recording.createAsync(
+        Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY,
+      );
+      setRecording(AudioRecording);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const stopRecord = async () => {
+    if (!recording) return;
+
+    await recording.stopAndUnloadAsync();
+    const recordingURI = recording.getURI();
+    setAudioURI(recordingURI);
+    setRecording(null);
+    if (!recordingURI) return;
+    uploadRecord(recordingURI);
+  };
+
   useEffect(() => {
     let recordDuration: NodeJS.Timer | undefined;
-    if (recordStatus === 'recording')
+    if (recordStatus === 'recording') {
       recordDuration = setInterval(() => {
         setSeconds((prev) => {
           if (prev >= 60) {
@@ -83,7 +143,12 @@ function AudioRecorder(props: AudioRecorderProps) {
           return prev + 1;
         });
       }, 1000);
-    if (recordStatus === 'finished') setDisplaySeconds(60);
+      startRecord();
+    }
+    if (recordStatus === 'finished') {
+      setDisplaySeconds(60);
+      stopRecord();
+    }
     return () => {
       if (recordDuration) clearInterval(recordDuration);
     };

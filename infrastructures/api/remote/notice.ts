@@ -9,7 +9,7 @@ export function noticeRemote(): NoticeService {
         if (response.code === 'SUCCESS') {
           return Object.keys(response.singleData.result).map((date) => ({
             date,
-            notices: response.singleData.result.date.map((notice: any) => ({
+            notices: response.singleData.result[date].map((notice: any) => ({
               id: notice.postId,
               type:
                 // eslint-disable-next-line no-nested-ternary
