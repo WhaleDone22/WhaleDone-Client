@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useEffect, useState } from 'react';
 import {
@@ -10,14 +11,14 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import { Avatar, Switch } from 'react-native-elements';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { privateAPI } from '../../../infrastructures/api/remote/base';
+import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonBack from '../../components/ButtonBack';
 import PhotoSelectorModal from '../../components/PhotoSelectorModal';
 import COLORS from '../../styles/colors';
 import { commonStyles } from '../../styles/common';
-import MyPage from './Mypage';
 
 type EditProfileScreenProp = NativeStackScreenProps<
   NavigationStackParams,
@@ -110,7 +111,7 @@ const ProfileImageDefault = require('../../../assets/profile-image-default.png')
 const mypageLine = require('../../../assets/mypage-line.png');
 
 function EditProfileScreen({ navigation, route }: EditProfileScreenProp) {
-  const [newChannelName, setNewChannelName] = useState('');
+  const { nickname } = route.params;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [pickedImagePath, setPickedImagePath] = useState('');
 
@@ -118,6 +119,14 @@ function EditProfileScreen({ navigation, route }: EditProfileScreenProp) {
   const [date, setDate] = useState(new Date(1598051730000));
   const [mode, setMode] = useState('time');
   const [show, setShow] = useState(false);
+
+  const [countryCode, setCountryCode] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [familyName, setFamilyName] = useState('');
+  const [alarmStatus, setAlarmStatus] = useState(false);
+  const [alarmTime, setAlarmTime] = useState('');
+  const [familyId, setFamilyId] = useState('');
+  const [updateName, setUpdateName] = useState('');
 
   const openModal = () => setIsModalVisible(true);
   const closeModal = () => setIsModalVisible(false);
@@ -128,17 +137,55 @@ function EditProfileScreen({ navigation, route }: EditProfileScreenProp) {
     setDate(currentDate);
   };
 
-  // const showMode = (currentMode: any) => {
-  //   setShow(true);
-  //   setMode(currentMode);
-  // };
-
-  // const showTimepicker = () => {
-  //   showMode('time');
-  // };
-
   const showTimepicker = () => {
     setShow(true);
+  };
+
+  useEffect(() => {
+    privateAPI
+      .get({ url: 'api/v1/users/auth' })
+      .then((response) => {
+        // console.log('1', response);
+        if (response.responseSuccess) {
+          // console.log(response);
+          setCountryCode(response.singleData.countryCode);
+          setPhoneNumber(response.singleData.phoneNumber);
+          setAlarmStatus(response.singleData.alarmStatus);
+          setAlarmTime(response.singleData.alarmTime);
+          setFamilyId(response.singleData.familyId);
+        } else {
+          // 여기서 에러 띄우기
+        }
+      })
+      .catch((/* error */) => {
+        // 여기서도 에러 띄우기
+      });
+  }, []);
+  
+  const editProfileHandler = () => {
+    console.log({ countryCode, phoneNumber, familyName, alarmStatus, alarmTime});
+    privateAPI
+      .patch({
+        url: 'api/v1/users/auth/information',
+        data: { countryCode, phoneNumber, familyName, alarmStatus, alarmTime },
+      })
+      .then((response) => {
+        // eslint-disable-next-line no-constant-condition
+        if (typeof response.responseSuccess) {
+          console.log(response);
+          setCountryCode(response.countryCode);
+          setPhoneNumber(response.phoneNumber);
+          setFamilyName(response.familyName);
+          setAlarmStatus(response.alarmStatus);
+          setAlarmTime(response.alarmTime);
+          navigation.navigate('MyPage');
+        } else {
+          // 에러
+        }
+      })
+      .catch((/* error */) => {
+        // 여기서도 에러 띄우기
+      });
   };
 
   return (
@@ -153,9 +200,7 @@ function EditProfileScreen({ navigation, route }: EditProfileScreenProp) {
       <View style={styles.headerContainer}>
         <ButtonBack onPress={() => navigation.goBack()} />
         <Text style={styles.headerTitle}>마이페이지 수정</Text>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('MyPage', { newChannelName: newChannelName })}
-        >
+        <TouchableOpacity onPress={editProfileHandler}>
           <Text style={styles.saveText}>저장</Text>
         </TouchableOpacity>
       </View>
@@ -168,7 +213,7 @@ function EditProfileScreen({ navigation, route }: EditProfileScreenProp) {
             <Avatar.Accessory size={20} source={IcProfileImageEdit} />
           </Avatar>
         </TouchableOpacity>
-        <Text style={styles.userName}>user1 님</Text>
+        <Text style={styles.userName}>{nickname} 님</Text>
       </View>
 
       {/* 각각 설정 항목 */}
@@ -180,7 +225,7 @@ function EditProfileScreen({ navigation, route }: EditProfileScreenProp) {
             style={styles.settingValueTxt}
             onPress={() => navigation.navigate('PhoneInputFromMypage')}
           >
-            +82 010-7979-8282
+            +82 {phoneNumber}
           </Text>
         </View>
         <Image source={mypageLine} style={styles.lineImage} />
@@ -189,10 +234,10 @@ function EditProfileScreen({ navigation, route }: EditProfileScreenProp) {
         <View style={styles.eachSettings}>
           <Text style={styles.settingTxt}>가족 채널</Text>
           <TextInput
-            value={newChannelName}
+            value={familyName}
             style={styles.settingValueTxt}
-            placeholder="가족어쩌구"
-            onChangeText={setNewChannelName}
+            placeholder="웨일던, 칭찬하는 가족"
+            onChangeText={(text) => setFamilyName(text)}
           />
         </View>
         <Image source={mypageLine} style={styles.lineImage} />
@@ -205,8 +250,13 @@ function EditProfileScreen({ navigation, route }: EditProfileScreenProp) {
               style={[styles.settingValueTxt, styles.alarmTxt]}
               onPress={showTimepicker}
             >
-              {Platform.OS === 'ios' ? date.toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit', hour12: true}) : date.toLocaleTimeString()}
-              {/* {date.toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit', hour12: true})} */}
+              {Platform.OS === 'ios'
+                ? date.toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true,
+                  })
+                : date.toLocaleTimeString()}
             </Text>
             <Switch
               value={isSetAlarm}

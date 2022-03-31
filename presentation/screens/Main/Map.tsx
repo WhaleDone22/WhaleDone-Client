@@ -1,10 +1,11 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Text, Image, StyleSheet, View, Pressable } from 'react-native';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import BottomSheet from 'react-native-gesture-bottom-sheet';
 import MapView, { PROVIDER_GOOGLE, Marker, Circle } from 'react-native-maps';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { privateAPI } from '../../../infrastructures/api/remote/base';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 
 import COLORS from '../../styles/colors';
@@ -152,17 +153,37 @@ const defaultProfile = require('../../../assets/image-profile-default.png');
 const ex1Profile = require('../../../assets/image-profile-ex1.png');
 const ex2Profile = require('../../../assets/image-profile-ex2.png');
 const addFamily = require('../../../assets/ic-add-family.png');
-const ex2marker = require('../../../assets/image-marker-ex2.png');
 
 const IcNotice = require('../../../assets/ic-bell.png');
 const IcMyPage = require('../../../assets/ic-user-circle.png');
 
-function MapScreen({ navigation, route }: MapScreenProp) {
-  // const { code } = route.params;
-  const [selectedCountry, setSelectedCountry] = useState(true);
+function MapScreen({ navigation }: MapScreenProp) {
+  // const familyID = await AsyncStorage.getItem("familyID");
   const bottomSheetRef = useRef<any>(null);
+  const [familyProfile, setFamilyProfile] = useState([]);
 
-  AsyncStorage.getItem('familyID').then((v) => console.warn(v));
+  useEffect(() => {
+    privateAPI
+      .get({ url: 'api/v1/families/{familyID}/users' })
+      .then((response) => {
+        if (response.responseSuccess) {
+          console.log(response.multipleData);
+          setFamilyProfile(
+            response.multipleData.map((item: any, index: number) => {
+              console.log({ ...item });
+              return { ...item };
+            }),
+          );
+        } else {
+          // 여기서 에러 띄우기
+        }
+      })
+      .catch((/* error */) => {
+        // 여기서도 에러 띄우기
+      });
+  }, []);
+
+  // AsyncStorage.getItem('familyID').then((v) => console.warn(v));
 
   return (
     <View style={[{ flex: 1 }]}>
@@ -220,7 +241,7 @@ function MapScreen({ navigation, route }: MapScreenProp) {
           </View>
 
           {/* 마음 거리 */}
-          <View style={styles.distanceWrapper}>
+          {/* <View style={styles.distanceWrapper}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Image source={defaultProfile} style={styles.distanceProfile} />
               <Text style={styles.distanceText}>user님과의 마음거리</Text>
@@ -250,7 +271,7 @@ function MapScreen({ navigation, route }: MapScreenProp) {
             >
               9999km {'>'}
             </Text>
-          </View>
+          </View> */}
         </ScrollView>
       </BottomSheet>
 
@@ -266,8 +287,8 @@ function MapScreen({ navigation, route }: MapScreenProp) {
           style={[{ width: '100%', height: '100%' }]}
           provider={PROVIDER_GOOGLE}
           initialRegion={{
-            latitude: 35.91395373474155,
-            longitude: 127.73829440215488,
+            latitude: 37.487935,
+            longitude: 126.857758,
             latitudeDelta: 70,
             longitudeDelta: 70,
           }}

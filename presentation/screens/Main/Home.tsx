@@ -196,10 +196,6 @@ function HomeScreen({ navigation }: HomeScreenProp) {
   const [week1, setWeek1] = useState('');
   const [week2, setWeek2] = useState('');
 
-  // useEffect(() => {
-  //   console.log(carouselItems)
-  // }, [carouselItems]);
-
   const renderItem = useCallback(({ item }: RenderItemProps) => {
     return (
       <View style={styles.carouselWrapper} key={item.category}>

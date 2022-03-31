@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Dimensions,
   Image,
@@ -9,6 +9,7 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import COLORS from '../../styles/colors';
 
@@ -75,6 +76,15 @@ const styles = StyleSheet.create({
 });
 
 function SignUpMainScreen({ navigation }: SignUpMainScreenProp) {
+  // useEffect(() => {
+  //   AsyncStorage.getItem('userID').then(() => {
+  //     const familyID = await AsyncStorage.getItem('familyID');
+  //     if (familyID === '') {
+  //       navigation.navigate('Greet');
+  //     }
+  //   });
+  // }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <Image source={logoWithTitle} style={styles.logoImage} />

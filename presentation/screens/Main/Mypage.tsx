@@ -12,6 +12,8 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Avatar, Switch } from 'react-native-elements';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { privateAPI } from '../../../infrastructures/api/remote/base';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonBack from '../../components/ButtonBack';
 import PhotoSelectorModal from '../../components/PhotoSelectorModal';
@@ -19,7 +21,6 @@ import COLORS from '../../styles/colors';
 import { commonStyles } from '../../styles/common';
 
 type MyPageScreenProp = NativeStackScreenProps<NavigationStackParams, 'MyPage'>;
-
 
 const ProfileImageDefault = require('../../../assets/profile-image-default.png');
 const mypageLine = require('../../../assets/mypage-line.png');
@@ -127,31 +128,52 @@ const styles = StyleSheet.create({
   },
 });
 
-function MyPageScreen({ navigation, route }: MyPageScreenProp) {
+function MyPageScreen({ navigation }: MyPageScreenProp) {
+  // AsyncStorage.getItem('token')
   const [isEditable, setIsEditable] = useState(true);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [pickedImagePath, setPickedImagePath] = useState('');
-  const [channelName, setChannelName] = useState('');
-  const [text, setText] = useState('');
   const [isSetAlarm, setIsSetAlarm] = useState(true);
+
+  const [nickName, setNickName] = useState('');
+  const [countryCode, setCountryCode] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [familyName, setFamilyName] = useState('웨일던, 칭찬하는 가족');
+  const [alarmStatus, setAlarmStatus] = useState(false);
+  const [alarmTime, setAlarmTime] = useState('');
+  const [familyId, setFamilyId] = useState('');
 
   const openModal = () => setIsModalVisible(true);
   const closeModal = () => setIsModalVisible(false);
 
-  const onMembershipPressed = () => {
-    console.log('onMembershipPressed');
-  };
+  // const onMembershipPressed = () => {
+  //   console.log('onMembershipPressed');
+  // };
 
-  // useEffect(() => {
-  //   setIsUploadable(text.length > 10 || pickedImagePath !== '');
-  // }, [text, pickedImagePath]);
+  useEffect(() => {
+    privateAPI
+      .get({ url: 'api/v1/users/auth' })
+      .then((response) => {
+        if (response.responseSuccess) {
+          setNickName(response.singleData.nickName);
+          setCountryCode(response.singleData.countryCode);
+          setPhoneNumber(response.singleData.phoneNumber);
+          setAlarmStatus(response.singleData.alarmStatus);
+          setAlarmTime(response.singleData.alarmTime);
+          setFamilyId(response.singleData.familyId);
+          setFamilyName(response.singleData.groupName);
+        } else {
+          // 여기서 에러 띄우기
+        }
+      })
+      .catch((/* error */) => {
+        // 여기서도 에러 띄우기
+      });
+  }, []);
 
-  // 수정페이지에 일단 들어간 다음에 거기서 저장으로 다시 Mypage에 들어올 때 route.params를 받아와야 함
-  // const { newChannelName } = route.params;
-  // console.log(newChannelName)
-  // useEffect(() => {
-  //   //
-  // }, [newChannelName])
+  useEffect(() => {
+    setFamilyName('웨일던, 칭찬하는 가족');
+  }, []);
 
   return (
     <SafeAreaView style={commonStyles.container}>
@@ -166,7 +188,9 @@ function MyPageScreen({ navigation, route }: MyPageScreenProp) {
         <ButtonBack onPress={() => navigation.goBack()} />
         <Text style={styles.headerTitle}>마이페이지</Text>
         <TouchableOpacity
-          onPress={() => navigation.navigate('EditProfile')}
+          onPress={() =>
+            navigation.navigate('EditProfile', { nickname: nickName })
+          }
           disabled={!isEditable}
         >
           <Text
@@ -182,10 +206,8 @@ function MyPageScreen({ navigation, route }: MyPageScreenProp) {
 
       {/* Profile Wrapper */}
       <View style={styles.profileWrapper}>
-        <Avatar size={60} rounded source={ProfileImageDefault}>
-          {/* <Avatar.Accessory size={20} source={IcProfileImageEdit} /> */}
-        </Avatar>
-        <Text style={styles.userName}>user1 님</Text>
+        <Avatar size={60} rounded source={ProfileImageDefault} />
+        <Text style={styles.userName}>{nickName} 님</Text>
       </View>
 
       {/* 각각 설정 항목 */}
@@ -193,7 +215,7 @@ function MyPageScreen({ navigation, route }: MyPageScreenProp) {
         {/* 국가 */}
         <View style={styles.eachSettings}>
           <Text style={styles.settingTxt}>국가</Text>
-          <Text style={styles.settingValueTxt}>+82 010-7979-8282</Text>
+          <Text style={styles.settingValueTxt}>+82 {phoneNumber}</Text>
         </View>
         <Image source={mypageLine} style={styles.lineImage} />
 
@@ -201,14 +223,12 @@ function MyPageScreen({ navigation, route }: MyPageScreenProp) {
         <View style={styles.eachSettings}>
           <Text style={styles.settingTxt}>가족 채널</Text>
           <TextInput
+            value={familyName}
             editable={false}
             maxLength={15}
-            // value={channelName}
-            // onChangeText={setChannelName}
             style={styles.settingValueTxt}
-          >
-            웨일던, 칭찬하는 가족
-          </TextInput>
+            placeholder={familyName}
+          />
         </View>
         <Image source={mypageLine} style={styles.lineImage} />
 
@@ -243,15 +263,15 @@ function MyPageScreen({ navigation, route }: MyPageScreenProp) {
       </View>
 
       <View>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.membershipBtn}
-          onPress={onMembershipPressed}
+          // onPress={onMembershipPressed}
         >
           <Text style={styles.membershipTxt}>
             웨일던 프라이빗 지금 시작하세요!
           </Text>
           <Image source={IcArrowRight} style={styles.membershipArrowIcon} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <Text
           style={styles.withdrawTxt}
           onPress={() => navigation.navigate('Home')}

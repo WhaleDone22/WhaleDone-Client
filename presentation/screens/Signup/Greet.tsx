@@ -5,7 +5,6 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { privateAPI } from '../../../infrastructures/api/remote/base';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonBack from '../../components/ButtonBack';
-// import greetIcon from '../../../assets/greetIcon.png'
 
 import COLORS from '../../styles/colors';
 
