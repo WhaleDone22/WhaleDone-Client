@@ -3,8 +3,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Text, Image, StyleSheet, View, Pressable } from 'react-native';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import BottomSheet from 'react-native-gesture-bottom-sheet';
-import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
-import { privateAPI } from '../../../infrastructures/api/remote/base';
+import MapView, { PROVIDER_GOOGLE, Marker, Circle } from 'react-native-maps';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 
 import COLORS from '../../styles/colors';
@@ -128,6 +128,7 @@ const styles = StyleSheet.create({
     color: COLORS.BLUE_500,
   },
 
+  // Marker
   markerImg: {
     width: 48,
     height: 48,
@@ -179,7 +180,8 @@ function MapScreen({ navigation }: MapScreenProp) {
         // 여기서도 에러 띄우기
       });
   }, []);
-  
+
+  AsyncStorage.getItem('familyID').then((v) => console.warn(v));
 
   return (
     <View style={[{ flex: 1 }]}>

@@ -3,12 +3,14 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Text, View, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TextInput } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import ButtonBack from '../../components/ButtonBack';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import COLORS from '../../styles/colors';
 import { validateNickName } from '../../../infrastructures/utils/strings';
 import ButtonNext from '../../components/ButtonNext';
 import { commonStyles } from '../../styles/common';
+import { publicAPI } from '../../../infrastructures/api/remote/base';
 
 type NicknameInputScreenProp = NativeStackScreenProps<
   NavigationStackParams,
@@ -33,12 +35,48 @@ const styles = StyleSheet.create({
   },
 });
 
-function NicknameInputScreen({ navigation }: NicknameInputScreenProp) {
+function NicknameInputScreen({ navigation, route }: NicknameInputScreenProp) {
+  const { phoneNumber, countryCode, email, password, alarmStatus } =
+    route.params;
   const [nickName, setNickName] = useState('');
   const [isValidate, setIsValidate] = useState(false);
   useEffect(() => {
     setIsValidate(validateNickName(nickName));
   });
+  const postSignUp = () => {
+    publicAPI
+      .post({
+        url: 'api/v1/user/sign-up',
+        data: {
+          email,
+          nickName,
+          countryCode,
+          password,
+          phoneNumber,
+          profileImgUrl: 'https://avatars.githubusercontent.com/u/48249505?v=4', // 서버 변경 후 지워야 함
+          alarmStatus,
+        },
+      })
+      .then((response) => {
+        if (response.responseSuccess) {
+          if (
+            typeof response.code === 'string' &&
+            response.code === 'SUCCESS'
+          ) {
+            AsyncStorage.setItem(
+              'token',
+              response.singleData.jwtToken.split(' ')[1],
+            );
+            AsyncStorage.setItem(
+              'userID',
+              response.singleData.userId.toString(),
+            );
+            navigation.navigate('Greet', { nickname: nickName });
+          }
+        }
+      });
+  };
+
   return (
     <SafeAreaView style={commonStyles.container}>
       <ButtonBack onPress={() => navigation.goBack()} />
@@ -68,7 +106,7 @@ function NicknameInputScreen({ navigation }: NicknameInputScreenProp) {
       </Text>
       <View style={{ marginTop: 22 }}>
         <ButtonNext
-          onPress={() => navigation.navigate('Greet', { nickname: nickName })}
+          onPress={postSignUp}
           isActivated={isValidate && nickName.length < 6}
         />
       </View>

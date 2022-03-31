@@ -51,7 +51,8 @@ const styles = StyleSheet.create({
   },
 });
 
-function PasswordInputScreen({ navigation }: PasswordInputScreenProp) {
+function PasswordInputScreen({ navigation, route }: PasswordInputScreenProp) {
+  const { phoneNumber, countryCode, email, alarmStatus } = route.params;
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
   const [isPasswordValidate, setIsPasswordValidate] = useState(false);
@@ -130,7 +131,15 @@ function PasswordInputScreen({ navigation }: PasswordInputScreenProp) {
       )}
       <View style={{ marginTop: 22 }}>
         <ButtonNext
-          onPress={() => navigation.navigate('NicknameInput')}
+          onPress={() =>
+            navigation.navigate('NicknameInput', {
+              phoneNumber,
+              countryCode,
+              email,
+              password,
+              alarmStatus,
+            })
+          }
           isActivated={isPasswordValidate && isPasswordSame}
         />
       </View>

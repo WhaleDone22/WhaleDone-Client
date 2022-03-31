@@ -23,7 +23,7 @@ interface Request {
   url: string;
   headers?: object;
   isPrivate: boolean;
-  method: 'get' | 'post' | 'put' | 'delete';
+  method: 'get' | 'post' | 'put' | 'delete' | 'patch';
 }
 
 interface RequestWithParams extends Request {
@@ -57,13 +57,11 @@ const sendRequestForData = async ({
 }: RequestWithData) => {
   const basePrivateHeaders = await getBasePrivateHeaders();
   const baseHeaders = isPrivate ? basePrivateHeaders : basePublicHeaders;
-  console.warn(baseHeaders);
   return fetch(BASEURL + url, {
     method,
     headers: { ...baseHeaders, ...headers },
     body: JSON.stringify(data),
   }).then((response) => {
-    console.warn(response);
     return response.json();
   });
 };
@@ -107,7 +105,7 @@ export const privateAPI = {
     sendRequestForData({
       url,
       data,
-      method: 'put',
+      method: 'patch',
       headers,
       isPrivate: true,
     }),
@@ -147,6 +145,18 @@ export const publicAPI = {
       url,
       data,
       method: 'put',
+      headers,
+      isPrivate: false,
+    }),
+  patch: ({
+    url,
+    data,
+    headers,
+  }: Omit<RequestWithData, 'isPrivate' | 'method'>) =>
+    sendRequestForData({
+      url,
+      data,
+      method: 'patch',
       headers,
       isPrivate: false,
     }),
