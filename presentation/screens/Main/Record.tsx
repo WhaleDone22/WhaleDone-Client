@@ -134,11 +134,6 @@ function RecordScreen({ navigation, route }: RecordScreenProp) {
         (mode === 'IMAGE' && pickedImagePath === '')
       )
     ) {
-      console.warn(
-        routeParams?.question ?? title,
-        mode === 'IMAGE' ? pickedImagePath : text,
-        mode === 'TEXT' ? 0 : 1,
-      );
       api.feedService
         .createFeed(
           routeParams?.question ?? title,

@@ -13,6 +13,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Swiper from 'react-native-swiper';
 import BottomSheet from 'react-native-gesture-bottom-sheet';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { api } from '../../../infrastructures/api';
 import {
   ClockTime,
@@ -154,7 +155,10 @@ function FeedScreen({ navigation }: FeedScreenProp) {
   }, []);
 
   useEffect(() => {
-    api.feedService.getTime().then((response) => setTimes(response));
+    AsyncStorage.getItem('familyID').then((value) => {
+      if (!value || Number.isNaN(+value)) return;
+      api.feedService.getTime(+value).then((response) => setTimes(response));
+    });
   }, []);
 
   useEffect(() => {

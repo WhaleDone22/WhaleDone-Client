@@ -8,7 +8,7 @@ export function feedRemote(): FeedService {
   const createFeed = async (title: string, content: string, type: 0 | 1) => {
     return privateAPI
       .post({
-        url: '/api/v1/users/auth/post',
+        url: 'api/v1/users/auth/post',
         data: { title, question: content, type },
       })
       .then((data) => ({ isSuccess: data.responseSuccess ?? false }));
@@ -16,7 +16,7 @@ export function feedRemote(): FeedService {
 
   const getAllFeed = async () => {
     return privateAPI
-      .get({ url: '/api/v1/users/auth/family-posts' })
+      .get({ url: 'api/v1/users/auth/family-posts' })
       .then((response) => {
         return Object.keys(response.singleData.result).map((date) => ({
           date,
@@ -37,6 +37,9 @@ export function feedRemote(): FeedService {
             }),
           })),
         }));
+      })
+      .catch((error) => {
+        console.error(error);
       });
   };
 
@@ -44,7 +47,7 @@ export function feedRemote(): FeedService {
     const myID = await AsyncStorage.getItem('userID');
     return privateAPI
       .get({
-        url: `/api/v1/families/${familyID}/users/time-difference`,
+        url: `api/v1/families/${familyID}/users/time-difference`,
       })
       .then((response) => {
         const data: ClockTime[] = response.multipleData.map((time: any) => ({
@@ -71,6 +74,9 @@ export function feedRemote(): FeedService {
               timeDelta: time.timeDelta - mine.timeDelta,
             })),
         };
+      })
+      .catch((error) => {
+        console.error(error);
       });
   };
 

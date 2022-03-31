@@ -1,12 +1,9 @@
 import React, { useCallback } from 'react';
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import COLORS from '../styles/colors';
-import {
-  dataURItoBLOB,
-  fileURItoBLOB,
-} from '../../infrastructures/utils/images';
-import { privateAPI } from '../../infrastructures/api/remote/base';
+import { fileURItoBLOB } from '../../infrastructures/utils/images';
 
 type PhotoSelectorModalProp = {
   isModalVisible: boolean;
@@ -55,26 +52,26 @@ function PhotoSelectorModal(props: PhotoSelectorModalProp) {
         .replaceAll(' ', '')
         .replaceAll('.', '')
         .replaceAll(':', '')}.png`;
-      const presignedURLResponse = await privateAPI.post({
-        url: 'api/v1/content/presigned-url',
-        data: { fileName },
-      });
-      if (typeof presignedURLResponse.singleData?.presignedUrl === 'string') {
-        const imageBLOB = await fileURItoBLOB(imagePath);
-        const imageFile = new File([imageBLOB], fileName);
-        console.warn({ imageFile });
-        console.warn(presignedURLResponse.singleData.presignedUrl);
-        const s3UploadResponse = await fetch(
-          new Request(presignedURLResponse.singleData.presignedUrl, {
-            credentials: 'omit',
-            method: 'PUT',
-            body: imageFile,
-            headers: new Headers({
-              'Content-Type': 'image/*',
-            }),
-          }),
-        );
-        console.warn(s3UploadResponse);
+      const formData = new FormData();
+      const imageBLOB = await fileURItoBLOB(imagePath);
+      const imageFile = new File([imageBLOB], fileName);
+      const myToken = await AsyncStorage.getItem('token');
+      if (!myToken) return;
+      formData.append('multipartFile', imageFile);
+      const uploadRequest = await fetch(
+        'http://ec2-3-37-42-113.ap-northeast-2.compute.amazonaws.com:8080/api/v1/content',
+        {
+          method: 'POST',
+          body: formData,
+          headers: { 'X-AUTH-TOKEN': myToken },
+        },
+      );
+
+      const uploadResponse = await uploadRequest.json();
+
+      if (typeof uploadResponse.singleData.url === 'string') {
+        setPickedImagePath(uploadResponse.singleData.url);
+        console.warn(uploadResponse.singleData.url);
       }
     } catch (e) {
       console.error(e);
@@ -87,7 +84,6 @@ function PhotoSelectorModal(props: PhotoSelectorModalProp) {
     const result = await ImagePicker.launchCameraAsync();
     if (!result.cancelled) {
       uploadPhoto(result.uri);
-      setPickedImagePath(result.uri);
     }
     closeModal();
   }, []);
@@ -99,7 +95,6 @@ function PhotoSelectorModal(props: PhotoSelectorModalProp) {
     const result = await ImagePicker.launchImageLibraryAsync();
     if (!result.cancelled) {
       uploadPhoto(result.uri);
-      setPickedImagePath(result.uri);
     }
     closeModal();
   }, []);
