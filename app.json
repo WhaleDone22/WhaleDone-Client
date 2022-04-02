@@ -15,9 +15,14 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "bundleIdentifier": "com.mammoth.whaledone",
-      "buildNumber": "1.0.0",
-      "supportsTablet": true
+      "bundleIdentifier": "com.softsquared.whaledone",
+      "buildNumber": "1.0.4",
+      "supportsTablet": false,
+      "infoPlist": {
+        "UIBackgroundModes": ["location"],
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "App requires geolocation to improve the quality of the service"
+      },
+      "icon": "./assets/icon.png"
     },
     "android": {
       "adaptiveIcon": {
