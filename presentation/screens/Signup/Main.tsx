@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   Dimensions,
   Image,
@@ -9,7 +9,6 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import COLORS from '../../styles/colors';
 
@@ -24,7 +23,7 @@ const { height } = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 16,
-    paddingTop: height * 0.34,
+    paddingTop: height * 0.31,
     backgroundColor: 'white',
     flex: 1,
     alignItems: 'center',
@@ -38,7 +37,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: COLORS.TEXT_SECONDARY,
     textAlign: 'center',
-    marginTop: 60,
     lineHeight: 28,
   },
   signUpButton: {
@@ -47,7 +45,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     textAlign: 'center',
     width: '100%',
-    marginTop: 112,
+    marginTop: height * 0.13,
   },
   signUpButtonText: {
     color: 'white',
@@ -76,32 +74,34 @@ const styles = StyleSheet.create({
 });
 
 function SignUpMainScreen({ navigation }: SignUpMainScreenProp) {
-  // useEffect(() => {
-  //   AsyncStorage.getItem('userID').then(() => {
-  //     const familyID = await AsyncStorage.getItem('familyID');
-  //     if (familyID === '') {
-  //       navigation.navigate('Greet');
-  //     }
-  //   });
-  // }, []);
-
   return (
     <SafeAreaView style={styles.container}>
       <Image source={logoWithTitle} style={styles.logoImage} />
-      <Text style={styles.infoText}>
-        가족간 마음거리를 더 가깝게{'\n'}연결하는 소통서비스
-      </Text>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('PhoneInput')}
-        style={styles.signUpButton}
+      <View
+        style={{
+          flex: 1,
+          width: '100%',
+          justifyContent: 'center',
+          alignItems: 'center',
+          position: 'absolute',
+          bottom: height * 0.03,
+        }}
       >
-        <Text style={styles.signUpButtonText}>시작하기</Text>
-      </TouchableOpacity>
-      <View style={styles.signInContainer}>
-        <Text style={styles.signInText}>이미 계정이 있으신가요?</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-          <Text style={styles.signInButton}>로그인 하기</Text>
+        <Text style={styles.infoText}>
+          가족간 마음거리를 더 가깝게{'\n'}연결하는 소통서비스
+        </Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('PhoneInput')}
+          style={styles.signUpButton}
+        >
+          <Text style={styles.signUpButtonText}>시작하기</Text>
         </TouchableOpacity>
+        <View style={styles.signInContainer}>
+          <Text style={styles.signInText}>이미 계정이 있으신가요?</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+            <Text style={styles.signInButton}>로그인 하기</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </SafeAreaView>
   );
