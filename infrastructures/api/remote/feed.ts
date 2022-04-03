@@ -23,6 +23,34 @@ export function feedRemote(): FeedService {
       });
   };
 
+  const updateFeed = async (
+    feedID: number,
+    title: string,
+    content: string,
+    type: 'TEXT' | 'IMAGE',
+  ) => {
+    return privateAPI
+      .patch({
+        url: `api/v1/users/auth/posts/${feedID}`,
+        data: { title, content, type },
+      })
+      .then((data) => {
+        if (data.code === 'SUCCESS') return { isSuccess: true };
+        return { isSuccess: false };
+      });
+  };
+
+  const deleteFeed = async (feedID: number) => {
+    return privateAPI
+      .patch({
+        url: `api/v1/users/auth/posts/${feedID}/status`,
+      })
+      .then((data) => {
+        if (data.code === 'SUCCESS') return { isSuccess: true };
+        return { isSuccess: false };
+      });
+  };
+
   const getAllFeed = async () => {
     return privateAPI
       .get({ url: 'api/v1/users/auth/family-posts' })
@@ -129,5 +157,25 @@ export function feedRemote(): FeedService {
       });
   };
 
-  return { createFeed, getAllFeed, getTime, getReactions, createReaction };
+  const deleteReaction = async (feedID: number, reactionID: number) => {
+    return privateAPI
+      .patch({
+        url: `api/v1/users/auth/posts/${feedID}/reactions/${reactionID}/status`,
+      })
+      .then((data) => {
+        if (data.code === 'SUCCESS') return { isSuccess: true };
+        return { isSuccess: false };
+      });
+  };
+
+  return {
+    createFeed,
+    updateFeed,
+    deleteFeed,
+    getAllFeed,
+    getTime,
+    getReactions,
+    createReaction,
+    deleteReaction,
+  };
 }
