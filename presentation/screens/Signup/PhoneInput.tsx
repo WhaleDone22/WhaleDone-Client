@@ -291,7 +291,7 @@ function PhoneInputScreen({ navigation }: PhoneInputScreenProp) {
               fontSize: 12,
             }}
           >
-            서비스 알람 수신에 동의합니다.(선택)
+            서비스 알람 수신에 동의합니다. (선택)
           </Text>
         </View>
       </View>
