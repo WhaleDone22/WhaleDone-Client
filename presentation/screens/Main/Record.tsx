@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 20,
     fontSize: 16,
+    lineHeight: 24,
     fontFamily: 'Pretendard',
   },
   answerTextCount: {
@@ -194,7 +195,7 @@ function RecordScreen({ navigation, route }: RecordScreenProp) {
             <Text style={styles.answerTextCount}>({text.length}/180자)</Text>
             <TextInput
               value={text}
-              placeholder="답변을 입력하세요"
+              placeholder="답변을 입력하세요 (최소 10자)"
               onChangeText={(input) => setText(input)}
               maxLength={180}
               multiline

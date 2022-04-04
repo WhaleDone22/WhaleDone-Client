@@ -79,7 +79,7 @@ function PasswordInputScreen({ navigation, route }: PasswordInputScreenProp) {
           value={password}
           onChangeText={(text) => setPassword(text)}
           style={styles.textInput}
-          placeholder="비밀번호 설정"
+          placeholder="비밀번호 설정 (최소 8자)"
           secureTextEntry={isPasswordVisible}
           placeholderTextColor={COLORS.TEXT_DISABLED_GREY}
           keyboardType="default"

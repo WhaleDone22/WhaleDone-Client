@@ -87,7 +87,7 @@ function NicknameInputScreen({ navigation, route }: NicknameInputScreenProp) {
         value={nickName}
         onChangeText={(text) => text.length < 6 && setNickName(text)}
         style={styles.textInput}
-        placeholder="닉네임(최대 5자)"
+        placeholder="닉네임 (최대 5자)"
         placeholderTextColor={COLORS.TEXT_DISABLED_GREY}
         keyboardType="default"
         autoFocus

@@ -26,6 +26,11 @@ const styles = StyleSheet.create({
     fontFamily: 'Pretendard-Bold',
     fontSize: 16,
   },
+  deActivatedskipButton: {
+    color: '#fff',
+    fontFamily: 'Pretendard-Bold',
+    fontSize: 16,
+  },
   item: {
     alignItems: 'center',
   },
@@ -33,19 +38,24 @@ const styles = StyleSheet.create({
     width: 260,
     height: 260,
     marginTop: 52,
+    marginBottom: 9,
   },
-  titleText: {
+  titleButton: {
     borderRadius: 10,
     backgroundColor: COLORS.BLUE_200,
+    width: 175,
+    marginTop: 41,
+  },
+  titleText: {
     color: COLORS.BLUE_500,
     fontFamily: 'Pretendard-Bold',
     paddingVertical: 12,
-    width: 145,
     textAlign: 'center',
+    fontSize: 18,
   },
   subText: {
     padding: 10,
-    marginTop: 11,
+    marginTop: 19,
     lineHeight: 24,
     fontSize: 16,
     color: COLORS.TEXT_PRIMARY,
@@ -61,17 +71,17 @@ const image3 = require('../../../assets/image-onboarding-3.png');
 function OnboardingScreen({ navigation }: OnboardingScreenProp) {
   const carouselData = [
     {
-      icon: image1,
+      icon: image3,
       title: '일상 공유 주제제시',
       sub: '웨일던 질문에 답하며\n매일 일상을 쉽게 공유하세요!',
     },
     {
-      icon: image2,
+      icon: image1,
       title: '소통함',
       sub: '소중한 우리 가족 일상 글에\n생동감있고 간편하게 반응해 보세요!',
     },
     {
-      icon: image3,
+      icon: image2,
       title: '마음 거리',
       sub: '가족 간 소통이 모여\n변화되는 마음 거리를 확인하세요!',
     },
@@ -94,9 +104,15 @@ function OnboardingScreen({ navigation }: OnboardingScreenProp) {
     <SafeAreaView style={commonStyles.container}>
       <View style={styles.header}>
         <ButtonBack onPress={navigatePage} />
-        <Text onPress={navigatePage} style={styles.skipButton}>
-          건너뛰기
-        </Text>
+        {activeIndex !== 2 ? 
+          <Text onPress={navigatePage} style={styles.skipButton}>
+            건너뛰기
+          </Text>
+        :
+          <Text onPress={navigatePage} style={styles.deActivatedskipButton}>
+            건너뛰기
+          </Text>
+        }
       </View>
       <Pages
         indicatorColor={COLORS.BLUE_500}
@@ -106,7 +122,9 @@ function OnboardingScreen({ navigation }: OnboardingScreenProp) {
         {carouselData.map((data) => (
           <View style={styles.item} key={data.title}>
             <Image source={data.icon} style={styles.icon} />
-            <Text style={styles.titleText}>{data.title}</Text>
+            <View style={styles.titleButton}>
+              <Text style={styles.titleText}>{data.title}</Text>
+            </View>
             <Text style={styles.subText}>{data.sub}</Text>
           </View>
         ))}
