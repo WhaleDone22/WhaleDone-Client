@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     height: 130,
   },
   infoText: {
-    fontFamily: 'Pretendard-Bold',
+    fontFamily: 'Pretendard',
     fontSize: 18,
     color: COLORS.TEXT_SECONDARY,
     textAlign: 'center',
@@ -70,6 +70,8 @@ const styles = StyleSheet.create({
     color: COLORS.BLUE_500,
     borderBottomColor: COLORS.BLUE_500,
     borderBottomWidth: 2,
+    textDecorationLine: 'underline',
+    textDecorationStyle: 'solid',
   },
 });
 
@@ -99,7 +101,7 @@ function SignUpMainScreen({ navigation }: SignUpMainScreenProp) {
         <View style={styles.signInContainer}>
           <Text style={styles.signInText}>이미 계정이 있으신가요?</Text>
           <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-            <Text style={styles.signInButton}>로그인 하기</Text>
+            <Text style={styles.signInButton}>로그인</Text>
           </TouchableOpacity>
         </View>
       </View>

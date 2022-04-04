@@ -18,7 +18,8 @@ const styles = StyleSheet.create({
   textInput: {
     borderRadius: 5,
     backgroundColor: COLORS.GREY_030,
-    fontSize: 16,
+    fontFamily: 'Pretendard-Bold',
+    fontSize: 18,
     height: 54,
     width: '16%',
     textAlign: 'center',
