@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     marginTop: 49,
     paddingVertical: 20,
     paddingHorizontal: 10,
-    marginBottom: 100,
+    // marginBottom: 100,
   },
   title: {
     fontSize: 20,
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     paddingVertical: 17,
     marginTop: 70,
     marginBottom: 60,
-    top: 5,
+    // top: 5,
     color: 'white',
     borderRadius: 5,
   },

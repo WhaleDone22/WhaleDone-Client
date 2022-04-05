@@ -119,16 +119,16 @@ function PhoneInputScreen({ navigation }: PhoneInputScreenProp) {
     });
   }, []);
 
-  useEffect(() => {
-    if (phone.length === 10) {
-      setPhone(phone.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3'));
-    }
-    if (phone.length === 13) {
-      setPhone(
-        phone.replace(/-/g, '').replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3'),
-      );
-    }
-  }, [phone]);
+  // useEffect(() => {
+  //   if (phone.length === 10) {
+  //     setPhone(phone.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3'));
+  //   }
+  //   if (phone.length === 13) {
+  //     setPhone(
+  //       phone.replace(/-/g, '').replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3'),
+  //     );
+  //   }
+  // }, [phone]);
 
   const postPhoneAuth = () => {
     if (phone === '') return;

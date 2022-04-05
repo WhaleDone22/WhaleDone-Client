@@ -8,6 +8,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
 import { privateAPI } from '../../../infrastructures/api/remote/base';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
+import { getCircleSize } from '../../../infrastructures/utils/circles';
+import { getDistance } from '../../../infrastructures/utils/distances';
 
 import COLORS from '../../styles/colors';
 import { FamilyProfile } from '../../../infrastructures/types/map';
@@ -127,7 +129,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     paddingLeft: 12,
   },
-  distnaceValue: {
+  distanceValue: {
     fontFamily: 'Pretendard-Bold',
     color: COLORS.BLUE_500,
   },
@@ -142,9 +144,6 @@ const styles = StyleSheet.create({
   markerCircle: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: 200,
-    height: 200,
-    borderRadius: 100,
     borderWidth: 1,
     borderColor: COLORS.THEME_PRIMARY,
     backgroundColor: 'rgba(68,107,255,0.25)',
@@ -152,9 +151,9 @@ const styles = StyleSheet.create({
 });
 
 // Image
-const defaultProfile = require('../../../assets/image-profile-default.png');
-const ex1Profile = require('../../../assets/image-profile-ex1.png');
-const ex2Profile = require('../../../assets/image-profile-ex2.png');
+// const defaultProfile = require('../../../assets/image-profile-default.png');
+// const ex1Profile = require('../../../assets/image-profile-ex1.png');
+// const ex2Profile = require('../../../assets/image-profile-ex2.png');
 const addFamily = require('../../../assets/ic-add-family.png');
 
 const IcNotice = require('../../../assets/ic-bell.png');
@@ -205,21 +204,6 @@ function MapScreen({ navigation }: MapScreenProp) {
     });
   }, []);
 
-  useEffect(() => {
-    privateAPI
-      .get({ url: 'api/v1/families/{familyID}/users' })
-      .then((response) => {
-        if (response.responseSuccess) {
-          // console.log(response.multipleData);
-        } else {
-          // 여기서 에러 띄우기
-        }
-      })
-      .catch((/* error */) => {
-        // 여기서도 에러 띄우기
-      });
-  }, []);
-
   return (
     <View style={[{ flex: 1 }]}>
       <BottomSheet
@@ -229,80 +213,84 @@ function MapScreen({ navigation }: MapScreenProp) {
         radius={25}
         style={styles.bottomSheet}
       >
-        <ScrollView style={styles.bsWrapper}>
-          <View style={styles.textWrapper1}>
-            <Text style={styles.mainText}>가족 간 마음거리</Text>
-            <Text style={styles.subText}>
-              소통을 많이 할수록 원의 거리가 가까워져요
-            </Text>
-          </View>
-          {/* <View style={[styles.textWrapper1, styles.textWrapper2]}>
-            <Text style={styles.subText}>가족 채널명</Text>
-            <TouchableOpacity>
-              <Text style={styles.editText}>수정 {'>'} </Text>
-            </TouchableOpacity>
-          </View> */}
-
-          {/* Profile */}
-          <View style={styles.userWrapper}>
-            {familyProfile?.map((family) => (
-              <View style={styles.profileWrapper}>
-                <Image
-                  source={{ uri: family.profileImgUrl }}
-                  style={styles.imgWrapper}
-                />
-                <Text style={styles.subText}>{family.nickName}</Text>
+        
+        <Pressable>
+          <View>
+            <ScrollView style={styles.bsWrapper}>
+              <View style={styles.textWrapper1}>
+                <Text style={styles.mainText}>가족 간 마음거리</Text>
+                <Text style={styles.subText}>
+                  소통을 많이 할수록 원의 거리가 가까워져요
+                </Text>
               </View>
-            ))}
+              <View style={[styles.textWrapper1, styles.textWrapper2]}>
+                <Text style={styles.subText}>가족 채널명</Text>
+                <TouchableOpacity
+                // onPress={() => {
+                //   navigation.navigate('EditProfile');
+                // }}
+                >
+                  <Text style={styles.editText}>수정 {'>'} </Text>
+                </TouchableOpacity>
+              </View>
 
-            <View style={styles.profileWrapper}>
-              <Pressable
-                onPress={() => {
-                  bottomSheetRef.current?.close();
-                  navigation.navigate('GroupCodeShareFromMap');
-                }}
-              >
-                {/* <Image source={addFamily} style={styles.imgWrapper} />
-                <Text style={[styles.subText, { color: COLORS.BLUE_500 }]}>
-                  가족 추가
-                </Text> */}
-              </Pressable>
-            </View>
+              {/* Profile */}
+              <View style={styles.userWrapper}>
+                {familyProfile?.map((family) => (
+                  <View style={styles.profileWrapper}>
+                    <Image
+                      source={{ uri: family.profileImgUrl }}
+                      style={styles.imgWrapper}
+                    />
+                    <Text style={styles.subText}>{family.nickName}</Text>
+                  </View>
+                ))}
+
+                <View style={styles.profileWrapper}>
+                  <Pressable
+                    onPress={() => {
+                      bottomSheetRef.current?.close();
+                      // navigation.navigate('GroupCodeShareFromMap');
+                    }}
+                  >
+                    <Image source={addFamily} style={styles.imgWrapper} />
+                    <Text style={[styles.subText, { color: COLORS.BLUE_500 }]}>
+                      가족 추가
+                    </Text>
+                  </Pressable>
+                </View>
+              </View>
+
+              {/* 마음 거리 */}
+              {familyProfile?.map((family) => (
+                <View style={styles.distanceWrapper}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image
+                      source={{ uri: family.profileImgUrl }}
+                      style={styles.distanceProfile}
+                    />
+                    <Text style={styles.distanceText}>
+                      {family.nickName}님과의 마음거리
+                    </Text>
+                  </View>
+                  <Text
+                    style={styles.distanceValue}
+                    onPress={() => {
+                      bottomSheetRef.current?.close();
+                      navigation.navigate('MapDetail', {
+                        nickname: family.nickName,
+                        profileImgUrl: family.profileImgUrl,
+                        heartDistance: getDistance(family.communicationCount),
+                      });
+                    }}
+                  >
+                    {getDistance(family.communicationCount)}km {'>'}
+                  </Text>
+                </View>
+              ))}
+            </ScrollView>
           </View>
-
-          {/* 마음 거리 */}
-          {/* <View style={styles.distanceWrapper}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Image source={defaultProfile} style={styles.distanceProfile} />
-              <Text style={styles.distanceText}>user님과의 마음거리</Text>
-            </View>
-            <Text
-              style={styles.distnaceValue}
-              onPress={() => {
-                bottomSheetRef.current?.close();
-                navigation.navigate('MapDetail');
-              }}
-            >
-              9999km {'>'}
-            </Text>
-          </View>
-
-          <View style={styles.distanceWrapper}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Image source={defaultProfile} style={styles.distanceProfile} />
-              <Text style={styles.distanceText}>user님과의 마음거리</Text>
-            </View>
-            <Text
-              style={styles.distnaceValue}
-              onPress={() => {
-                bottomSheetRef.current?.close();
-                navigation.navigate('MapDetail');
-              }}
-            >
-              9999km {'>'}
-            </Text>
-          </View> */}
-        </ScrollView>
+        </Pressable>
       </BottomSheet>
 
       <View
@@ -317,22 +305,38 @@ function MapScreen({ navigation }: MapScreenProp) {
           style={[{ width: '100%', height: '100%' }]}
           provider={PROVIDER_GOOGLE}
           initialRegion={{
-            latitude: 37.487935,
+            latitude: 37.487935 - 6,
             longitude: 126.857758,
             latitudeDelta: 70,
             longitudeDelta: 70,
           }}
         >
-          <Marker coordinate={{ latitude: 37.487935, longitude: 126.857758 }}>
-            <View style={styles.markerCircle}>
-              <Image
-                source={{
-                  uri: 'https://avatars.githubusercontent.com/u/98895272?s=200&v=4',
-                }}
-                style={styles.markerImg}
-              />
-            </View>
-          </Marker>
+          {familyProfile?.map((family) => (
+            <Marker
+              coordinate={{
+                latitude: family.latitude,
+                longitude: family.longitude,
+              }}
+            >
+              <View
+                style={[
+                  styles.markerCircle,
+                  {
+                    width: getCircleSize(family.communicationCount),
+                    height: getCircleSize(family.communicationCount), // height 주석처리하면 겹쳐서 깨져보이지는 않음
+                    borderRadius: getCircleSize(family.communicationCount),
+                  },
+                ]}
+              >
+                <Image
+                  source={{
+                    uri: family.profileImgUrl,
+                  }}
+                  style={styles.markerImg}
+                />
+              </View>
+            </Marker>
+          ))}
         </MapView>
       </View>
 

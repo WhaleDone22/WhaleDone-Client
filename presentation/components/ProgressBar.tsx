@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect} from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import COLORS from '../styles/colors';
 
 type ProgressBarProps = {
@@ -25,6 +25,11 @@ function ProgressBar(props: ProgressBarProps) {
   const [getheight, setHeight] = useState(height);
   const [getCompletedColor1, setCompletedColor1] = useState(completedColor1);
   const [getCompletedColor2, setCompletedColor2] = useState(completedColor2);
+
+  useEffect(() => {
+    setDistance1(250); //max: 340
+    setDistance2(120);
+  }, []);
 
   return (
     <View>

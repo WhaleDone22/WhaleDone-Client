@@ -135,15 +135,16 @@ const styles = StyleSheet.create({
   },
 });
 
-const defaultProfile = require('../../../assets/image-profile-default.png');
-const ex1Profile = require('../../../assets/image-profile-ex1.png');
-const ex2Profile = require('../../../assets/image-profile-ex2.png');
+// const defaultProfile = require('../../../assets/image-profile-default.png');
+// const ex1Profile = require('../../../assets/image-profile-ex1.png');
+// const ex2Profile = require('../../../assets/image-profile-ex2.png');
 const distanceLine = require('../../../assets/ic-distance-line2.png');
 const lockedReportImage = require('../../../assets/image-report-lock2.png');
 const IcArrowRight = require('../../../assets/ic-arrow-right.png');
 const IcLock = require('../../../assets/ic-lock.png');
 
-function MapDetailScreen({ navigation }: MapDetailScreenProp) {
+function MapDetailScreen({ navigation, route }: MapDetailScreenProp) {
+  const { nickname, profileImgUrl, heartDistance } = route.params;
   const onMembershipPressed = () => {
     console.log('onMembershipPressed');
   };
@@ -154,28 +155,28 @@ function MapDetailScreen({ navigation }: MapDetailScreenProp) {
         {/* Header */}
         <View style={styles.headerContainer}>
           <ButtonBack onPress={() => navigation.goBack()} />
-          <Text style={styles.headerTitle}>user2님과의 3월 마음거리</Text>
+          <Text style={styles.headerTitle}>{nickname}님과의 4월 마음거리</Text>
         </View>
 
         {/* 마음거리 */}
         <View style={styles.distanceWrapper}>
-          <Image source={defaultProfile} style={styles.imgWrapper} />
+          <Image source={{ uri: profileImgUrl }} style={styles.imgWrapper} />
 
           {/* line */}
           <View style={styles.lineWrapper}>
-            <Text style={styles.distanceValue}>9,000km</Text>
+            <Text style={styles.distanceValue}>{heartDistance}km</Text>
             <Image source={distanceLine} style={styles.line} />
           </View>
 
-          <Image source={ex1Profile} style={styles.imgWrapper} />
+          <Image source={{ uri: profileImgUrl }} style={styles.imgWrapper} />
         </View>
 
         {/* Progress Bar */}
         <View style={styles.progressBarWrapper}>
           <ProgressBar
             navigation="???"
-            distance1={60}
-            distance2={20}
+            distance1={6000}
+            distance2={2800}
             height={20}
             completedColor1={COLORS.BLUE_500}
             completedColor2={COLORS.BLUE_300}
