@@ -91,7 +91,9 @@ function GroupCodeShareScreen({ navigation, route }: GroupCodeShareScreenProp) {
           </TouchableOpacity>
           <Text
             style={styles.shareCompleteTxt}
-            onPress={() => navigation.push('Main', { screen: 'Home' })}
+            onPress={() => {
+              navigation.push('Main', { screen: 'Home' });
+            }}
           >
             초대 코드 공유 완료
           </Text>
