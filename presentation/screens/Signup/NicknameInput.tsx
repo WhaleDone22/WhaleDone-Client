@@ -15,7 +15,7 @@ import { publicAPI } from '../../../infrastructures/api/remote/base';
 type NicknameInputScreenProp = NativeStackScreenProps<
   NavigationStackParams,
   'NicknameInput'
->;
+> & { setLogin: () => void };
 
 const styles = StyleSheet.create({
   textInput: {
@@ -35,7 +35,11 @@ const styles = StyleSheet.create({
   },
 });
 
-function NicknameInputScreen({ navigation, route }: NicknameInputScreenProp) {
+function NicknameInputScreen({
+  navigation,
+  route,
+  setLogin,
+}: NicknameInputScreenProp) {
   const { phoneNumber, countryCode, email, password, alarmStatus } =
     route.params;
   const [nickName, setNickName] = useState('');
@@ -57,20 +61,21 @@ function NicknameInputScreen({ navigation, route }: NicknameInputScreenProp) {
           alarmStatus,
         },
       })
-      .then((response) => {
+      .then(async (response) => {
         if (response.responseSuccess) {
           if (
             typeof response.code === 'string' &&
             response.code === 'SUCCESS'
           ) {
-            AsyncStorage.setItem(
+            await AsyncStorage.setItem(
               'token',
               response.singleData.jwtToken.split(' ')[1],
             );
-            AsyncStorage.setItem(
+            await AsyncStorage.setItem(
               'userID',
               response.singleData.userId.toString(),
             );
+            setLogin();
             navigation.navigate('Greet', { nickname: nickName });
           }
         }

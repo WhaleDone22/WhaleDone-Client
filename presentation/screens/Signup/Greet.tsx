@@ -17,7 +17,7 @@ function GreetScreen({ navigation, route }: GreetScreenProp) {
   const [nickname, setNickname] = useState('');
 
   useEffect(() => {
-    if (routeParams) setNickname(routeParams.nickname);
+    if (routeParams !== undefined) setNickname(routeParams.nickname);
     else {
       privateAPI.get({ url: 'api/v1/users/auth' }).then((response) => {
         if (typeof response.singleData.nickName === 'string') {

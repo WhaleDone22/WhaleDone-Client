@@ -2,7 +2,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState, useRef, useEffect } from 'react';
 import {
-  Button,
   Text,
   View,
   StyleSheet,
@@ -18,9 +17,12 @@ import COLORS from '../../styles/colors';
 type GroupCodeInputScreenProp = NativeStackScreenProps<
   NavigationStackParams,
   'GroupCodeInput'
->;
+> & { setJoinFamily: () => void };
 
-function GroupCodeInputScreen({ navigation }: GroupCodeInputScreenProp) {
+function GroupCodeInputScreen({
+  navigation,
+  setJoinFamily,
+}: GroupCodeInputScreenProp) {
   const inputRef1 = useRef<TextInput | null>(null);
   const inputRef2 = useRef<TextInput | null>(null);
   const inputRef3 = useRef<TextInput | null>(null);
@@ -79,6 +81,7 @@ function GroupCodeInputScreen({ navigation }: GroupCodeInputScreenProp) {
               userResponse.singleData.familyId.toString(),
             ),
           );
+        setJoinFamily();
         navigation.navigate('GroupCodeShare', {
           code: response.singleData.invitationCode,
         });
@@ -93,12 +96,12 @@ function GroupCodeInputScreen({ navigation }: GroupCodeInputScreenProp) {
         data: { invitationCode: filledTexts.join('').toLowerCase() },
       })
       .then((response) => {
-        console.warn(response);
         if (response.code === 'SUCCESS') {
           AsyncStorage.setItem(
             'familyID',
             response.singleData.familyId.toString(),
           );
+          setJoinFamily();
           navigation.push('Main', { screen: 'Home' });
         }
       });

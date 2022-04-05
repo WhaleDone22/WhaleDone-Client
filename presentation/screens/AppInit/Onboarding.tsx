@@ -13,7 +13,7 @@ import { commonStyles } from '../../styles/common';
 type OnboardingScreenProp = NativeStackScreenProps<
   NavigationStackParams,
   'Onboarding'
->;
+> & { setOnboardingSeen: () => void };
 
 const styles = StyleSheet.create({
   header: {
@@ -68,7 +68,10 @@ const image1 = require('../../../assets/image-onboarding-1.png');
 const image2 = require('../../../assets/image-onboarding-2.png');
 const image3 = require('../../../assets/image-onboarding-3.png');
 
-function OnboardingScreen({ navigation }: OnboardingScreenProp) {
+function OnboardingScreen({
+  navigation,
+  setOnboardingSeen,
+}: OnboardingScreenProp) {
   const carouselData = [
     {
       icon: image3,
@@ -97,22 +100,22 @@ function OnboardingScreen({ navigation }: OnboardingScreenProp) {
 
   const navigatePage = () => {
     AsyncStorage.setItem('isOnboardingUnseen', 'false');
-    navigation.navigate('SignUpMain');
+    setOnboardingSeen();
   };
 
   return (
     <SafeAreaView style={commonStyles.container}>
       <View style={styles.header}>
         <ButtonBack onPress={navigatePage} />
-        {activeIndex !== 2 ? 
+        {activeIndex !== 2 ? (
           <Text onPress={navigatePage} style={styles.skipButton}>
             건너뛰기
           </Text>
-        :
+        ) : (
           <Text onPress={navigatePage} style={styles.deActivatedskipButton}>
             건너뛰기
           </Text>
-        }
+        )}
       </View>
       <Pages
         indicatorColor={COLORS.BLUE_500}
