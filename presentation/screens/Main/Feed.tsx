@@ -27,7 +27,7 @@ import ReactionItem from '../../components/ReactionItem';
 import AudioRecorder from '../../components/AudioRecorder';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 const reactionEmojis: string[] = require('../../../infrastructures/data/reactionEmoji.json');
 
 const styles = StyleSheet.create({
@@ -338,9 +338,23 @@ function FeedScreen({ navigation }: FeedScreenProp) {
                   onStartShouldSetResponder={() => true}
                   style={{ paddingBottom: 30 }}
                 >
-                  {reactions.map((reaction) => (
-                    <ReactionItem {...reaction} key={reaction.reactionID} />
-                  ))}
+                  {reactions.length > 0 ? (
+                    reactions.map((reaction) => (
+                      <ReactionItem {...reaction} key={reaction.reactionID} />
+                    ))
+                  ) : (
+                    <Text
+                      style={{
+                        color: COLORS.TEXT_DISABLED_GREY,
+                        fontSize: 14,
+                        fontFamily: 'Pretendard',
+                        textAlign: 'center',
+                        marginTop: height * 0.15,
+                      }}
+                    >
+                      도착한 리액션이 아직 없어요.
+                    </Text>
+                  )}
                 </View>
               </ScrollView>
             )}
