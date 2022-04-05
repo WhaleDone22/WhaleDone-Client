@@ -213,7 +213,7 @@ function EditProfileScreen({ navigation, route }: EditProfileScreenProp) {
       {/* 각각 설정 항목 */}
       <View style={styles.settingsWrapper}>
         {/* 국가 */}
-        <View style={styles.eachSettings}>
+        {/* <View style={styles.eachSettings}>
           <Text style={styles.settingTxt}>국가</Text>
           <Text
             style={styles.settingValueTxt}
@@ -222,7 +222,7 @@ function EditProfileScreen({ navigation, route }: EditProfileScreenProp) {
             +82 {phoneNumber}
           </Text>
         </View>
-        <Image source={mypageLine} style={styles.lineImage} />
+        <Image source={mypageLine} style={styles.lineImage} /> */}
 
         {/* 가족 채널 */}
         <View style={styles.eachSettings}>
