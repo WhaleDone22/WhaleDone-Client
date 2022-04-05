@@ -22,6 +22,7 @@ export const FEED_DATA: {
             { type: 'TEXT', count: 1 },
             { type: 'RECORD', count: 3 },
           ],
+          type: 'TEXT',
         },
         {
           id: 2,
@@ -34,6 +35,7 @@ export const FEED_DATA: {
             { type: 'TEXT', count: 1 },
             { type: 'RECORD', count: 0 },
           ],
+          type: 'TEXT',
         },
         {
           id: 3,
@@ -46,6 +48,7 @@ export const FEED_DATA: {
             { type: 'TEXT', count: 1 },
             { type: 'RECORD', count: 0 },
           ],
+          type: 'TEXT',
         },
       ],
     },
@@ -65,6 +68,7 @@ export const FEED_DATA: {
             { type: 'TEXT', count: 1 },
             { type: 'RECORD', count: 3 },
           ],
+          type: 'TEXT',
         },
         {
           id: 5,
@@ -77,6 +81,7 @@ export const FEED_DATA: {
             { type: 'TEXT', count: 1 },
             { type: 'RECORD', count: 0 },
           ],
+          type: 'TEXT',
         },
         {
           id: 6,
@@ -89,6 +94,7 @@ export const FEED_DATA: {
             { type: 'TEXT', count: 1 },
             { type: 'RECORD', count: 0 },
           ],
+          type: 'TEXT',
         },
       ],
     },
@@ -107,6 +113,7 @@ export const FEED_DATA: {
       reactionType: 'EMOJI',
       content:
         'https://seojinseojin-dummy.s3.ap-northeast-2.amazonaws.com/emoji_6.png',
+      isMine: false,
     },
     {
       reactionID: 2,
@@ -114,6 +121,7 @@ export const FEED_DATA: {
       reactionType: 'EMOJI',
       content:
         'https://seojinseojin-dummy.s3.ap-northeast-2.amazonaws.com/emoji_1.png',
+      isMine: false,
     },
     {
       reactionID: 3,
@@ -121,6 +129,7 @@ export const FEED_DATA: {
       reactionType: 'RECORD',
       content:
         'https://seojinseojin-dummy.s3.ap-northeast-2.amazonaws.com/sample-6s.mp3',
+      isMine: false,
     },
     {
       reactionID: 4,
@@ -129,6 +138,7 @@ export const FEED_DATA: {
       reactionType: 'TEXT',
       content:
         '텍스트 반응이 들어갑니다. 최대 40글자. 텍스트 반응이 들어갑니다. 최대 40글자. 텍스트 반응이 들어갑니다. 최대 40글자. ',
+      isMine: false,
     },
     {
       reactionID: 5,
@@ -137,6 +147,7 @@ export const FEED_DATA: {
       reactionType: 'TEXT',
       content:
         '텍스트 반응이 들어갑니다. 최대 40글자. 텍스트 반응이 들어갑니다. 최대 40글자. 텍스트 반응이 들어갑니다. 최대 40글자. ',
+      isMine: false,
     },
     {
       reactionID: 6,
@@ -145,6 +156,7 @@ export const FEED_DATA: {
       reactionType: 'TEXT',
       content:
         '텍스트 반응이 들어갑니다. 최대 40글자. 텍스트 반응이 들어갑니다. 최대 40글자. 텍스트 반응이 들어갑니다. 최대 40글자. ',
+      isMine: false,
     },
     {
       reactionID: 7,
@@ -153,6 +165,7 @@ export const FEED_DATA: {
       reactionType: 'TEXT',
       content:
         '텍스트 반응이 들어갑니다. 최대 40글자. 텍스트 반응이 들어갑니다. 최대 40글자. 텍스트 반응이 들어갑니다. 최대 40글자. ',
+      isMine: false,
     },
     {
       reactionID: 8,
@@ -161,6 +174,7 @@ export const FEED_DATA: {
       reactionType: 'TEXT',
       content:
         '텍스트 반응이 들어갑니다. 최대 40글자. 텍스트 반응이 들어갑니다. 최대 40글자. 텍스트 반응이 들어갑니다. 최대 40글자. ',
+      isMine: false,
     },
   ],
 };

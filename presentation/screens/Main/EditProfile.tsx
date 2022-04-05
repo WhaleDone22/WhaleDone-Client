@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useEffect, useState } from 'react';
 import {
@@ -107,7 +106,6 @@ const styles = StyleSheet.create({
 });
 
 const IcProfileImageEdit = require('../../../assets/ic-profile-image-edit.png');
-const ProfileImageDefault = require('../../../assets/profile-image-default.png');
 const mypageLine = require('../../../assets/mypage-line.png');
 
 function EditProfileScreen({ navigation, route }: EditProfileScreenProp) {
@@ -131,7 +129,7 @@ function EditProfileScreen({ navigation, route }: EditProfileScreenProp) {
   const openModal = () => setIsModalVisible(true);
   const closeModal = () => setIsModalVisible(false);
 
-  const onChange = (event, selectedDate: Date) => {
+  const onChange = (event: any, selectedDate: Date) => {
     const currentDate = selectedDate;
     setShow(false);
     setDate(currentDate);
@@ -145,14 +143,13 @@ function EditProfileScreen({ navigation, route }: EditProfileScreenProp) {
     privateAPI
       .get({ url: 'api/v1/users/auth' })
       .then((response) => {
-        // console.log('1', response);
-        if (response.responseSuccess) {
-          // console.log(response);
+        if (response.code === 'SUCCESS') {
           setCountryCode(response.singleData.countryCode);
           setPhoneNumber(response.singleData.phoneNumber);
           setAlarmStatus(response.singleData.alarmStatus);
           setAlarmTime(response.singleData.alarmTime);
           setFamilyId(response.singleData.familyId);
+          setPickedImagePath(response.singleData.profileImgUrl);
         } else {
           // 여기서 에러 띄우기
         }
@@ -161,18 +158,15 @@ function EditProfileScreen({ navigation, route }: EditProfileScreenProp) {
         // 여기서도 에러 띄우기
       });
   }, []);
-  
+
   const editProfileHandler = () => {
-    console.log({ countryCode, phoneNumber, familyName, alarmStatus, alarmTime});
     privateAPI
       .patch({
         url: 'api/v1/users/auth/information',
         data: { countryCode, phoneNumber, familyName, alarmStatus, alarmTime },
       })
       .then((response) => {
-        // eslint-disable-next-line no-constant-condition
-        if (typeof response.responseSuccess) {
-          console.log(response);
+        if (typeof response.responseSuccess === 'string') {
           setCountryCode(response.countryCode);
           setPhoneNumber(response.phoneNumber);
           setFamilyName(response.familyName);
@@ -209,7 +203,7 @@ function EditProfileScreen({ navigation, route }: EditProfileScreenProp) {
       {/* Profile Wrapper */}
       <View style={styles.profileWrapper}>
         <TouchableOpacity onPress={() => openModal()}>
-          <Avatar size={60} source={ProfileImageDefault}>
+          <Avatar size={60} source={{ uri: pickedImagePath }}>
             <Avatar.Accessory size={20} source={IcProfileImageEdit} />
           </Avatar>
         </TouchableOpacity>
@@ -219,7 +213,7 @@ function EditProfileScreen({ navigation, route }: EditProfileScreenProp) {
       {/* 각각 설정 항목 */}
       <View style={styles.settingsWrapper}>
         {/* 국가 */}
-        <View style={styles.eachSettings}>
+        {/* <View style={styles.eachSettings}>
           <Text style={styles.settingTxt}>국가</Text>
           <Text
             style={styles.settingValueTxt}
@@ -228,7 +222,7 @@ function EditProfileScreen({ navigation, route }: EditProfileScreenProp) {
             +82 {phoneNumber}
           </Text>
         </View>
-        <Image source={mypageLine} style={styles.lineImage} />
+        <Image source={mypageLine} style={styles.lineImage} /> */}
 
         {/* 가족 채널 */}
         <View style={styles.eachSettings}>

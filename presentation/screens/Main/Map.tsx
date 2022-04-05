@@ -213,6 +213,7 @@ function MapScreen({ navigation }: MapScreenProp) {
         radius={25}
         style={styles.bottomSheet}
       >
+        
         <Pressable>
           <View>
             <ScrollView style={styles.bsWrapper}>

@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useEffect, useState } from 'react';
 import {
@@ -18,6 +19,7 @@ import COLORS from '../../styles/colors';
 import { commonStyles } from '../../styles/common';
 
 type RecordScreenProp = NativeStackScreenProps<NavigationStackParams, 'Record'>;
+type RecordMode = 'TEXT' | 'IMAGE';
 
 const { height, width } = Dimensions.get('window');
 
@@ -113,9 +115,42 @@ const styles = StyleSheet.create({
 
 function RecordScreen({ navigation, route }: RecordScreenProp) {
   const routeParams = route.params;
-  const [mode, setMode] = useState<'TEXT' | 'IMAGE' | null>(null);
+
+  const editRouteParams =
+    typeof (
+      routeParams as {
+        category: string;
+        question: string;
+        feedID: number;
+        content: string;
+        type: string;
+      }
+    )?.feedID === 'number'
+      ? {
+          category: routeParams?.category,
+          question: routeParams?.question,
+          feedID:
+            typeof (routeParams as { feedID: number })?.feedID === 'number'
+              ? (routeParams as { feedID: number })?.feedID
+              : undefined,
+          content:
+            typeof (routeParams as { content: string })?.content === 'string'
+              ? (routeParams as { content: string })?.content
+              : undefined,
+          type:
+            typeof (routeParams as { type: RecordMode })?.type === 'string'
+              ? (routeParams as { type: RecordMode })?.type
+              : null,
+        }
+      : undefined;
+
+  const [mode, setMode] = useState<RecordMode | null>(
+    editRouteParams?.type ?? null,
+  );
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [pickedImagePath, setPickedImagePath] = useState('');
+  const [pickedImagePath, setPickedImagePath] = useState(
+    editRouteParams?.type === 'IMAGE' ? editRouteParams?.content ?? '' : '',
+  );
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
   const [isUploadable, setIsUploadable] = useState(false);
@@ -135,19 +170,36 @@ function RecordScreen({ navigation, route }: RecordScreenProp) {
         (mode === 'IMAGE' && pickedImagePath === '')
       )
     ) {
-      api.feedService
-        .createFeed(
-          routeParams?.question ?? title,
-          mode === 'IMAGE' ? pickedImagePath : text,
-          mode,
-        )
-        .then(({ isSuccess }) => {
-          if (isSuccess) {
-            setText('');
-            setPickedImagePath('');
-            navigation.push('Main', { screen: 'Feed' });
-          }
-        });
+      if (typeof editRouteParams?.feedID === 'number') {
+        api.feedService
+          .updateFeed(
+            editRouteParams?.feedID,
+            editRouteParams?.question ?? title,
+            mode === 'IMAGE' ? pickedImagePath : text,
+            mode,
+          )
+          .then(({ isSuccess }) => {
+            if (isSuccess) {
+              setText('');
+              setPickedImagePath('');
+              navigation.push('Main', { screen: 'Feed' });
+            }
+          });
+      } else {
+        api.feedService
+          .createFeed(
+            routeParams?.question ?? title,
+            mode === 'IMAGE' ? pickedImagePath : text,
+            mode,
+          )
+          .then(({ isSuccess }) => {
+            if (isSuccess) {
+              setText('');
+              setPickedImagePath('');
+              navigation.push('Main', { screen: 'Feed' });
+            }
+          });
+      }
     }
   };
 
@@ -161,7 +213,9 @@ function RecordScreen({ navigation, route }: RecordScreenProp) {
       <View style={styles.headerContainer}>
         <ButtonBack onPress={() => navigation.goBack()} />
         <Text style={styles.headerTitle}>
-          {routeParams?.category
+          {editRouteParams?.category
+            ? '수정하기'
+            : routeParams?.category
             ? `${routeParams.category} 일상공유`
             : '내 질문으로 일상공유'}
         </Text>
@@ -174,7 +228,7 @@ function RecordScreen({ navigation, route }: RecordScreenProp) {
                 : styles.uploadTextDisabled,
             ]}
           >
-            업로드
+            {editRouteParams !== undefined ? '수정 완료' : '업로드'}
           </Text>
         </TouchableOpacity>
       </View>
@@ -202,6 +256,7 @@ function RecordScreen({ navigation, route }: RecordScreenProp) {
               textAlignVertical="top"
               style={styles.answerTextInput}
               placeholderTextColor={COLORS.TEXT_DISABLED_GREY}
+              defaultValue={editRouteParams?.content}
             />
           </View>
         ) : (

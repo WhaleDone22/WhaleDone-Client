@@ -6,6 +6,14 @@ export function feedMock(): FeedService {
     return { isSuccess: true };
   };
 
+  const updateFeed = async () => {
+    return { isSuccess: true };
+  };
+
+  const deleteFeed = async () => {
+    return { isSuccess: true };
+  };
+
   const getAllFeed = async () => {
     return FEED_DATA.GET_ALL;
   };
@@ -22,5 +30,18 @@ export function feedMock(): FeedService {
     return { isSuccess: true };
   };
 
-  return { createFeed, getAllFeed, getTime, getReactions, createReaction };
+  const deleteReaction = async () => {
+    return { isSuccess: true };
+  };
+
+  return {
+    createFeed,
+    updateFeed,
+    deleteFeed,
+    getAllFeed,
+    getTime,
+    getReactions,
+    createReaction,
+    deleteReaction,
+  };
 }

@@ -63,12 +63,22 @@ function AudioPlayer(props: AudioPlayerProps) {
     };
   }, [isPlaying]);
 
+  useEffect(() => {
+    if (!status?.isLoaded || !status.durationMillis) return;
+    if (seconds * 1000 > status.durationMillis) setIsPlaying(false);
+  }, [seconds]);
+
   return (
     <View style={styles.wrapper}>
-      {status?.isLoaded && (
+      {status && status?.isLoaded && status?.durationMillis && (
         <>
           <Pressable
             onPress={() => {
+              if (
+                status.durationMillis &&
+                seconds * 1000 > status.durationMillis
+              )
+                setSeconds(0);
               setIsPlaying((prev) => !prev);
             }}
           >
@@ -77,14 +87,18 @@ function AudioPlayer(props: AudioPlayerProps) {
               style={styles.icon}
             />
           </Pressable>
+
           <View style={styles.statusbar}>
-            <View
-              style={{
-                height: 6,
-                backgroundColor: COLORS.THEME_PRIMARY,
-                width: (seconds * 100000) / (status.durationMillis ?? 10000),
-              }}
-            />
+            {status.durationMillis && (
+              <View
+                style={{
+                  height: 6,
+                  backgroundColor: COLORS.THEME_PRIMARY,
+                  width: `${(100 * 1000 * seconds) / status.durationMillis}%`,
+                  maxWidth: '100%',
+                }}
+              />
+            )}
           </View>
           <Text style={styles.timeStamp}>
             {status.durationMillis &&

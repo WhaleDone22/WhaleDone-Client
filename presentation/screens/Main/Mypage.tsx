@@ -1,32 +1,31 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useEffect, useState } from 'react';
 import {
-  Platform,
   Image,
   StyleSheet,
   Text,
   View,
   TextInput,
   TouchableOpacity,
-  Button,
   Modal,
   Pressable,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Avatar, Switch } from 'react-native-elements';
 import WebView from 'react-native-webview';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { privateAPI } from '../../../infrastructures/api/remote/base';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonBack from '../../components/ButtonBack';
-import PhotoSelectorModal from '../../components/PhotoSelectorModal';
 import COLORS from '../../styles/colors';
 import { commonStyles } from '../../styles/common';
 
-type MyPageScreenProp = NativeStackScreenProps<NavigationStackParams, 'MyPage'>;
+type MyPageScreenProp =
+  | NativeStackScreenProps<NavigationStackParams, 'MyPage'> & {
+      resetUserState: () => void;
+    };
 
-const ProfileImageDefault = require('../../../assets/profile-image-default.png');
 const mypageLine = require('../../../assets/mypage-line.png');
-const IcArrowRight = require('../../../assets/ic-arrow-right.png');
 const icCloseTerms = require('../../../assets/ic-close-terms.png');
 
 const styles = StyleSheet.create({
@@ -131,11 +130,9 @@ const styles = StyleSheet.create({
   },
 });
 
-function MyPageScreen({ navigation }: MyPageScreenProp) {
+function MyPageScreen({ navigation, resetUserState }: MyPageScreenProp) {
   // AsyncStorage.getItem('token')
   const [isEditable, setIsEditable] = useState(true);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [pickedImagePath, setPickedImagePath] = useState('');
   const [isSetAlarm, setIsSetAlarm] = useState(true);
 
   const [nickName, setNickName] = useState('');
@@ -146,9 +143,7 @@ function MyPageScreen({ navigation }: MyPageScreenProp) {
   const [alarmTime, setAlarmTime] = useState('');
   const [familyId, setFamilyId] = useState('');
   const [termsOpened, setTermsOpened] = useState(false);
-
-  const openModal = () => setIsModalVisible(true);
-  const closeModal = () => setIsModalVisible(false);
+  const [profileImage, setProfileImage] = useState('');
 
   // const onMembershipPressed = () => {
   //   console.log('onMembershipPressed');
@@ -158,6 +153,7 @@ function MyPageScreen({ navigation }: MyPageScreenProp) {
     privateAPI
       .get({ url: 'api/v1/users/auth' })
       .then((response) => {
+        console.log(response);
         if (response.responseSuccess) {
           setNickName(response.singleData.nickName);
           setCountryCode(response.singleData.countryCode);
@@ -166,6 +162,7 @@ function MyPageScreen({ navigation }: MyPageScreenProp) {
           setAlarmTime(response.singleData.alarmTime);
           setFamilyId(response.singleData.familyId);
           setFamilyName(response.singleData.groupName);
+          setProfileImage(response.singleData.profileImgUrl);
         } else {
           // 여기서 에러 띄우기
         }
@@ -179,14 +176,24 @@ function MyPageScreen({ navigation }: MyPageScreenProp) {
     setFamilyName('웨일던, 칭찬하는 가족');
   }, []);
 
+  const logOut = () => {
+    AsyncStorage.clear();
+    resetUserState();
+    navigation.navigate('SignUpMain');
+  };
+
+  const withdrawl = () => {
+    privateAPI.patch({ url: 'api/v1/users/auth/status' }).then((response) => {
+      if (response.code === 'SUCCESS') {
+        AsyncStorage.clear();
+        resetUserState();
+        navigation.navigate('SignUpMain');
+      }
+    });
+  };
+
   return (
     <SafeAreaView style={commonStyles.container}>
-      <PhotoSelectorModal
-        isModalVisible={isModalVisible}
-        closeModal={closeModal}
-        setPickedImagePath={(path: string) => setPickedImagePath(path)}
-      />
-
       {/* Header */}
       <View style={styles.headerContainer}>
         <ButtonBack onPress={() => navigation.goBack()} />
@@ -210,7 +217,13 @@ function MyPageScreen({ navigation }: MyPageScreenProp) {
 
       {/* Profile Wrapper */}
       <View style={styles.profileWrapper}>
-        <Avatar size={60} rounded source={ProfileImageDefault} />
+        <Avatar
+          size={60}
+          rounded
+          source={{
+            uri: profileImage,
+          }}
+        />
         <Text style={styles.userName}>{nickName} 님</Text>
       </View>
 
@@ -261,11 +274,11 @@ function MyPageScreen({ navigation }: MyPageScreenProp) {
         <Image source={mypageLine} style={styles.lineImage} />
 
         {/* 로그아웃 */}
-        {/* <View style={styles.eachSettings}>
-          <TouchableOpacity>
+        <View style={styles.eachSettings}>
+          <TouchableOpacity onPress={logOut}>
             <Text style={[styles.settingTxt, styles.logout]}>로그아웃</Text>
           </TouchableOpacity>
-        </View> */}
+        </View>
       </View>
 
       <View>
@@ -278,12 +291,9 @@ function MyPageScreen({ navigation }: MyPageScreenProp) {
           </Text>
           <Image source={IcArrowRight} style={styles.membershipArrowIcon} />
         </TouchableOpacity> */}
-        {/* <Text
-          style={styles.withdrawTxt}
-          onPress={() => navigation.navigate('Home')}
-        >
+        <Text style={styles.withdrawTxt} onPress={withdrawl}>
           탈퇴하기
-        </Text> */}
+        </Text>
       </View>
       <Modal
         transparent

@@ -27,7 +27,7 @@ import ReactionItem from '../../components/ReactionItem';
 import AudioRecorder from '../../components/AudioRecorder';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 const reactionEmojis: string[] = require('../../../infrastructures/data/reactionEmoji.json');
 
 const styles = StyleSheet.create({
@@ -149,6 +149,27 @@ function FeedScreen({ navigation }: FeedScreenProp) {
   const [viewPaddingBottom, setViewPaddingBottom] = useState(40);
   const [reactions, setReactions] = useState<ReactionItemType[]>([]);
 
+  const fetchFeeds = () => {
+    api.feedService.getAllFeed().then((response) => setFeeds(response));
+  };
+
+  const fetchReactions = () => {
+    if (!selectedFeedID) return;
+    api.feedService.getReactions(selectedFeedID).then((r) => setReactions(r));
+  };
+
+  const deleteReaction = (reactionID: number) => {
+    if (!selectedFeedID) return;
+    api.feedService
+      .deleteReaction(selectedFeedID, reactionID)
+      .then((response) => {
+        if (response.isSuccess) {
+          fetchReactions();
+          fetchFeeds();
+        }
+      });
+  };
+
   const sendTextReaction = () => {
     if (!selectedFeedID) return;
     api.feedService
@@ -157,6 +178,8 @@ function FeedScreen({ navigation }: FeedScreenProp) {
         if (response.isSuccess) {
           setTypedText('');
           setBottomSheetMode('reaction');
+          fetchReactions();
+          fetchFeeds();
         }
       });
   };
@@ -168,6 +191,8 @@ function FeedScreen({ navigation }: FeedScreenProp) {
       .then((response) => {
         if (response.isSuccess) {
           setBottomSheetMode('reaction');
+          fetchReactions();
+          fetchFeeds();
         }
       });
   };
@@ -179,12 +204,30 @@ function FeedScreen({ navigation }: FeedScreenProp) {
       .then((response) => {
         if (response.isSuccess) {
           setBottomSheetMode('reaction');
+          fetchReactions();
+          fetchFeeds();
         }
       });
   };
 
+  const editFeed = (
+    category: string,
+    question: string,
+    feedID: number,
+    content: string,
+    type: string,
+  ) => {
+    navigation.navigate('Record', {
+      category,
+      question,
+      feedID,
+      content,
+      type,
+    });
+  };
+
   useEffect(() => {
-    api.feedService.getAllFeed().then((response) => setFeeds(response));
+    fetchFeeds();
   }, []);
 
   useEffect(() => {
@@ -194,7 +237,7 @@ function FeedScreen({ navigation }: FeedScreenProp) {
   useEffect(() => {
     if (selectedFeedID !== undefined) {
       bottomSheetRef.current?.show();
-      api.feedService.getReactions(selectedFeedID).then((r) => setReactions(r));
+      fetchReactions();
     }
   }, [selectedFeedID]);
 
@@ -307,9 +350,27 @@ function FeedScreen({ navigation }: FeedScreenProp) {
                   onStartShouldSetResponder={() => true}
                   style={{ paddingBottom: 30 }}
                 >
-                  {reactions.map((reaction) => (
-                    <ReactionItem {...reaction} key={reaction.reactionID} />
-                  ))}
+                  {reactions.length > 0 ? (
+                    reactions.map((reaction) => (
+                      <ReactionItem
+                        {...reaction}
+                        key={reaction.reactionID}
+                        deleteReaction={deleteReaction}
+                      />
+                    ))
+                  ) : (
+                    <Text
+                      style={{
+                        color: COLORS.TEXT_DISABLED_GREY,
+                        fontSize: 14,
+                        fontFamily: 'Pretendard',
+                        textAlign: 'center',
+                        marginTop: height * 0.15,
+                      }}
+                    >
+                      도착한 리액션이 아직 없어요.
+                    </Text>
+                  )}
                 </View>
               </ScrollView>
             )}
@@ -430,6 +491,8 @@ function FeedScreen({ navigation }: FeedScreenProp) {
                 setSelectedFeedID={setSelectedFeedID}
                 selectedFeedID={selectedFeedID}
                 setSelectedFeedY={setSelectedFeedY}
+                editFeed={editFeed}
+                fetchFeeds={fetchFeeds}
               />
             ))}
           </View>

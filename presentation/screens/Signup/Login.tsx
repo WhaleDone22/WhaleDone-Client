@@ -19,7 +19,10 @@ import COLORS from '../../styles/colors';
 const icPasswordVisibleTrue = require('../../../assets/ic-password-visible-true.png');
 const icPasswordVisibleFalse = require('../../../assets/ic-password-visible-false.png');
 
-type LoginScreenProp = NativeStackScreenProps<NavigationStackParams, 'Login'>;
+type LoginScreenProp = NativeStackScreenProps<
+  NavigationStackParams,
+  'Login'
+> & { setLogin: (hasFamily: boolean) => void };
 
 const styles = StyleSheet.create({
   container: {
@@ -54,34 +57,38 @@ const styles = StyleSheet.create({
   },
 });
 
-function LoginScreen({ navigation }: LoginScreenProp) {
+function LoginScreen({ navigation, setLogin }: LoginScreenProp) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isPasswordVisible, setIsPasswordVisible] = useState(true);
-  const handleLogin = () => {
+  const handleLogin = async () => {
     publicAPI
       .post({ url: 'api/v1/user/sign-in', data: { email, password } })
-      .then((response) => {
+      .then(async (response) => {
         if (response.responseSuccess) {
           if (typeof response.singleData.jwtToken === 'string') {
-            AsyncStorage.setItem(
+            await AsyncStorage.setItem(
               'token',
               response.singleData.jwtToken.split(' ')[1],
             );
-            AsyncStorage.setItem(
+            await AsyncStorage.setItem(
               'userID',
               response.singleData.userId.toString(),
             );
             if (typeof response.singleData.familyId === 'number') {
-              AsyncStorage.setItem(
-                'familyID',
-                response.singleData.familyId.toString(),
-              );
-              navigation.push('Main', { screen: 'Home' });
-            } else {
-              navigation.push('Greet', {
-                nickname: response.singleData.nickName,
-              });
+              if (parseFloat(response.singleData.familyId) !== -1) {
+                await AsyncStorage.setItem(
+                  'familyID',
+                  response.singleData.familyId.toString(),
+                );
+                setLogin(true);
+                navigation.push('Main', { screen: 'Home' });
+              } else {
+                setLogin(false);
+                navigation.push('Greet', {
+                  nickname: response.singleData.nickName,
+                });
+              }
             }
           } else {
             // 에러 띄우기
