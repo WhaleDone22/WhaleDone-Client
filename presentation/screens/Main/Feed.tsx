@@ -158,6 +158,18 @@ function FeedScreen({ navigation }: FeedScreenProp) {
     api.feedService.getReactions(selectedFeedID).then((r) => setReactions(r));
   };
 
+  const deleteReaction = (reactionID: number) => {
+    if (!selectedFeedID) return;
+    api.feedService
+      .deleteReaction(selectedFeedID, reactionID)
+      .then((response) => {
+        if (response.isSuccess) {
+          fetchReactions();
+          fetchFeeds();
+        }
+      });
+  };
+
   const sendTextReaction = () => {
     if (!selectedFeedID) return;
     api.feedService
@@ -340,7 +352,11 @@ function FeedScreen({ navigation }: FeedScreenProp) {
                 >
                   {reactions.length > 0 ? (
                     reactions.map((reaction) => (
-                      <ReactionItem {...reaction} key={reaction.reactionID} />
+                      <ReactionItem
+                        {...reaction}
+                        key={reaction.reactionID}
+                        deleteReaction={deleteReaction}
+                      />
                     ))
                   ) : (
                     <Text

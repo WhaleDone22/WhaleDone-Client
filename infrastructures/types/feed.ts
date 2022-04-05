@@ -36,4 +36,5 @@ export type ReactionItem = {
   reactionID: number;
   reactionType: Reaction['type'];
   content: string;
+  isMine: boolean;
 };

@@ -116,6 +116,7 @@ export function feedRemote(): FeedService {
   };
 
   const getReactions = async (feedID: number) => {
+    const myID = await AsyncStorage.getItem('userID');
     return privateAPI
       .get({
         url: `api/v1/posts/${feedID}/reactions`,
@@ -132,6 +133,7 @@ export function feedRemote(): FeedService {
               ? 'RECORD'
               : 'TEXT',
           content: reaction.contents,
+          isMine: parseFloat(myID ?? '-1') === reaction.authorIdx,
         }));
       });
   };
