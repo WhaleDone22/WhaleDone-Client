@@ -55,20 +55,7 @@ function GroupCodeInputScreen({ navigation }: GroupCodeInputScreenProp) {
     });
   };
 
-  // 코드 생성
-  /*
-  const createCode = () => {
-    const rawCode = Math.random().toString(36).substr(2, 6);
-    const code: string[] = [];
-    for (let i = 0; i < rawCode.length; i += 1) {
-      code[i] = rawCode.charAt(i);
-    }
-    return code;
-  };
-  */
-
   const onCreateCodePressed = () => {
-    // const code: any = createCode();
     privateAPI.post({ url: 'api/v1/family' }).then((response) => {
       if (response.code === 'SUCCESS') {
         privateAPI
@@ -113,7 +100,7 @@ function GroupCodeInputScreen({ navigation }: GroupCodeInputScreenProp) {
           <Text style={styles.title}>초대 코드를 입력하세요</Text>
         </View>
 
-        <View>
+        <View style={styles.contentsContainer}>
           <View
             style={
               isFilled ? styles.inactivatedCodeContainer : styles.codeContainer
@@ -199,31 +186,31 @@ function GroupCodeInputScreen({ navigation }: GroupCodeInputScreenProp) {
           >
             <Text style={styles.entranceBtnText}>입장하기</Text>
           </TouchableOpacity>
-        </View>
 
-        <View>
-          <Text style={styles.createTxt}>아직 초대 코드가 없으신가요?</Text>
-          {!isCreated ? (
-            <TouchableOpacity
-              style={
-                !isFilled
-                  ? styles.createCodeBtn
-                  : styles.inactivatedCreateCodeBtn
-              }
-              onPress={onCreateCodePressed}
-            >
-              <Text style={styles.createCodeBtnTxt}>
-                새로운 초대 코드 만들기
-              </Text>
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity
-              style={styles.createCodeBtn}
-              onPress={onCreateCodePressed}
-            >
-              <Text style={styles.createCodeBtnTxt}>초대 코드 공유하기</Text>
-            </TouchableOpacity>
-          )}
+          <View>
+            <Text style={styles.createTxt}>아직 초대 코드가 없으신가요?</Text>
+            {!isCreated ? (
+              <TouchableOpacity
+                style={
+                  !isFilled
+                    ? styles.createCodeBtn
+                    : styles.inactivatedCreateCodeBtn
+                }
+                onPress={onCreateCodePressed}
+              >
+                <Text style={styles.createCodeBtnTxt}>
+                  새로운 초대 코드 만들기
+                </Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={styles.createCodeBtn}
+                onPress={onCreateCodePressed}
+              >
+                <Text style={styles.createCodeBtnTxt}>초대 코드 공유하기</Text>
+              </TouchableOpacity>
+            )}
+          </View>
         </View>
       </View>
     </SafeAreaView>
@@ -238,8 +225,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   container: {
-    flex: 1,
-    justifyContent: 'space-between',
+    // flex: 1,
+    // justifyContent: 'space-between',
   },
   title: {
     fontSize: 20,
@@ -249,6 +236,11 @@ const styles = StyleSheet.create({
   titleWrapper: {
     paddingVertical: 20,
     paddingHorizontal: 10,
+  },
+  contentsContainer: {
+    backgroundColor: 'green',
+    justifyContent: 'space-between',
+    alignItems: 'stretch',
   },
 
   textInput: {
@@ -280,7 +272,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.TEXT_DISABLED_GREY,
     paddingVertical: 35,
     borderRadius: 10,
-    // flex: 1,
   },
 
   //
@@ -295,7 +286,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingVertical: 17,
     backgroundColor: COLORS.TEXT_DISABLED_GREY,
-    marginBottom: 300,
+    // marginBottom: 300,
     marginTop: 30,
   },
   entranceBtnText: {
@@ -318,7 +309,7 @@ const styles = StyleSheet.create({
     color: 'white',
     borderRadius: 5,
     marginBottom: 60,
-    bottom: 16,
+    // bottom: 16,
   },
   createCodeBtn: {
     textAlign: 'center',
@@ -326,8 +317,8 @@ const styles = StyleSheet.create({
     paddingVertical: 17,
     color: 'white',
     borderRadius: 5,
-    marginBottom: 60,
-    bottom: 16,
+    // marginBottom: 60,
+    // bottom: 16,
   },
   createCodeBtnTxt: {
     color: 'white',
@@ -341,10 +332,11 @@ const styles = StyleSheet.create({
     fontFamily: 'Pretendard',
     fontSize: 12,
     textAlign: 'center',
-    paddingVertical: 20,
+    // paddingVertical: 20,
     color: COLORS.TEXT_SECONDARY,
     marginBottom: 10,
-    bottom: 5,
+    // paddingBottom: 10,
+    // bottom: 5,
   },
 });
 

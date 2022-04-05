@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState, useEffect, useRef } from 'react';
-import { Text, Image, StyleSheet, View, Pressable } from 'react-native';
+import { Text, Image, StyleSheet, View, Pressable, TouchableWithoutFeedback } from 'react-native';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import BottomSheet from 'react-native-gesture-bottom-sheet';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     paddingLeft: 12,
   },
-  distnaceValue: {
+  distanceValue: {
     fontFamily: 'Pretendard-Bold',
     color: COLORS.BLUE_500,
   },
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: 200,
     height: 200,
-    borderRadius: 100,
+    // borderRadius: 200,
     borderWidth: 1,
     borderColor: COLORS.THEME_PRIMARY,
     backgroundColor: 'rgba(68,107,255,0.25)',
@@ -165,6 +165,7 @@ function MapScreen({ navigation }: MapScreenProp) {
   const [familyProfile, setFamilyProfile] = useState<FamilyProfile[]>([]);
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [heartDistance, setHeartDistance] = useState(0);
 
   useEffect(() => {
     (async () => {
@@ -175,7 +176,7 @@ function MapScreen({ navigation }: MapScreenProp) {
       }
 
       const locationPermission = await Location.getCurrentPositionAsync({});
-      // setLocation(locationPermission);
+      setLocation(locationPermission);
     })();
   }, []);
 
@@ -195,6 +196,7 @@ function MapScreen({ navigation }: MapScreenProp) {
           if (response.responseSuccess) {
             console.warn(response);
             setFamilyProfile(response.multipleData);
+            setHeartDistance(response.multipleData.communicationCount);
           } else {
             // 여기서 에러 띄우기
           }
@@ -205,19 +207,16 @@ function MapScreen({ navigation }: MapScreenProp) {
     });
   }, []);
 
+  // 마음거리 계산
+  const heartDistanceHandler = (hd: number) => {
+    switch (hd) {
+      //
+    }
+  };
+
   useEffect(() => {
-    privateAPI
-      .get({ url: 'api/v1/families/{familyID}/users' })
-      .then((response) => {
-        if (response.responseSuccess) {
-          // console.log(response.multipleData);
-        } else {
-          // 여기서 에러 띄우기
-        }
-      })
-      .catch((/* error */) => {
-        // 여기서도 에러 띄우기
-      });
+    console.log(heartDistance);
+    setHeartDistance(heartDistance);
   }, []);
 
   return (
@@ -236,16 +235,16 @@ function MapScreen({ navigation }: MapScreenProp) {
               소통을 많이 할수록 원의 거리가 가까워져요
             </Text>
           </View>
-          {/* <View style={[styles.textWrapper1, styles.textWrapper2]}>
+          <View style={[styles.textWrapper1, styles.textWrapper2]}>
             <Text style={styles.subText}>가족 채널명</Text>
             <TouchableOpacity>
               <Text style={styles.editText}>수정 {'>'} </Text>
             </TouchableOpacity>
-          </View> */}
+          </View>
 
           {/* Profile */}
           <View style={styles.userWrapper}>
-            {familyProfile.map((family) => (
+            {familyProfile?.map((family) => (
               <View style={styles.profileWrapper}>
                 <Image
                   source={{ uri: family.profileImgUrl }}
@@ -259,41 +258,48 @@ function MapScreen({ navigation }: MapScreenProp) {
               <Pressable
                 onPress={() => {
                   bottomSheetRef.current?.close();
-                  navigation.navigate('GroupCodeShareFromMap');
+                  // navigation.navigate('GroupCodeShareFromMap');
                 }}
               >
-                {/* <Image source={addFamily} style={styles.imgWrapper} />
+                <Image source={addFamily} style={styles.imgWrapper} />
                 <Text style={[styles.subText, { color: COLORS.BLUE_500 }]}>
                   가족 추가
-                </Text> */}
+                </Text>
               </Pressable>
             </View>
           </View>
 
           {/* 마음 거리 */}
+          {familyProfile?.map((family) => (
+            <View style={styles.distanceWrapper}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Image
+                  source={{ uri: family.profileImgUrl }}
+                  style={styles.distanceProfile}
+                />
+                <Text style={styles.distanceText}>
+                  {family.nickName}님과의 마음거리
+                </Text>
+              </View>
+              <Text
+                style={styles.distanceValue}
+                onPress={() => {
+                  bottomSheetRef.current?.close();
+                  navigation.navigate('MapDetail');
+                }}
+              >
+                {heartDistance}km {'>'}
+              </Text>
+            </View>
+          ))}
+
           {/* <View style={styles.distanceWrapper}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Image source={defaultProfile} style={styles.distanceProfile} />
               <Text style={styles.distanceText}>user님과의 마음거리</Text>
             </View>
             <Text
-              style={styles.distnaceValue}
-              onPress={() => {
-                bottomSheetRef.current?.close();
-                navigation.navigate('MapDetail');
-              }}
-            >
-              9999km {'>'}
-            </Text>
-          </View>
-
-          <View style={styles.distanceWrapper}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Image source={defaultProfile} style={styles.distanceProfile} />
-              <Text style={styles.distanceText}>user님과의 마음거리</Text>
-            </View>
-            <Text
-              style={styles.distnaceValue}
+              style={styles.distanceValue}
               onPress={() => {
                 bottomSheetRef.current?.close();
                 navigation.navigate('MapDetail');
@@ -323,16 +329,23 @@ function MapScreen({ navigation }: MapScreenProp) {
             longitudeDelta: 70,
           }}
         >
-          <Marker coordinate={{ latitude: 37.487935, longitude: 126.857758 }}>
-            <View style={styles.markerCircle}>
-              <Image
-                source={{
-                  uri: 'https://avatars.githubusercontent.com/u/98895272?s=200&v=4',
-                }}
-                style={styles.markerImg}
-              />
-            </View>
-          </Marker>
+          {familyProfile?.map((family) => (
+            <Marker
+              coordinate={{
+                latitude: family.latitude,
+                longitude: family.longitude,
+              }}
+            >
+              <View style={styles.markerCircle}>
+                <Image
+                  source={{
+                    uri: 'https://avatars.githubusercontent.com/u/98895272?s=200&v=4',
+                  }}
+                  style={styles.markerImg}
+                />
+              </View>
+            </Marker>
+          ))}
         </MapView>
       </View>
 
