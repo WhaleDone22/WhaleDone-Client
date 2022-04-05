@@ -206,8 +206,6 @@ function HomeScreen({ navigation }: HomeScreenProp) {
             style={{
               flex: 1,
               justifyContent: 'flex-end',
-              // width: 308,
-              // height: 413,
             }}
             source={item.image.icon}
             resizeMode="contain"
