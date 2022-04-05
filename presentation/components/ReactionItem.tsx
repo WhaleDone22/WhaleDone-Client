@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { RectButton, Swipeable } from 'react-native-gesture-handler';
 import { ReactionItem as ReactionItemType } from '../../infrastructures/types/feed';
@@ -67,7 +67,7 @@ function ReactionItem(props: ReactionItemProps) {
         source={writerThumbnail ? { uri: writerThumbnail } : ImageEmptyProfile}
         style={styles.profileImage}
       />
-      {isMine ? (
+      {isMine && reactionType !== 'RECORD' ? (
         <Swipeable
           containerStyle={{ flex: 1 }}
           renderRightActions={() => (
@@ -79,7 +79,6 @@ function ReactionItem(props: ReactionItemProps) {
         >
           <RectButton>
             <View style={styles.bubbleWrapper}>
-              {reactionType === 'RECORD' && <AudioPlayer src={content} />}
               {reactionType === 'TEXT' && (
                 <Text style={styles.text}>{content}</Text>
               )}
