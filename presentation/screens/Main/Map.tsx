@@ -245,7 +245,7 @@ function MapScreen({ navigation }: MapScreenProp) {
 
           {/* Profile */}
           <View style={styles.userWrapper}>
-            {familyProfile.map((family) => (
+            {familyProfile?.map((family) => (
               <View style={styles.profileWrapper}>
                 <Image
                   source={{ uri: family.profileImgUrl }}
