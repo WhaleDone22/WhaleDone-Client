@@ -1,9 +1,12 @@
 import React, { useRef, useState } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { api } from '../../infrastructures/api';
 import { Feed, reactionToIcon } from '../../infrastructures/types/feed';
 import COLORS from '../styles/colors';
 
 const ImageEmptyProfile = require('../../assets/image-profile-empty.png');
+const IcEditBlack = require('../../assets/ic-edit-black.png');
+const IcDeleteRed = require('../../assets/ic-delete-red.png');
 
 const styles = StyleSheet.create({
   profileImage: {
@@ -16,6 +19,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 16,
     paddingHorizontal: 17,
+    position: 'relative',
   },
   myFeed: {
     flexDirection: 'row-reverse',
@@ -41,10 +45,10 @@ const styles = StyleSheet.create({
   },
   feedBubble: {
     flexDirection: 'column',
-    padding: 20,
     backgroundColor: COLORS.GREY_020,
     borderRadius: 10,
     marginLeft: 10,
+    paddingVertical: 20,
   },
   myFeedBubble: {
     backgroundColor: COLORS.BLUE_200,
@@ -54,6 +58,7 @@ const styles = StyleSheet.create({
   feedReactions: {
     flexDirection: 'row',
     marginTop: 10,
+    paddingHorizontal: 20,
   },
   reactionBox: {
     flexDirection: 'row',
@@ -71,12 +76,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Pretendard-Bold',
     color: COLORS.TEXT_PRIMARY,
+    paddingHorizontal: 20,
   },
   bodyText: {
     marginTop: 14,
     fontSize: 14,
     fontFamily: 'Pretendard',
     color: 'black',
+    paddingHorizontal: 20,
   },
 });
 
@@ -86,19 +93,49 @@ function FeedItem({
   setSelectedFeedID,
   selectedFeedID,
   setSelectedFeedY,
+  editFeed,
+  fetchFeeds,
 }: {
   feed: Feed;
   isMine: boolean;
   setSelectedFeedID: () => void;
   selectedFeedID: number | undefined;
   setSelectedFeedY: (y: number) => void;
+  editFeed: (
+    category: string,
+    question: string,
+    feedID: number,
+    content: string,
+    type: string,
+  ) => void;
+  fetchFeeds: () => void;
 }) {
   const [positionY, setPositionY] = useState<number | undefined>(undefined);
   const [height, setHeight] = useState<number | undefined>(undefined);
+  const [editVisible, setEditVisible] = useState(false);
   const feedViewRef = useRef<View>(null);
   const onBubbleClicked = () => {
     setSelectedFeedID();
+    setEditVisible(false);
     if (positionY && height) setSelectedFeedY(positionY + height);
+  };
+
+  const onBubbleLongPressed = () => {
+    setEditVisible(true);
+  };
+
+  const onEditPressed = () => {
+    editFeed('수정하기', feed.title, feed.id, feed.body, feed.type);
+    setEditVisible(false);
+  };
+
+  const onDeletePressed = () => {
+    api.feedService.deleteFeed(feed.id).then((response) => {
+      if (response.isSuccess) {
+        setEditVisible(false);
+        fetchFeeds();
+      }
+    });
   };
 
   return (
@@ -121,13 +158,14 @@ function FeedItem({
       />
       <View style={styles.feedBox}>
         {!isMine && <Text style={styles.writerText}>{feed.writer}</Text>}
-        <TouchableOpacity
+        <Pressable
           style={[
             styles.feedBubble,
             isMine && styles.myFeedBubble,
             selectedFeedID === feed.id && styles.selectedFeedBox,
           ]}
           onPress={onBubbleClicked}
+          onLongPress={onBubbleLongPressed}
         >
           <Text style={styles.titleText}>{feed.title}</Text>
           {feed.type === 'TEXT' && (
@@ -146,16 +184,87 @@ function FeedItem({
           )}
           <View style={styles.feedReactions}>
             {feed.reactions.map((reaction) => (
-              <TouchableOpacity key={reaction.type} style={styles.reactionBox}>
+              <Pressable key={reaction.type} style={styles.reactionBox}>
                 <Image
                   source={reactionToIcon[reaction.type]}
                   style={styles.reactionIcon}
                 />
                 <Text style={styles.reactionCount}>{reaction.count}</Text>
-              </TouchableOpacity>
+              </Pressable>
             ))}
           </View>
-        </TouchableOpacity>
+          {isMine && editVisible && (
+            <View
+              style={{
+                position: 'absolute',
+                backgroundColor: COLORS.GREY_010,
+                bottom: 0,
+                left: 0,
+                width: '100%',
+                borderRadius: 10,
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 3,
+                },
+                shadowOpacity: 0.27,
+                shadowRadius: 4.65,
+                elevation: 6,
+              }}
+            >
+              <Pressable
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  height: 52,
+                  borderBottomColor: COLORS.GREY_030,
+                  borderBottomWidth: 1,
+                }}
+                onPress={onEditPressed}
+              >
+                <Text
+                  style={{
+                    fontSize: 14,
+                    fontFamily: 'Pretendard',
+                    color: COLORS.TEXT_PRIMARY,
+                    paddingLeft: 16,
+                  }}
+                >
+                  수정하기
+                </Text>
+                <Image
+                  source={IcEditBlack}
+                  style={{ width: 24, height: 24, marginRight: 16 }}
+                />
+              </Pressable>
+              <Pressable
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  height: 52,
+                }}
+                onPress={onDeletePressed}
+              >
+                <Text
+                  style={{
+                    fontSize: 14,
+                    fontFamily: 'Pretendard',
+                    color: COLORS.THEME_NEGATIVE,
+                    paddingLeft: 16,
+                  }}
+                >
+                  삭제하기
+                </Text>
+                <Image
+                  source={IcDeleteRed}
+                  style={{ width: 24, height: 24, marginRight: 16 }}
+                />
+              </Pressable>
+            </View>
+          )}
+        </Pressable>
       </View>
     </View>
   );

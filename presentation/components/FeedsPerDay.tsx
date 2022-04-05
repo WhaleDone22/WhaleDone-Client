@@ -26,6 +26,8 @@ function FeedsPerDay({
   setSelectedFeedID,
   selectedFeedID,
   setSelectedFeedY,
+  editFeed,
+  fetchFeeds,
 }: {
   date: string;
   feeds: Feed[];
@@ -33,11 +35,20 @@ function FeedsPerDay({
   setSelectedFeedID: (id: number) => void;
   selectedFeedID: number | undefined;
   setSelectedFeedY: (y: number) => void;
+  editFeed: (
+    category: string,
+    question: string,
+    feedID: number,
+    content: string,
+    type: string,
+  ) => void;
+  fetchFeeds: () => void;
 }) {
   const [myID, setMyID] = useState(0);
   useEffect(() => {
     AsyncStorage.getItem('userID').then((value) => setMyID(+(value ?? 0)));
   }, []);
+
   return (
     <>
       <View style={{ alignItems: 'center' }}>
@@ -52,6 +63,8 @@ function FeedsPerDay({
               setSelectedFeedID={() => setSelectedFeedID(feed.id)}
               selectedFeedID={selectedFeedID}
               setSelectedFeedY={setSelectedFeedY}
+              editFeed={editFeed}
+              fetchFeeds={fetchFeeds}
             />
           ))
         : feeds
@@ -64,6 +77,8 @@ function FeedsPerDay({
                 setSelectedFeedID={() => setSelectedFeedID(feed.id)}
                 selectedFeedID={selectedFeedID}
                 setSelectedFeedY={setSelectedFeedY}
+                editFeed={editFeed}
+                fetchFeeds={fetchFeeds}
               />
             ))}
     </>

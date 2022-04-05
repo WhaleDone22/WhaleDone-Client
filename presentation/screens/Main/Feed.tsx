@@ -149,6 +149,15 @@ function FeedScreen({ navigation }: FeedScreenProp) {
   const [viewPaddingBottom, setViewPaddingBottom] = useState(40);
   const [reactions, setReactions] = useState<ReactionItemType[]>([]);
 
+  const fetchFeeds = () => {
+    api.feedService.getAllFeed().then((response) => setFeeds(response));
+  };
+
+  const fetchReactions = () => {
+    if (!selectedFeedID) return;
+    api.feedService.getReactions(selectedFeedID).then((r) => setReactions(r));
+  };
+
   const sendTextReaction = () => {
     if (!selectedFeedID) return;
     api.feedService
@@ -157,6 +166,8 @@ function FeedScreen({ navigation }: FeedScreenProp) {
         if (response.isSuccess) {
           setTypedText('');
           setBottomSheetMode('reaction');
+          fetchReactions();
+          fetchFeeds();
         }
       });
   };
@@ -168,6 +179,8 @@ function FeedScreen({ navigation }: FeedScreenProp) {
       .then((response) => {
         if (response.isSuccess) {
           setBottomSheetMode('reaction');
+          fetchReactions();
+          fetchFeeds();
         }
       });
   };
@@ -179,12 +192,30 @@ function FeedScreen({ navigation }: FeedScreenProp) {
       .then((response) => {
         if (response.isSuccess) {
           setBottomSheetMode('reaction');
+          fetchReactions();
+          fetchFeeds();
         }
       });
   };
 
+  const editFeed = (
+    category: string,
+    question: string,
+    feedID: number,
+    content: string,
+    type: string,
+  ) => {
+    navigation.navigate('Record', {
+      category,
+      question,
+      feedID,
+      content,
+      type,
+    });
+  };
+
   useEffect(() => {
-    api.feedService.getAllFeed().then((response) => setFeeds(response));
+    fetchFeeds();
   }, []);
 
   useEffect(() => {
@@ -194,7 +225,7 @@ function FeedScreen({ navigation }: FeedScreenProp) {
   useEffect(() => {
     if (selectedFeedID !== undefined) {
       bottomSheetRef.current?.show();
-      api.feedService.getReactions(selectedFeedID).then((r) => setReactions(r));
+      fetchReactions();
     }
   }, [selectedFeedID]);
 
@@ -430,6 +461,8 @@ function FeedScreen({ navigation }: FeedScreenProp) {
                 setSelectedFeedID={setSelectedFeedID}
                 selectedFeedID={selectedFeedID}
                 setSelectedFeedY={setSelectedFeedY}
+                editFeed={editFeed}
+                fetchFeeds={fetchFeeds}
               />
             ))}
           </View>
