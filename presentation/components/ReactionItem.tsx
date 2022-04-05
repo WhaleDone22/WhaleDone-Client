@@ -75,7 +75,7 @@ function ReactionItem(props: ReactionItemProps) {
               <Image source={IcTrash} style={styles.icon} />
             </RectButton>
           )}
-          /* onSwipeableOpen={() => deleteReaction(reactionID)} */
+          onSwipeableOpen={() => deleteReaction(reactionID)}
         >
           <RectButton>
             <View style={styles.bubbleWrapper}>

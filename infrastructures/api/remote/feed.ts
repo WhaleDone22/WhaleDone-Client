@@ -162,7 +162,7 @@ export function feedRemote(): FeedService {
   const deleteReaction = async (feedID: number, reactionID: number) => {
     return privateAPI
       .patch({
-        url: `api/v1/users/auth/posts/${feedID}/reactions/${reactionID}/status`,
+        url: `api/v1/posts/${feedID}/reactions/${reactionID}/status`,
       })
       .then((data) => {
         if (data.code === 'SUCCESS') return { isSuccess: true };
