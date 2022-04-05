@@ -29,6 +29,7 @@ module.exports = {
     ],
     'react/jsx-props-no-spreading': 0,
     'no-unused-vars': 'warn',
+    'react/no-unused-prop-types': 'warn',
     'no-use-before-define': 'warn',
     'prettier/prettier': [
       'error',
