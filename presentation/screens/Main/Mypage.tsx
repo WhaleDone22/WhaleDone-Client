@@ -153,7 +153,6 @@ function MyPageScreen({ navigation, resetUserState }: MyPageScreenProp) {
     privateAPI
       .get({ url: 'api/v1/users/auth' })
       .then((response) => {
-        console.log(response);
         if (response.responseSuccess) {
           setNickName(response.singleData.nickName);
           setCountryCode(response.singleData.countryCode);

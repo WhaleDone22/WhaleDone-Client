@@ -61,7 +61,6 @@ function PhotoSelectorModal(props: PhotoSelectorModalProp) {
         type: `image/${imagePath.split('.').pop()}`,
       };
       formData.append('multipartFile', file);
-      console.warn(formData);
 
       const myToken = await AsyncStorage.getItem('token');
       if (!myToken) return;
@@ -80,7 +79,6 @@ function PhotoSelectorModal(props: PhotoSelectorModalProp) {
       );
 
       const uploadResponse = await uploadRequest.json();
-      console.warn(uploadResponse);
 
       if (typeof uploadResponse.singleData?.url === 'string') {
         setPickedImagePath(uploadResponse.singleData.url);

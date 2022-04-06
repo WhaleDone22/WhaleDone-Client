@@ -251,7 +251,6 @@ function HomeScreen({ navigation }: HomeScreenProp) {
       .get({ url: 'api/v1/questions' })
       .then((response) => {
         if (response.responseSuccess) {
-          // console.log(response.multipleData);
           setCarouselItems(
             response.multipleData.map((item: any, index: number) => {
               return { ...item, image: imageItem[index] };
