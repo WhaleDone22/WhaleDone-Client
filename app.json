@@ -2,7 +2,7 @@
   "expo": {
     "name": "WhaleDone",
     "slug": "WhaleDone",
-    "version": "1.0.4",
+    "version": "1.0.9",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -16,11 +16,13 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "bundleIdentifier": "com.softsquared.whaledone",
-      "buildNumber": "1.0.5",
+      "buildNumber": "1.0.8",
       "supportsTablet": false,
       "infoPlist": {
-        "UIBackgroundModes": ["location"],
-        "NSLocationAlwaysAndWhenInUseUsageDescription": "App requires geolocation to improve the quality of the service"
+        "NSLocationWhenInUseUsageDescription": "Allowing a location makes it confirms the location and time of family's country each other. You can change this access later in your system settings.",
+        "NSCameraUsageDescription": "Allowing access to the camera can take pictures. You can change this access later in your system settings.",
+        "NSPhotoLibraryUsageDescription": "Allowing photos makes it easy to upload album photos. You can change this access later in your system settings.",
+        "NSMicrophoneUsageDescription": "Allowing a microphone can record and send a one-minute message. You can change this access later in your system settings."
       },
       "icon": "./assets/icon.png"
     },
@@ -35,6 +37,15 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allowing photos makes it easy to upload album photos. You can change this access later in your system settings.",
+          "cameraPermission": "Allowing access to the camera can take pictures. You can change this access later in your system settings."
+        }
+      ]
+    ]
   }
 }

@@ -193,7 +193,6 @@ function MapScreen({ navigation }: MapScreenProp) {
         .get({ url: `api/v1/families/${value}/users` })
         .then((response) => {
           if (response.responseSuccess) {
-            console.warn(response);
             setFamilyProfile(response.multipleData);
           } else {
             // 여기서 에러 띄우기
