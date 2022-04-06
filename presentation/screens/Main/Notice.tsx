@@ -91,7 +91,11 @@ function NoticeScreen({ navigation }: NoticeScreenProp) {
             </View>
           ) : (
             data.map((notice) => (
-              <NoticesPerDay key={notice.date} {...notice} />
+              <NoticesPerDay
+                key={notice.date}
+                {...notice}
+                goFeed={() => navigation.navigate('Main', { screen: 'Feed' })}
+              />
             ))
           )}
         </View>

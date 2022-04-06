@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Swipeable, RectButton } from 'react-native-gesture-handler';
 import { Notice, noticeToIcon } from '../../infrastructures/types/notice';
 import COLORS from '../styles/colors';
@@ -55,38 +55,63 @@ const styles = StyleSheet.create({
 
 const IcTrash = require('../../assets/ic-trash.png');
 
-function NoticeItem(prop: Notice) {
-  const { type, isSeen, body, sub } = prop;
+type NoticeItemProps = Notice & { goFeed: () => void };
+
+function NoticeItem(prop: NoticeItemProps) {
+  const { type, isSeen, body, sub, goFeed } = prop;
   return (
-    <Swipeable
-      renderRightActions={() => (
-        <RectButton style={[styles.container, styles.containerDelete]}>
-          <Image source={IcTrash} style={styles.icon} />
-        </RectButton>
-      )}
+    // <Swipeable
+    //   renderRightActions={() => (
+    //     <RectButton style={[styles.container, styles.containerDelete]}>
+    //       <Image source={IcTrash} style={styles.icon} />
+    //     </RectButton>
+    //   )}
+    // >
+    //   <RectButton
+    //     style={[
+    //       styles.container,
+    //       isSeen ? styles.containerSeen : styles.containerUnseen,
+    //     ]}
+    //     onPress={goFeed}
+    //   >
+    //     <View style={styles.iconWrapper}>
+    //       <Image source={noticeToIcon[type]} style={styles.icon} />
+    //     </View>
+    //     <View style={styles.textWrapper}>
+    //       <Text style={[styles.text, isSeen && styles.textSeen]}>{body}</Text>
+    //       {sub && (
+    //         <Text
+    //           numberOfLines={1}
+    //           style={[styles.text, styles.subText, isSeen && styles.textSeen]}
+    //         >
+    //           {sub}
+    //         </Text>
+    //       )}
+    //     </View>
+    //   </RectButton>
+    // </Swipeable>
+    <Pressable
+      style={[
+        styles.container,
+        isSeen ? styles.containerSeen : styles.containerUnseen,
+      ]}
+      onPress={goFeed}
     >
-      <RectButton
-        style={[
-          styles.container,
-          isSeen ? styles.containerSeen : styles.containerUnseen,
-        ]}
-      >
-        <View style={styles.iconWrapper}>
-          <Image source={noticeToIcon[type]} style={styles.icon} />
-        </View>
-        <View style={styles.textWrapper}>
-          <Text style={[styles.text, isSeen && styles.textSeen]}>{body}</Text>
-          {sub && (
-            <Text
-              numberOfLines={1}
-              style={[styles.text, styles.subText, isSeen && styles.textSeen]}
-            >
-              {sub}
-            </Text>
-          )}
-        </View>
-      </RectButton>
-    </Swipeable>
+      <View style={styles.iconWrapper}>
+        <Image source={noticeToIcon[type]} style={styles.icon} />
+      </View>
+      <View style={styles.textWrapper}>
+        <Text style={[styles.text, isSeen && styles.textSeen]}>{body}</Text>
+        {sub && (
+          <Text
+            numberOfLines={1}
+            style={[styles.text, styles.subText, isSeen && styles.textSeen]}
+          >
+            {sub}
+          </Text>
+        )}
+      </View>
+    </Pressable>
   );
 }
 
