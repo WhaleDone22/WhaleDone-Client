@@ -147,6 +147,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.THEME_PRIMARY,
     backgroundColor: 'rgba(68,107,255,0.25)',
+    // position: 'absolute',
   },
 });
 
@@ -314,7 +315,7 @@ function MapScreen({ navigation }: MapScreenProp) {
             <View key={family.id}>
               <Marker
                 coordinate={{
-                  latitude: family.latitude,
+                  latitude: family.latitude - family.id * 0.000001,
                   longitude: family.longitude,
                 }}
               >
