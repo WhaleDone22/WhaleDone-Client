@@ -1,7 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useEffect, useState } from 'react';
 import {
-  Platform,
   Image,
   StyleSheet,
   Text,
@@ -12,6 +11,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Avatar, Switch } from 'react-native-elements';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { CommonActions } from '@react-navigation/native';
 import { privateAPI } from '../../../infrastructures/api/remote/base';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonBack from '../../components/ButtonBack';
@@ -113,31 +113,30 @@ function EditProfileScreen({ navigation, route }: EditProfileScreenProp) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [pickedImagePath, setPickedImagePath] = useState('');
 
-  const [isSetAlarm, setIsSetAlarm] = useState(true);
-  const [date, setDate] = useState(new Date(1598051730000));
-  const [mode, setMode] = useState('time');
-  const [show, setShow] = useState(false);
+  // const [isSetAlarm, setIsSetAlarm] = useState(true);
+  // const [date, setDate] = useState(new Date(1598051730000));
+  // const [mode, setMode] = useState('time');
+  // const [show, setShow] = useState(false);
 
   const [countryCode, setCountryCode] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [familyName, setFamilyName] = useState('');
   const [alarmStatus, setAlarmStatus] = useState(false);
-  const [alarmTime, setAlarmTime] = useState('');
-  const [familyId, setFamilyId] = useState('');
-  const [updateName, setUpdateName] = useState('');
+  // const [alarmTime, setAlarmTime] = useState('');
+  // const [familyId, setFamilyId] = useState('');
 
   const openModal = () => setIsModalVisible(true);
   const closeModal = () => setIsModalVisible(false);
 
-  const onChange = (event: any, selectedDate: Date) => {
-    const currentDate = selectedDate;
-    setShow(false);
-    setDate(currentDate);
-  };
+  // const onChange = (event: any, selectedDate: Date) => {
+  //   const currentDate = selectedDate;
+  //   setShow(false);
+  //   setDate(currentDate);
+  // };
 
-  const showTimepicker = () => {
-    setShow(true);
-  };
+  // const showTimepicker = () => {
+  //   setShow(true);
+  // };
 
   useEffect(() => {
     privateAPI
@@ -147,9 +146,10 @@ function EditProfileScreen({ navigation, route }: EditProfileScreenProp) {
           setCountryCode(response.singleData.countryCode);
           setPhoneNumber(response.singleData.phoneNumber);
           setAlarmStatus(response.singleData.alarmStatus);
-          setAlarmTime(response.singleData.alarmTime);
-          setFamilyId(response.singleData.familyId);
+          // setAlarmTime(response.singleData.alarmTime);
+          // setFamilyId(response.singleData.familyId);
           setPickedImagePath(response.singleData.profileImgUrl);
+          setFamilyName(response.singleData.groupName);
         } else {
           // 여기서 에러 띄우기
         }
@@ -159,26 +159,22 @@ function EditProfileScreen({ navigation, route }: EditProfileScreenProp) {
       });
   }, []);
 
-  const editProfileHandler = () => {
+  const confirmEdit = () => {
     privateAPI
       .patch({
         url: 'api/v1/users/auth/information',
-        data: { countryCode, phoneNumber, familyName, alarmStatus, alarmTime },
+        data: {
+          countryCode,
+          phoneNumber,
+          familyName,
+          alarmStatus,
+          profileImgUrl: pickedImagePath,
+        },
       })
       .then((response) => {
-        if (typeof response.responseSuccess === 'string') {
-          setCountryCode(response.countryCode);
-          setPhoneNumber(response.phoneNumber);
-          setFamilyName(response.familyName);
-          setAlarmStatus(response.alarmStatus);
-          setAlarmTime(response.alarmTime);
-          navigation.navigate('MyPage');
-        } else {
-          // 에러
+        if (response.code === 'SUCCESS') {
+          navigation.dispatch(CommonActions.goBack());
         }
-      })
-      .catch((/* error */) => {
-        // 여기서도 에러 띄우기
       });
   };
 
@@ -194,7 +190,7 @@ function EditProfileScreen({ navigation, route }: EditProfileScreenProp) {
       <View style={styles.headerContainer}>
         <ButtonBack onPress={() => navigation.goBack()} />
         <Text style={styles.headerTitle}>마이페이지 수정</Text>
-        <TouchableOpacity onPress={editProfileHandler}>
+        <TouchableOpacity onPress={confirmEdit}>
           <Text style={styles.saveText}>저장</Text>
         </TouchableOpacity>
       </View>
@@ -203,7 +199,7 @@ function EditProfileScreen({ navigation, route }: EditProfileScreenProp) {
       {/* Profile Wrapper */}
       <View style={styles.profileWrapper}>
         <TouchableOpacity onPress={() => openModal()}>
-          <Avatar size={60} source={{ uri: pickedImagePath }}>
+          <Avatar size={60} source={{ uri: pickedImagePath }} rounded>
             <Avatar.Accessory size={20} source={IcProfileImageEdit} />
           </Avatar>
         </TouchableOpacity>
@@ -232,12 +228,13 @@ function EditProfileScreen({ navigation, route }: EditProfileScreenProp) {
             style={styles.settingValueTxt}
             placeholder="웨일던, 칭찬하는 가족"
             onChangeText={(text) => setFamilyName(text)}
+            maxLength={12}
           />
         </View>
         <Image source={mypageLine} style={styles.lineImage} />
 
         {/* 알림 받기 */}
-        <View style={[styles.eachSettings, { height: 64 }]}>
+        {/* <View style={[styles.eachSettings, { height: 64 }]}>
           <Text style={styles.settingTxt}>알림 받기</Text>
           <View style={styles.alarmWrapper}>
             <Text
@@ -269,7 +266,7 @@ function EditProfileScreen({ navigation, route }: EditProfileScreenProp) {
               onChange={onChange}
             />
           )}
-        </View>
+        </View> */}
       </View>
     </SafeAreaView>
   );

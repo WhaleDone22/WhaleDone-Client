@@ -14,6 +14,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Avatar, Switch } from 'react-native-elements';
 import WebView from 'react-native-webview';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/native';
 import { privateAPI } from '../../../infrastructures/api/remote/base';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonBack from '../../components/ButtonBack';
@@ -131,7 +132,7 @@ const styles = StyleSheet.create({
 });
 
 function MyPageScreen({ navigation, resetUserState }: MyPageScreenProp) {
-  // AsyncStorage.getItem('token')
+  const isFocused = useIsFocused();
   const [isEditable, setIsEditable] = useState(true);
   const [isSetAlarm, setIsSetAlarm] = useState(true);
 
@@ -139,9 +140,8 @@ function MyPageScreen({ navigation, resetUserState }: MyPageScreenProp) {
   const [countryCode, setCountryCode] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [familyName, setFamilyName] = useState('웨일던, 칭찬하는 가족');
-  const [alarmStatus, setAlarmStatus] = useState(false);
-  const [alarmTime, setAlarmTime] = useState('');
-  const [familyId, setFamilyId] = useState('');
+  // const [alarmStatus, setAlarmStatus] = useState(false);
+  // const [alarmTime, setAlarmTime] = useState('');
   const [termsOpened, setTermsOpened] = useState(false);
   const [profileImage, setProfileImage] = useState('');
 
@@ -157,9 +157,8 @@ function MyPageScreen({ navigation, resetUserState }: MyPageScreenProp) {
           setNickName(response.singleData.nickName);
           setCountryCode(response.singleData.countryCode);
           setPhoneNumber(response.singleData.phoneNumber);
-          setAlarmStatus(response.singleData.alarmStatus);
-          setAlarmTime(response.singleData.alarmTime);
-          setFamilyId(response.singleData.familyId);
+          // setAlarmStatus(response.singleData.alarmStatus);
+          // setAlarmTime(response.singleData.alarmTime);
           setFamilyName(response.singleData.groupName);
           setProfileImage(response.singleData.profileImgUrl);
         } else {
@@ -169,11 +168,7 @@ function MyPageScreen({ navigation, resetUserState }: MyPageScreenProp) {
       .catch((/* error */) => {
         // 여기서도 에러 띄우기
       });
-  }, []);
-
-  useEffect(() => {
-    setFamilyName('웨일던, 칭찬하는 가족');
-  }, []);
+  }, [isFocused]);
 
   const logOut = () => {
     AsyncStorage.clear();
