@@ -166,25 +166,25 @@ function MapScreen({ navigation }: MapScreenProp) {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
 
-  useEffect(() => {
-    (async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
-        return;
-      }
+  // useEffect(() => {
+  //   (async () => {
+  //     const { status } = await Location.requestForegroundPermissionsAsync();
+  //     if (status !== 'granted') {
+  //       setErrorMsg('Permission to access location was denied');
+  //       return;
+  //     }
 
-      const locationPermission = await Location.getCurrentPositionAsync({});
-      setLocation(locationPermission);
-    })();
-  }, []);
+  //     const locationPermission = await Location.getCurrentPositionAsync({});
+  //     setLocation(locationPermission);
+  //   })();
+  // }, []);
 
-  let text: string = 'Waiting..';
-  if (errorMsg) {
-    text = errorMsg;
-  } else if (location) {
-    text = JSON.stringify(location);
-  }
+  // let text: string = 'Waiting..';
+  // if (errorMsg) {
+  //   text = errorMsg;
+  // } else if (location) {
+  //   text = JSON.stringify(location);
+  // }
 
   useEffect(() => {
     AsyncStorage.getItem('familyID').then((value) => {
