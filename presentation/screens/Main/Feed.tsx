@@ -3,6 +3,7 @@ import {
   Dimensions,
   Image,
   Keyboard,
+  Platform,
   Pressable,
   StyleSheet,
   Text,
@@ -338,7 +339,8 @@ function FeedScreen({ navigation }: FeedScreenProp) {
               flex: 1,
             }}
           >
-            {bottomSheetMode === 'reaction' && (
+            {(bottomSheetMode === 'reaction' ||
+              (bottomSheetMode === 'text' && Platform.OS === 'android')) && (
               <ScrollView
                 style={{
                   flex: 1,
