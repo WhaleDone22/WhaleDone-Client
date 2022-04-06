@@ -79,6 +79,7 @@ function NicknameInputScreen({
             navigation.navigate('Greet', { nickname: nickName });
           }
         }
+        console.log(response.message);
       });
   };
 

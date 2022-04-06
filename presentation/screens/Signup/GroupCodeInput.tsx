@@ -228,8 +228,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   container: {
-    // flex: 1,
-    // justifyContent: 'space-between',
+    flex: 1,
   },
   title: {
     fontSize: 20,
@@ -241,9 +240,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   contentsContainer: {
-    backgroundColor: 'green',
+    flex: 1,
     justifyContent: 'space-between',
-    alignItems: 'stretch',
   },
 
   textInput: {
@@ -282,14 +280,14 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingVertical: 17,
     backgroundColor: COLORS.BLUE_500,
-    marginBottom: 300,
+    marginBottom: 280,
     marginTop: 30,
   },
   entranceBtnWrapper: {
     borderRadius: 5,
     paddingVertical: 17,
     backgroundColor: COLORS.TEXT_DISABLED_GREY,
-    // marginBottom: 300,
+    marginBottom: 280,
     marginTop: 30,
   },
   entranceBtnText: {
@@ -312,7 +310,6 @@ const styles = StyleSheet.create({
     color: 'white',
     borderRadius: 5,
     marginBottom: 60,
-    // bottom: 16,
   },
   createCodeBtn: {
     textAlign: 'center',
@@ -320,8 +317,7 @@ const styles = StyleSheet.create({
     paddingVertical: 17,
     color: 'white',
     borderRadius: 5,
-    // marginBottom: 60,
-    // bottom: 16,
+    marginBottom: 60,
   },
   createCodeBtnTxt: {
     color: 'white',
@@ -335,11 +331,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Pretendard',
     fontSize: 12,
     textAlign: 'center',
-    // paddingVertical: 20,
     color: COLORS.TEXT_SECONDARY,
     marginBottom: 10,
-    // paddingBottom: 10,
-    // bottom: 5,
   },
 });
 

@@ -174,7 +174,7 @@ function MapScreen({ navigation }: MapScreenProp) {
       }
 
       const locationPermission = await Location.getCurrentPositionAsync({});
-      // setLocation(locationPermission);
+      setLocation(locationPermission);
     })();
   }, []);
 
@@ -213,7 +213,6 @@ function MapScreen({ navigation }: MapScreenProp) {
         radius={25}
         style={styles.bottomSheet}
       >
-        
         <Pressable>
           <View>
             <ScrollView style={styles.bsWrapper}>
@@ -237,7 +236,7 @@ function MapScreen({ navigation }: MapScreenProp) {
               {/* Profile */}
               <View style={styles.userWrapper}>
                 {familyProfile?.map((family) => (
-                  <View style={styles.profileWrapper}>
+                  <View style={styles.profileWrapper} key={family.id}>
                     <Image
                       source={{ uri: family.profileImgUrl }}
                       style={styles.imgWrapper}
@@ -263,7 +262,7 @@ function MapScreen({ navigation }: MapScreenProp) {
 
               {/* 마음 거리 */}
               {familyProfile?.map((family) => (
-                <View style={styles.distanceWrapper}>
+                <View style={styles.distanceWrapper} key={family.id}>
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Image
                       source={{ uri: family.profileImgUrl }}
@@ -312,30 +311,32 @@ function MapScreen({ navigation }: MapScreenProp) {
           }}
         >
           {familyProfile?.map((family) => (
-            <Marker
-              coordinate={{
-                latitude: family.latitude,
-                longitude: family.longitude,
-              }}
-            >
-              <View
-                style={[
-                  styles.markerCircle,
-                  {
-                    width: getCircleSize(family.communicationCount),
-                    height: getCircleSize(family.communicationCount), // height 주석처리하면 겹쳐서 깨져보이지는 않음
-                    borderRadius: getCircleSize(family.communicationCount),
-                  },
-                ]}
+            <View key={family.id}>
+              <Marker
+                coordinate={{
+                  latitude: family.latitude,
+                  longitude: family.longitude,
+                }}
               >
-                <Image
-                  source={{
-                    uri: family.profileImgUrl,
-                  }}
-                  style={styles.markerImg}
-                />
-              </View>
-            </Marker>
+                <View
+                  style={[
+                    styles.markerCircle,
+                    {
+                      width: getCircleSize(family.communicationCount),
+                      height: getCircleSize(family.communicationCount), // height 주석처리하면 겹쳐서 깨져보이지는 않음 (iOS only)
+                      borderRadius: getCircleSize(family.communicationCount),
+                    },
+                  ]}
+                >
+                  <Image
+                    source={{
+                      uri: family.profileImgUrl,
+                    }}
+                    style={styles.markerImg}
+                  />
+                </View>
+              </Marker>
+            </View>
           ))}
         </MapView>
       </View>
