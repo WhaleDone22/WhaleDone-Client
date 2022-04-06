@@ -37,6 +37,15 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allowing photos makes it easy to upload album photos. You can change this access later in your system settings.",
+          "cameraPermission": "Allowing access to the camera can take pictures. You can change this access later in your system settings."
+        }
+      ]
+    ]
   }
 }
