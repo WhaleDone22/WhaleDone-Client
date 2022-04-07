@@ -13,18 +13,15 @@ const IcGreet = require('../../../assets/ic-greet.png');
 type GreetScreenProp = NativeStackScreenProps<NavigationStackParams, 'Greet'>;
 
 function GreetScreen({ navigation, route }: GreetScreenProp) {
-  const routeParams = route.params;
+  // const routeParams = route.params;
   const [nickname, setNickname] = useState('');
 
   useEffect(() => {
-    if (routeParams !== undefined) setNickname(routeParams.nickname);
-    else {
-      privateAPI.get({ url: 'api/v1/users/auth' }).then((response) => {
-        if (typeof response.singleData.nickName === 'string') {
-          setNickname(response.singleData.nickName);
-        }
-      });
-    }
+    privateAPI.get({ url: 'api/v1/users/auth' }).then((response) => {
+      if (typeof response.singleData?.nickName === 'string') {
+        setNickname(response.singleData.nickName);
+      }
+    });
   }, []);
 
   return (

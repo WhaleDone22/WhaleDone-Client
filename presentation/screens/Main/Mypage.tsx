@@ -244,7 +244,7 @@ function MyPageScreen({ navigation, resetUserState }: MyPageScreenProp) {
         <Image source={mypageLine} style={styles.lineImage} />
 
         {/* 알림 받기 */}
-        <View style={[styles.eachSettings, { height: 64 }]}>
+        {/* <View style={[styles.eachSettings, { height: 64 }]}>
           <Text style={styles.settingTxt}>알림 받기</Text>
           <View style={styles.alarmWrapper}>
             <Text style={[styles.settingValueTxt, styles.alarmTxt]}>
@@ -257,7 +257,7 @@ function MyPageScreen({ navigation, resetUserState }: MyPageScreenProp) {
             />
           </View>
         </View>
-        <Image source={mypageLine} style={styles.lineImage} />
+        <Image source={mypageLine} style={styles.lineImage} /> */}
 
         {/* 약관동의/정책 */}
         <View style={styles.eachSettings}>

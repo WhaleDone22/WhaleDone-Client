@@ -195,7 +195,8 @@ function MapDetailScreen({ navigation, route }: MapDetailScreenProp) {
               <Image source={IcLock} style={styles.lockImg} />
             </View>
             <Text style={styles.membershipBoxTxt}>
-              웨일던에서 분석한 월간 레포트는{'\n'}웨일던 프라이빗 시작 후 확인할 수 있어요!
+              웨일던에서 분석한 월간 레포트는{'\n'}웨일던 프라이빗 시작 후
+              확인할 수 있어요!
             </Text>
           </View>
         </View>

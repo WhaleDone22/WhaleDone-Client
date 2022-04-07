@@ -105,7 +105,7 @@ function PhoneAuthScreen({ navigation, route }: PhoneAuthScreenProp) {
       .post({
         url: 'api/v1/sms/validation/code',
         data: {
-          smsCode: filledTexts.join('').toLowerCase(),
+          smsCode: filledTexts.join('').toUpperCase(),
           phoneNumber,
         },
       })
