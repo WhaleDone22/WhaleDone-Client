@@ -172,15 +172,18 @@ function FeedItem({
             <Text style={styles.bodyText}>{feed.body}</Text>
           )}
           {feed.type === 'IMAGE' && (
-            <Image
-              source={{ uri: feed.body }}
-              style={{
-                width: 235,
-                height: 332,
-                marginTop: 16,
-                borderRadius: 16,
-              }}
-            />
+            <View style={{ paddingHorizontal: 24 }}>
+              <Image
+                source={{ uri: feed.body }}
+                style={{
+                  width: '100%',
+                  height: 332,
+                  marginTop: 16,
+                  borderRadius: 5,
+                  alignSelf: 'center',
+                }}
+              />
+            </View>
           )}
           <View style={styles.feedReactions}>
             {feed.reactions.map((reaction) => (

@@ -38,7 +38,6 @@ function GroupCodeInputScreen({
     '',
   ]);
   const [isFilled, setIsFilled] = useState(false);
-  const [groupCode, setGroupCode] = useState<string[]>([]);
   const [isCreated, setIsCreated] = useState(false);
 
   useEffect(() => {
@@ -80,7 +79,7 @@ function GroupCodeInputScreen({
     privateAPI
       .patch({
         url: 'api/v1/family/validation/invitationCode',
-        data: { invitationCode: filledTexts.join('').toLowerCase() },
+        data: { invitationCode: filledTexts.join('').toUpperCase() },
       })
       .then((response) => {
         if (response.code === 'SUCCESS') {
@@ -119,7 +118,6 @@ function GroupCodeInputScreen({
                   if (text === '') inputRef1.current?.blur();
                   else inputRef2.current?.focus();
                 }}
-                value={groupCode && groupCode[0]}
               />
               <TextInput
                 style={styles.textInput}
@@ -130,7 +128,6 @@ function GroupCodeInputScreen({
                   if (text === '') inputRef1.current?.focus();
                   else inputRef3.current?.focus();
                 }}
-                value={groupCode && groupCode[1]}
               />
               <TextInput
                 style={styles.textInput}
@@ -141,7 +138,6 @@ function GroupCodeInputScreen({
                   if (text === '') inputRef2.current?.focus();
                   else inputRef4.current?.focus();
                 }}
-                value={groupCode && groupCode[2]}
               />
               <TextInput
                 style={styles.textInput}
@@ -152,7 +148,6 @@ function GroupCodeInputScreen({
                   if (text === '') inputRef3.current?.focus();
                   else inputRef5.current?.focus();
                 }}
-                value={groupCode && groupCode[3]}
               />
               <TextInput
                 style={styles.textInput}
@@ -163,7 +158,6 @@ function GroupCodeInputScreen({
                   if (text === '') inputRef4.current?.focus();
                   else inputRef6.current?.focus();
                 }}
-                value={groupCode && groupCode[4]}
               />
               <TextInput
                 style={styles.textInput}
@@ -174,7 +168,6 @@ function GroupCodeInputScreen({
                   if (text === '') inputRef5.current?.focus();
                   else inputRef6.current?.blur();
                 }}
-                value={groupCode && groupCode[5]}
               />
             </View>
           </View>

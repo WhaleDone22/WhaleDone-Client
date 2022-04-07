@@ -8,6 +8,7 @@ import NoticeItem from './NoticeItem';
 type NoticesPerDayProps = {
   date: string;
   notices: Notice[];
+  goFeed: () => void;
 };
 
 const IcMoveUp = require('../../assets/ic-move-up.png');
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
 });
 
 function NoticesPerDay(props: NoticesPerDayProps) {
-  const { date, notices } = props;
+  const { date, notices, goFeed } = props;
   const [isWrapped, setIsWrapped] = useState(false);
   return (
     <View style={styles.container}>
@@ -49,7 +50,9 @@ function NoticesPerDay(props: NoticesPerDayProps) {
         </TouchableOpacity>
       </View>
       {!isWrapped &&
-        notices.map((notice) => <NoticeItem key={notice.id} {...notice} />)}
+        notices.map((notice) => (
+          <NoticeItem key={notice.id} {...notice} goFeed={goFeed} />
+        ))}
     </View>
   );
 }
