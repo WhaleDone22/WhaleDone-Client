@@ -164,15 +164,18 @@ const IcMyPage = require('../../../assets/ic-user-circle.png');
 function MapScreen({ navigation }: MapScreenProp) {
   const bottomSheetRef = useRef<any>(null);
   const [familyProfile, setFamilyProfile] = useState<FamilyProfile[]>([]);
+  const [newFamilyName, setNewFamilyName] = useState('');
+  const [nickName, setNickName] = useState('');
 
   useEffect(() => {
-    AsyncStorage.getItem('familyID').then((value) => {
-      if (!value) return;
+    AsyncStorage.getItem('familyID').then((familyID) => {
+      if (!familyID) return;
       privateAPI
-        .get({ url: `api/v1/families/${value}/users` })
+        .get({ url: `api/v1/families/${familyID}/users` })
         .then((response) => {
           if (response.responseSuccess) {
             setFamilyProfile(response.multipleData);
+            setNickName(response.multipleData[1].nickName);
           } else {
             // 여기서 에러 띄우기
           }
@@ -182,6 +185,26 @@ function MapScreen({ navigation }: MapScreenProp) {
         });
     });
   }, []);
+
+  const editFamilyName = () => {
+    AsyncStorage.getItem('familyID').then((familyID) => {
+      if (!familyID) return;
+      privateAPI
+        .patch({ url: `api/v1/families/${familyID}/name`, data: newFamilyName })
+        .then((response) => {
+          if (response.responseSuccess) {
+            // setNewFamilyName(response.updateName);
+            navigation.navigate('MyPage');
+            bottomSheetRef.current?.close();
+          } else {
+            // 여기서 에러 띄우기
+          }
+        })
+        .catch((/* error */) => {
+          // 여기서도 에러 띄우기
+        });
+    });
+  };
 
   return (
     <View style={[{ flex: 1 }]}>
@@ -203,9 +226,13 @@ function MapScreen({ navigation }: MapScreenProp) {
               </View>
               <View style={[styles.textWrapper1, styles.textWrapper2]}>
                 <Text style={styles.subText}>가족 채널명</Text>
-                <TouchableOpacity>
+                <Pressable
+                  onPress={() =>
+                    navigation.navigate('EditProfile', { nickname: nickName })
+                  }
+                >
                   <Text style={styles.editText}>수정 {'>'} </Text>
-                </TouchableOpacity>
+                </Pressable>
               </View>
 
               {/* Profile */}
