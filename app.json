@@ -28,12 +28,18 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.mammoth.whaledone",
       "versionCode": 6,
-      "softwareKeyboardLayoutMode": "pan"
+      "softwareKeyboardLayoutMode": "pan",
+      "config": {
+        "googleSignIn": "API Key 값으로 수정하여 빌드",
+        "googleMaps": {
+          "apiKey": "API Key 값으로 수정하여 빌드"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
