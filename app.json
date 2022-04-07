@@ -16,7 +16,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "bundleIdentifier": "com.softsquared.whaledone",
-      "buildNumber": "1.0.8",
+      "buildNumber": "1.0.10",
       "supportsTablet": false,
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "Allowing a location makes it confirms the location and time of family's country each other. You can change this access later in your system settings.",
@@ -32,7 +32,7 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.mammoth.whaledone",
-      "versionCode": 5,
+      "versionCode": 6,
       "softwareKeyboardLayoutMode": "pan"
     },
     "web": {
