@@ -153,11 +153,7 @@ const styles = StyleSheet.create({
 });
 
 // Image
-// const defaultProfile = require('../../../assets/image-profile-default.png');
-// const ex1Profile = require('../../../assets/image-profile-ex1.png');
-// const ex2Profile = require('../../../assets/image-profile-ex2.png');
 const addFamily = require('../../../assets/ic-add-family.png');
-
 const IcNotice = require('../../../assets/ic-bell.png');
 const IcMyPage = require('../../../assets/ic-user-circle.png');
 
@@ -165,7 +161,9 @@ function MapScreen({ navigation }: MapScreenProp) {
   const bottomSheetRef = useRef<any>(null);
   const [familyProfile, setFamilyProfile] = useState<FamilyProfile[]>([]);
   const [newFamilyName, setNewFamilyName] = useState('');
-  const [nickName, setNickName] = useState('');
+  const [myNickName, setMyNickName] = useState('');
+  const [myCommunicationCnt, setMyCommunicationCnt] = useState(0);
+  const [myID, setMyID] = useState(0);
 
   useEffect(() => {
     AsyncStorage.getItem('familyID').then((familyID) => {
@@ -175,7 +173,6 @@ function MapScreen({ navigation }: MapScreenProp) {
         .then((response) => {
           if (response.responseSuccess) {
             setFamilyProfile(response.multipleData);
-            setNickName(response.multipleData[1].nickName);
           } else {
             // 여기서 에러 띄우기
           }
@@ -186,25 +183,37 @@ function MapScreen({ navigation }: MapScreenProp) {
     });
   }, []);
 
-  const editFamilyName = () => {
-    AsyncStorage.getItem('familyID').then((familyID) => {
-      if (!familyID) return;
-      privateAPI
-        .patch({ url: `api/v1/families/${familyID}/name`, data: newFamilyName })
-        .then((response) => {
-          if (response.responseSuccess) {
-            // setNewFamilyName(response.updateName);
-            navigation.navigate('MyPage');
-            bottomSheetRef.current?.close();
-          } else {
-            // 여기서 에러 띄우기
-          }
-        })
-        .catch((/* error */) => {
-          // 여기서도 에러 띄우기
-        });
+  useEffect(() => {
+    AsyncStorage.getItem('userID').then((value) => {
+      setMyID(+(value ?? 0));
+      {familyProfile?.map((family) => 
+        {if (myID === family.id) {
+          setMyNickName(family.nickName);
+          setMyCommunicationCnt(family.communicationCount);
+        }}
+        )}
     });
-  };
+  }, []);
+
+  // const editFamilyName = () => {
+  //   AsyncStorage.getItem('familyID').then((familyID) => {
+  //     if (!familyID) return;
+  //     privateAPI
+  //       .patch({ url: `api/v1/families/${familyID}/name`, data: newFamilyName })
+  //       .then((response) => {
+  //         if (response.responseSuccess) {
+  //           // setNewFamilyName(response.updateName);
+  //           navigation.navigate('MyPage');
+  //           bottomSheetRef.current?.close();
+  //         } else {
+  //           // 여기서 에러 띄우기
+  //         }
+  //       })
+  //       .catch((/* error */) => {
+  //         // 여기서도 에러 띄우기
+  //       });
+  //   });
+  // };
 
   return (
     <View style={[{ flex: 1 }]}>
@@ -228,7 +237,7 @@ function MapScreen({ navigation }: MapScreenProp) {
                 <Text style={styles.subText}>가족 채널명</Text>
                 <Pressable
                   onPress={() =>
-                    navigation.navigate('EditProfile', { nickname: nickName })
+                    navigation.navigate('EditProfile', { nickname: myNickName })
                   }
                 >
                   <Text style={styles.editText}>수정 {'>'} </Text>
@@ -237,29 +246,39 @@ function MapScreen({ navigation }: MapScreenProp) {
 
               {/* Profile */}
               <View style={styles.userWrapper}>
-                {familyProfile?.map((family) => (
-                  <View style={styles.profileWrapper} key={family.id}>
-                    <Image
-                      source={{ uri: family.profileImgUrl }}
-                      style={styles.imgWrapper}
-                    />
-                    <Text style={styles.subText}>{family.nickName}</Text>
-                  </View>
-                ))}
+                {/* 가족 프로필이미지 가로 스크롤뷰 */}
+                <ScrollView
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}
+                >
+                  {familyProfile?.map((family) => (
+                    <View>
+                      <View style={styles.profileWrapper} key={family.id}>
+                        <Image
+                          source={{ uri: family.profileImgUrl }}
+                          style={styles.imgWrapper}
+                        />
+                        <Text style={styles.subText}>{family.nickName}</Text>
+                      </View>
+                    </View>
+                  ))}
 
-                <View style={styles.profileWrapper}>
-                  <Pressable
-                    onPress={() => {
-                      bottomSheetRef.current?.close();
-                      // navigation.navigate('GroupCodeShareFromMap');
-                    }}
-                  >
-                    <Image source={addFamily} style={styles.imgWrapper} />
-                    <Text style={[styles.subText, { color: COLORS.BLUE_500 }]}>
-                      가족 추가
-                    </Text>
-                  </Pressable>
-                </View>
+                  <View style={styles.profileWrapper}>
+                    <Pressable
+                      onPress={() => {
+                        bottomSheetRef.current?.close();
+                        console.log(familyProfile);
+                      }}
+                    >
+                      <Image source={addFamily} style={styles.imgWrapper} />
+                      <Text
+                        style={[styles.subText, { color: COLORS.BLUE_500 }]}
+                      >
+                        가족 추가
+                      </Text>
+                    </Pressable>
+                  </View>
+                </ScrollView>
               </View>
 
               {/* 마음 거리 */}
@@ -281,11 +300,14 @@ function MapScreen({ navigation }: MapScreenProp) {
                       navigation.navigate('MapDetail', {
                         nickname: family.nickName,
                         profileImgUrl: family.profileImgUrl,
-                        heartDistance: getDistance(family.communicationCount),
+                        familyDistance: getDistance(family.communicationCount),
+                        myDistance: getDistance(myCommunicationCnt),
                       });
                     }}
                   >
-                    {getDistance(family.communicationCount)}km {'>'}
+                    {getDistance(family.communicationCount) +
+                      getDistance(myCommunicationCnt)}
+                    km {'>'}
                   </Text>
                 </View>
               ))}
@@ -324,7 +346,7 @@ function MapScreen({ navigation }: MapScreenProp) {
                     styles.markerCircle,
                     {
                       width: getCircleSize(family.communicationCount),
-                      height: getCircleSize(family.communicationCount), // height 주석처리하면 겹쳐서 깨져보이지는 않음 (iOS only)
+                      height: getCircleSize(family.communicationCount),
                       borderRadius: getCircleSize(family.communicationCount),
                     },
                   ]}
