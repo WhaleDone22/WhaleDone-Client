@@ -10,10 +10,14 @@ import {
   ScrollView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { privateAPI } from '../../../infrastructures/api/remote/base';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonBack from '../../components/ButtonBack';
 import COLORS from '../../styles/colors';
 import ProgressBar from '../../components/ProgressBar';
+import { getDistance } from '../../../infrastructures/utils/distances';
+import { getProgressbarWidth } from '../../../infrastructures/utils/progressbar';
 
 type MapDetailScreenProp = NativeStackScreenProps<
   NavigationStackParams,
@@ -29,7 +33,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.BLUE_100,
     height: 274,
     paddingHorizontal: 16,
-    paddingTop: 59,
+    paddingTop: 50,
   },
   headerContainer: {
     flexDirection: 'row',
@@ -46,12 +50,14 @@ const styles = StyleSheet.create({
   //
   distanceWrapper: {
     flexDirection: 'row',
-    paddingVertical: 28,
+    paddingTop: 28,
+    paddingBottom: 20,
     justifyContent: 'center',
   },
   imgWrapper: {
     width: 62,
     height: 62,
+    borderRadius: 31,
   },
   lineWrapper: {
     width: 126,
@@ -70,13 +76,13 @@ const styles = StyleSheet.create({
   },
 
   progressBarWrapper: {
-    // backgroundColor: COLORS.BLUE_500,
-    paddingHorizontal: 20,
+    // backgroundColor: 'skyblue',
+    alignItems: 'center',
   },
 
   lockedReportImg: {
     width: '100%',
-    height: 812,
+    height: '100%',
     backgroundColor: 'rgba( 255, 255, 255, 1.0 )',
   },
 
@@ -144,7 +150,24 @@ const IcArrowRight = require('../../../assets/ic-arrow-right.png');
 const IcLock = require('../../../assets/ic-lock.png');
 
 function MapDetailScreen({ navigation, route }: MapDetailScreenProp) {
-  const { nickname, profileImgUrl, heartDistance } = route.params;
+  const { nickname, profileImgUrl, familyDistance, myDistance } = route.params;
+  const [profileImage, setProfileImage] = useState('');
+
+  useEffect(() => {
+    privateAPI
+      .get({ url: 'api/v1/users/auth' })
+      .then((response) => {
+        if (response.responseSuccess) {
+          setProfileImage(response.singleData.profileImgUrl);
+        } else {
+          // 여기서 에러 띄우기
+        }
+      })
+      .catch((/* error */) => {
+        // 여기서도 에러 띄우기
+      });
+  }, []);
+
   const onMembershipPressed = () => {
     console.log('onMembershipPressed');
   };
@@ -160,14 +183,18 @@ function MapDetailScreen({ navigation, route }: MapDetailScreenProp) {
 
         {/* 마음거리 */}
         <View style={styles.distanceWrapper}>
-          <Image source={{ uri: profileImgUrl }} style={styles.imgWrapper} />
+          {/* 내 프로필이미지 */}
+          <Image source={{ uri: profileImage }} style={styles.imgWrapper} />
 
           {/* line */}
           <View style={styles.lineWrapper}>
-            <Text style={styles.distanceValue}>{heartDistance}km</Text>
+            <Text style={styles.distanceValue}>
+              {familyDistance + myDistance}km
+            </Text>
             <Image source={distanceLine} style={styles.line} />
           </View>
 
+          {/* 내가 선택한 가족 프로필이미지 */}
           <Image source={{ uri: profileImgUrl }} style={styles.imgWrapper} />
         </View>
 
@@ -175,11 +202,11 @@ function MapDetailScreen({ navigation, route }: MapDetailScreenProp) {
         <View style={styles.progressBarWrapper}>
           <ProgressBar
             navigation="???"
-            distance1={6000}
-            distance2={2800}
+            distance1={familyDistance}
+            distance2={myDistance}
             height={20}
-            completedColor1={COLORS.BLUE_500}
-            completedColor2={COLORS.BLUE_300}
+            completedColor1={COLORS.BLUE_300}
+            completedColor2={COLORS.BLUE_500}
           />
         </View>
       </View>

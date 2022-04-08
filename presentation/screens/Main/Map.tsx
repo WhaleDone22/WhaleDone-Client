@@ -177,14 +177,14 @@ const styles = StyleSheet.create({
 });
 
 const addFamily = require('../../../assets/ic-add-family.png');
-
 const IcNotice = require('../../../assets/ic-bell.png');
 const IcMyPage = require('../../../assets/ic-user-circle.png');
 
 function MapScreen({ navigation }: MapScreenProp) {
   const bottomSheetRef = useRef<any>(null);
   const [familyProfile, setFamilyProfile] = useState<FamilyProfile[]>([]);
-  const [nickName, setNickName] = useState('');
+  const [myNickName, setMyNickName] = useState('');
+  const [myCommunicationCnt, setMyCommunicationCnt] = useState(0);
   const [userID, setUserID] = useState<number | undefined>(undefined);
   const [selectedFamilyID, setSelectedFamilyID] = useState<number | undefined>(
     undefined,
@@ -194,6 +194,13 @@ function MapScreen({ navigation }: MapScreenProp) {
     AsyncStorage.getItem('userID').then((id) => {
       if (!id) return;
       setUserID(+id);
+      {familyProfile?.map((family) => 
+        {if (userID === family.id) {
+          setMyNickName(family.nickName);
+          setMyCommunicationCnt(family.communicationCount);
+        }}
+        )}
+    });
     });
   }, []);
 
@@ -205,7 +212,6 @@ function MapScreen({ navigation }: MapScreenProp) {
         .then((response) => {
           if (response.responseSuccess) {
             setFamilyProfile(response.multipleData);
-            setNickName(response.multipleData[1].nickName);
           } else {
             // 여기서 에러 띄우기
           }
@@ -246,7 +252,7 @@ function MapScreen({ navigation }: MapScreenProp) {
                 <Text style={styles.subText}>가족 채널명</Text>
                 <Pressable
                   onPress={() =>
-                    navigation.navigate('EditProfile', { nickname: nickName })
+                    navigation.navigate('EditProfile', { nickname: myNickName })
                   }
                 >
                   <Text style={styles.editText}>수정 {'>'} </Text>
@@ -255,6 +261,11 @@ function MapScreen({ navigation }: MapScreenProp) {
 
               {/* Profile */}
               <View style={styles.userWrapper}>
+              {/* 가족 프로필이미지 가로 스크롤뷰 */}
+                <ScrollView
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}
+                >
                 {familyProfile
                   ?.filter((family) => family.id !== userID)
                   .map((family) => (
@@ -287,6 +298,7 @@ function MapScreen({ navigation }: MapScreenProp) {
                     </Text>
                   </Pressable>
                 </View>
+              </ScrollView>
               </View>
 
               {/* 마음 거리 */}
@@ -319,7 +331,24 @@ function MapScreen({ navigation }: MapScreenProp) {
                       {getDistance(family.communicationCount)}km {'>'}
                     </Text>
                   </View>
-                ))}
+                  <Text
+                    style={styles.distanceValue}
+                    onPress={() => {
+                      bottomSheetRef.current?.close();
+                      navigation.navigate('MapDetail', {
+                        nickname: family.nickName,
+                        profileImgUrl: family.profileImgUrl,
+                        familyDistance: getDistance(family.communicationCount),
+                        myDistance: getDistance(myCommunicationCnt),
+                      });
+                    }}
+                  >
+                    {getDistance(family.communicationCount) +
+                      getDistance(myCommunicationCnt)}
+                    km {'>'}
+                  </Text>
+                </View>
+              ))}
             </ScrollView>
           </View>
         </Pressable>
@@ -360,7 +389,7 @@ function MapScreen({ navigation }: MapScreenProp) {
                     styles.markerCircle,
                     {
                       width: getCircleSize(family.communicationCount),
-                      height: getCircleSize(family.communicationCount), // height 주석처리하면 겹쳐서 깨져보이지는 않음 (iOS only)
+                      height: getCircleSize(family.communicationCount),
                       borderRadius: getCircleSize(family.communicationCount),
                     },
                     shouldHightlightMarker(family.id) &&

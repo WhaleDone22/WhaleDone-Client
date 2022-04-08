@@ -1,11 +1,12 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import COLORS from '../styles/colors';
+import { getProgressbarWidth } from '../../infrastructures/utils/progressbar';
 
 type ProgressBarProps = {
   navigation: string;
-  distance1: Number;
-  distance2: Number;
+  distance1: number; // familyDistance
+  distance2: number; // myDistance
   height: number;
   completedColor1: string;
   completedColor2: string;
@@ -20,15 +21,15 @@ function ProgressBar(props: ProgressBarProps) {
     completedColor1,
     completedColor2,
   } = props;
-  const [getDistance1, setDistance1] = useState(distance1);
-  const [getDistance2, setDistance2] = useState(distance2);
+  const [getWidth1, setWidth1] = useState(distance1);
+  const [getWidth2, setWidth2] = useState(distance2);
   const [getheight, setHeight] = useState(height);
   const [getCompletedColor1, setCompletedColor1] = useState(completedColor1);
   const [getCompletedColor2, setCompletedColor2] = useState(completedColor2);
 
   useEffect(() => {
-    setDistance1(250); //max: 340
-    setDistance2(120);
+    setWidth1(getProgressbarWidth(distance2)); // max 163
+    setWidth2(getProgressbarWidth(distance1));
   }, []);
 
   return (
@@ -36,7 +37,7 @@ function ProgressBar(props: ProgressBarProps) {
       <View style={{ justifyContent: 'center' }}>
         <View
           style={{
-            width: '100%',
+            width: 327,
             height: getheight,
             marginVertical: 5,
             borderRadius: 4,
@@ -46,10 +47,11 @@ function ProgressBar(props: ProgressBarProps) {
           }}
         />
 
+        {/* Progressbar */}
         {/* 1 */}
         <View
           style={{
-            width: getDistance1 || 0,
+            width: getWidth1 || 0,
             height: getheight,
             marginVertical: 5,
             borderRadius: 4,
@@ -59,55 +61,63 @@ function ProgressBar(props: ProgressBarProps) {
           }}
         />
         {/* 2 */}
-        <View
-          style={{
-            width: getDistance2 || 0,
-            height: getheight,
-            marginVertical: 5,
-            borderRadius: 4,
-            backgroundColor: getCompletedColor2,
-            position: 'absolute',
-            bottom: 40,
-          }}
-        />
+        <View style={{ flexDirection: 'row' }}>
+          <View
+            style={{
+              width: getWidth2 || 0,
+              height: getheight,
+              marginVertical: 5,
+              borderRadius: 4,
+              backgroundColor: getCompletedColor2,
+              position: 'absolute',
+              bottom: 0,
+              marginLeft: 163,
+            }}
+          />
+        </View>
 
+        {/* Text (km) */}
         {/* 1 */}
         <View
           style={{
-            width: getDistance1 || 0,
+            width: 163,
             height: getheight,
-            bottom: 0,
           }}
         >
           <Text
             style={{
-              textAlign: 'right',
               fontFamily: 'Pretendard',
               fontSize: 12,
+              lineHeight: 14,
               color: COLORS.BLUE_500,
             }}
           >
             {distance1}km
           </Text>
         </View>
+
         {/* 2 */}
-        <View
-          style={{
-            width: getDistance2 || 0,
-            height: getheight,
-            bottom: 20,
-          }}
-        >
-          <Text
+        <View style={{ flexDirection: 'row' }}>
+          <View
             style={{
-              textAlign: 'right',
-              fontFamily: 'Pretendard',
-              fontSize: 12,
-              color: COLORS.BLUE_400,
+              width: 163,
+              height: getheight,
+              bottom: 20,
             }}
           >
-            {distance2}km
-          </Text>
+            <Text
+              style={{
+                width: 163,
+                fontFamily: 'Pretendard',
+                fontSize: 12,
+                lineHeight: 14,
+                color: COLORS.BLUE_400,
+                marginLeft: 163,
+              }}
+            >
+              {distance2}km
+            </Text>
+          </View>
         </View>
       </View>
     </View>
