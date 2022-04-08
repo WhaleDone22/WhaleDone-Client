@@ -199,13 +199,6 @@ function MapScreen({ navigation }: MapScreenProp) {
     AsyncStorage.getItem('userID').then((id) => {
       if (!id) return;
       setUserID(+id);
-      {familyProfile?.map((family) => 
-        {if (userID === family.id) {
-          setMyNickName(family.nickName);
-          setMyCommunicationCnt(family.communicationCount);
-        }}
-        )}
-    });
     });
   }, []);
 
@@ -255,55 +248,50 @@ function MapScreen({ navigation }: MapScreenProp) {
               </View>
               <View style={[styles.textWrapper1, styles.textWrapper2]}>
                 <Text style={styles.subText}>가족 채널명</Text>
-                <Pressable
-                  onPress={() =>
-                    navigation.navigate('EditProfile', { nickname: myNickName })
-                  }
-                >
+                <Pressable onPress={() => navigation.navigate('EditProfile')}>
                   <Text style={styles.editText}>수정 {'>'} </Text>
                 </Pressable>
               </View>
 
               {/* Profile */}
               <View style={styles.userWrapper}>
-              {/* 가족 프로필이미지 가로 스크롤뷰 */}
-                <ScrollView
-                  horizontal={true}
-                  showsHorizontalScrollIndicator={false}
-                >
-                {familyProfile
-                  ?.filter((family) => family.id !== userID)
-                  .map((family) => (
+                {/* 가족 프로필이미지 가로 스크롤뷰 */}
+                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                  {familyProfile
+                    ?.filter((family) => family.id !== userID)
+                    .map((family) => (
+                      <Pressable
+                        style={styles.profileWrapper}
+                        key={family.id}
+                        onPress={() => {
+                          bottomSheetRef.current?.close();
+                          setSelectedFamilyID(family.id);
+                        }}
+                      >
+                        <Image
+                          source={{ uri: family.profileImgUrl }}
+                          style={styles.imgWrapper}
+                        />
+                        <Text style={styles.subText}>{family.nickName}</Text>
+                      </Pressable>
+                    ))}
+
+                  <View style={styles.profileWrapper}>
                     <Pressable
-                      style={styles.profileWrapper}
-                      key={family.id}
                       onPress={() => {
                         bottomSheetRef.current?.close();
-                        setSelectedFamilyID(family.id);
+                        navigation.navigate('GroupCodeReissue');
                       }}
                     >
-                      <Image
-                        source={{ uri: family.profileImgUrl }}
-                        style={styles.imgWrapper}
-                      />
-                      <Text style={styles.subText}>{family.nickName}</Text>
+                      <Image source={addFamily} style={styles.imgWrapper} />
+                      <Text
+                        style={[styles.subText, { color: COLORS.BLUE_500 }]}
+                      >
+                        가족 추가
+                      </Text>
                     </Pressable>
-                  ))}
-
-                <View style={styles.profileWrapper}>
-                  <Pressable
-                    onPress={() => {
-                      bottomSheetRef.current?.close();
-                      navigation.navigate('GroupCodeReissue');
-                    }}
-                  >
-                    <Image source={addFamily} style={styles.imgWrapper} />
-                    <Text style={[styles.subText, { color: COLORS.BLUE_500 }]}>
-                      가족 추가
-                    </Text>
-                  </Pressable>
-                </View>
-              </ScrollView>
+                  </View>
+                </ScrollView>
               </View>
 
               {/* 마음 거리 */}
@@ -329,31 +317,19 @@ function MapScreen({ navigation }: MapScreenProp) {
                         navigation.navigate('MapDetail', {
                           nickname: family.nickName,
                           profileImgUrl: family.profileImgUrl,
-                          heartDistance: getDistance(family.communicationCount),
+                          familyDistance: getDistance(
+                            family.communicationCount,
+                          ),
+                          myDistance: getDistance(myCommunicationCnt),
                         });
                       }}
                     >
-                      {getDistance(family.communicationCount)}km {'>'}
+                      {getDistance(family.communicationCount) +
+                        getDistance(myCommunicationCnt)}
+                      km {'>'}
                     </Text>
                   </View>
-                  <Text
-                    style={styles.distanceValue}
-                    onPress={() => {
-                      bottomSheetRef.current?.close();
-                      navigation.navigate('MapDetail', {
-                        nickname: family.nickName,
-                        profileImgUrl: family.profileImgUrl,
-                        familyDistance: getDistance(family.communicationCount),
-                        myDistance: getDistance(myCommunicationCnt),
-                      });
-                    }}
-                  >
-                    {getDistance(family.communicationCount) +
-                      getDistance(myCommunicationCnt)}
-                    km {'>'}
-                  </Text>
-                </View>
-              ))}
+                ))}
             </ScrollView>
           </View>
         </Pressable>

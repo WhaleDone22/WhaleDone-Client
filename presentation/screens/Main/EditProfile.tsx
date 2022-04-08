@@ -108,10 +108,10 @@ const styles = StyleSheet.create({
 const IcProfileImageEdit = require('../../../assets/ic-profile-image-edit.png');
 const mypageLine = require('../../../assets/mypage-line.png');
 
-function EditProfileScreen({ navigation, route }: EditProfileScreenProp) {
-  const { nickname } = route.params;
+function EditProfileScreen({ navigation }: EditProfileScreenProp) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [pickedImagePath, setPickedImagePath] = useState('');
+  const [nickName, setNickName] = useState('');
 
   // const [isSetAlarm, setIsSetAlarm] = useState(true);
   // const [date, setDate] = useState(new Date(1598051730000));
@@ -150,6 +150,7 @@ function EditProfileScreen({ navigation, route }: EditProfileScreenProp) {
           // setFamilyId(response.singleData.familyId);
           setPickedImagePath(response.singleData.profileImgUrl);
           setFamilyName(response.singleData.groupName);
+          setNickName(response.singleData.nickName);
         } else {
           // 여기서 에러 띄우기
         }
@@ -203,7 +204,7 @@ function EditProfileScreen({ navigation, route }: EditProfileScreenProp) {
             <Avatar.Accessory size={20} source={IcProfileImageEdit} />
           </Avatar>
         </TouchableOpacity>
-        <Text style={styles.userName}>{nickname} 님</Text>
+        <Text style={styles.userName}>{nickName} 님</Text>
       </View>
 
       {/* 각각 설정 항목 */}

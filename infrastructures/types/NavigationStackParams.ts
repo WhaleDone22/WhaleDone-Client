@@ -27,8 +27,13 @@ export type NavigationStackParams = {
   PhoneInput: undefined;
   PhoneAuth: { phoneNumber: string; countryCode: string; alarmStatus: boolean };
   Main: { screen: 'Home' | 'Map' | 'Feed' };
-  EditProfile: { nickname: string };
-  MapDetail: { nickname: string; profileImgUrl: string; heartDistance: number };
+  EditProfile: undefined;
+  MapDetail: {
+    nickname: string;
+    profileImgUrl: string;
+    familyDistance: number;
+    myDistance: number;
+  };
   MyPage: undefined;
   Notice: undefined;
   Record:
