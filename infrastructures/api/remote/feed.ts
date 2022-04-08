@@ -93,7 +93,9 @@ export function feedRemote(): FeedService {
           countryCode: time.countryCode,
           timeDelta: time.timeDiff,
         }));
-        const mine = data.find((time: any) => time.id === myID?.toString()) ?? {
+        const mine = data.find(
+          (time: any) => time.id === parseFloat(myID ?? '-1'),
+        ) ?? {
           id: +(myID ?? 0),
           countryCode: 'KR',
           timeDelta: 0,
