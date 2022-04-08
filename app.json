@@ -2,7 +2,7 @@
   "expo": {
     "name": "WhaleDone",
     "slug": "WhaleDone",
-    "version": "1.0.9",
+    "version": "1.0.11",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -20,8 +20,8 @@
       "supportsTablet": false,
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "Allowing a location makes it confirms the location and time of family's country each other. You can change this access later in your system settings.",
-        "NSCameraUsageDescription": "Allowing access to the camera can take pictures. You can change this access later in your system settings.",
-        "NSPhotoLibraryUsageDescription": "Allowing photos makes it easy to upload album photos. You can change this access later in your system settings.",
+        "NSCameraUsageDescription": "Allowing access to the camera can take picture and upload them to your post immediately (in 일상공유 and 소통함). You can change this access later in your system settings.",
+        "NSPhotoLibraryUsageDescription": "Allowing photos makes it easy to upload album photos to your post (in 일상공유 and 소통함). You can change this access later in your system settings.",
         "NSMicrophoneUsageDescription": "Allowing a microphone can record and send a one-minute message. You can change this access later in your system settings."
       },
       "icon": "./assets/icon.png"
@@ -48,8 +48,8 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "Allowing photos makes it easy to upload album photos. You can change this access later in your system settings.",
-          "cameraPermission": "Allowing access to the camera can take pictures. You can change this access later in your system settings."
+          "photosPermission": "Allowing photos makes it easy to upload album photos to your post (in 일상공유 and 소통함). You can change this access later in your system settings.",
+          "cameraPermission": "Allowing access to the camera can take picture and upload them to your post immediately (in 일상공유 and 소통함). You can change this access later in your system settings."
         }
       ]
     ]
