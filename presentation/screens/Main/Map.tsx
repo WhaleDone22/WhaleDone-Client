@@ -171,6 +171,11 @@ const styles = StyleSheet.create({
   },
   markerCircleSelected: {
     borderWidth: 1,
+    borderColor: '#EF6400',
+    backgroundColor: '#ff781848',
+  },
+  myMarker: {
+    borderWidth: 1,
     borderColor: COLORS.THEME_PRIMARY,
     backgroundColor: 'rgba(68,107,255,0.25)',
   },
@@ -393,7 +398,9 @@ function MapScreen({ navigation }: MapScreenProp) {
                       borderRadius: getCircleSize(family.communicationCount),
                     },
                     shouldHightlightMarker(family.id) &&
-                      styles.markerCircleSelected,
+                      (family.id === userID
+                        ? styles.myMarker
+                        : styles.markerCircleSelected),
                   ]}
                 >
                   <View style={styles.markerShadowView}>
