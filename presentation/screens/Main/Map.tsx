@@ -164,8 +164,15 @@ const IcMyPage = require('../../../assets/ic-user-circle.png');
 function MapScreen({ navigation }: MapScreenProp) {
   const bottomSheetRef = useRef<any>(null);
   const [familyProfile, setFamilyProfile] = useState<FamilyProfile[]>([]);
-  const [newFamilyName, setNewFamilyName] = useState('');
   const [nickName, setNickName] = useState('');
+  const [userID, setUserID] = useState<number | undefined>(undefined);
+
+  useEffect(() => {
+    AsyncStorage.getItem('userID').then((id) => {
+      if (!id) return;
+      setUserID(+id);
+    });
+  }, []);
 
   useEffect(() => {
     AsyncStorage.getItem('familyID').then((familyID) => {
@@ -217,15 +224,17 @@ function MapScreen({ navigation }: MapScreenProp) {
 
               {/* Profile */}
               <View style={styles.userWrapper}>
-                {familyProfile?.map((family) => (
-                  <View style={styles.profileWrapper} key={family.id}>
-                    <Image
-                      source={{ uri: family.profileImgUrl }}
-                      style={styles.imgWrapper}
-                    />
-                    <Text style={styles.subText}>{family.nickName}</Text>
-                  </View>
-                ))}
+                {familyProfile
+                  ?.filter((family) => family.id !== userID)
+                  .map((family) => (
+                    <View style={styles.profileWrapper} key={family.id}>
+                      <Image
+                        source={{ uri: family.profileImgUrl }}
+                        style={styles.imgWrapper}
+                      />
+                      <Text style={styles.subText}>{family.nickName}</Text>
+                    </View>
+                  ))}
 
                 <View style={styles.profileWrapper}>
                   <Pressable
@@ -243,32 +252,36 @@ function MapScreen({ navigation }: MapScreenProp) {
               </View>
 
               {/* 마음 거리 */}
-              {familyProfile?.map((family) => (
-                <View style={styles.distanceWrapper} key={family.id}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image
-                      source={{ uri: family.profileImgUrl }}
-                      style={styles.distanceProfile}
-                    />
-                    <Text style={styles.distanceText}>
-                      {family.nickName}님과의 마음거리
+              {familyProfile
+                ?.filter((family) => family.id !== userID)
+                .map((family) => (
+                  <View style={styles.distanceWrapper} key={family.id}>
+                    <View
+                      style={{ flexDirection: 'row', alignItems: 'center' }}
+                    >
+                      <Image
+                        source={{ uri: family.profileImgUrl }}
+                        style={styles.distanceProfile}
+                      />
+                      <Text style={styles.distanceText}>
+                        {family.nickName}님과의 마음거리
+                      </Text>
+                    </View>
+                    <Text
+                      style={styles.distanceValue}
+                      onPress={() => {
+                        bottomSheetRef.current?.close();
+                        navigation.navigate('MapDetail', {
+                          nickname: family.nickName,
+                          profileImgUrl: family.profileImgUrl,
+                          heartDistance: getDistance(family.communicationCount),
+                        });
+                      }}
+                    >
+                      {getDistance(family.communicationCount)}km {'>'}
                     </Text>
                   </View>
-                  <Text
-                    style={styles.distanceValue}
-                    onPress={() => {
-                      bottomSheetRef.current?.close();
-                      navigation.navigate('MapDetail', {
-                        nickname: family.nickName,
-                        profileImgUrl: family.profileImgUrl,
-                        heartDistance: getDistance(family.communicationCount),
-                      });
-                    }}
-                  >
-                    {getDistance(family.communicationCount)}km {'>'}
-                  </Text>
-                </View>
-              ))}
+                ))}
             </ScrollView>
           </View>
         </Pressable>
