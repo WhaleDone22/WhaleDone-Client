@@ -66,7 +66,7 @@ function PhotoSelectorModal(props: PhotoSelectorModalProp) {
       if (!myToken) return;
 
       const uploadRequest = await fetch(
-        'http://ec2-3-37-42-113.ap-northeast-2.compute.amazonaws.com:8080/api/v1/content',
+        'http://whaledone.site/api/v1/content',
         {
           method: 'POST',
           body: formData,

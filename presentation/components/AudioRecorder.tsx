@@ -87,14 +87,11 @@ function AudioRecorder(props: AudioRecorderProps) {
     const myToken = await AsyncStorage.getItem('token');
     if (!myToken) return;
 
-    const uploadRequest = await fetch(
-      'http://ec2-3-37-42-113.ap-northeast-2.compute.amazonaws.com:8080/api/v1/content',
-      {
-        method: 'POST',
-        body: formData,
-        headers: { 'X-AUTH-TOKEN': myToken },
-      },
-    );
+    const uploadRequest = await fetch('http://whaledone.site/api/v1/content', {
+      method: 'POST',
+      body: formData,
+      headers: { 'X-AUTH-TOKEN': myToken },
+    });
 
     const uploadResponse = await uploadRequest.json();
 

@@ -205,7 +205,13 @@ function EditProfileScreen({ navigation }: EditProfileScreenProp) {
             <Avatar.Accessory size={20} source={IcProfileImageEdit} />
           </Avatar>
         </TouchableOpacity>
-        <Text style={styles.userName}>{nickName} 님</Text>
+        <TextInput
+          style={styles.userName}
+          defaultValue={nickName}
+          onChangeText={(t) => setNickName(t)}
+          maxLength={5}
+        />
+        <Text style={styles.userName}>님</Text>
       </View>
 
       {/* 각각 설정 항목 */}
