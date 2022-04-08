@@ -48,5 +48,5 @@ export type NavigationStackParams = {
   PasswordFind: undefined;
   PhoneAuthFromMypage: undefined;
   PhoneInputFromMypage: undefined;
-  GroupCodeShareFromMap: undefined | { code: string };
+  GroupCodeReissue: undefined;
 };
