@@ -353,44 +353,47 @@ function MapScreen({ navigation }: MapScreenProp) {
           }}
           onPress={() => setSelectedFamilyID(undefined)}
         >
-          {familyProfile?.map((family) => (
-            <View key={family.id}>
-              <Marker
-                coordinate={{
-                  latitude: family.latitude - family.id * 0.000001,
-                  longitude: family.longitude,
-                }}
-                onPress={(e) => {
-                  e.stopPropagation();
-                  setSelectedFamilyID(family.id);
-                }}
-              >
-                <View
-                  style={[
-                    styles.markerCircle,
-                    {
-                      width: getCircleSize(family.communicationCount),
-                      height: getCircleSize(family.communicationCount),
-                      borderRadius: getCircleSize(family.communicationCount),
-                    },
-                    shouldHightlightMarker(family.id) &&
-                      (family.id === userID
-                        ? styles.myMarker
-                        : styles.markerCircleSelected),
-                  ]}
+          {familyProfile?.map((family) => {
+            const circleSize = getCircleSize(family.communicationCount);
+            return (
+              <View key={family.id}>
+                <Marker
+                  coordinate={{
+                    latitude: family.latitude - family.id * 0.000001,
+                    longitude: family.longitude,
+                  }}
+                  onPress={(e) => {
+                    e.stopPropagation();
+                    setSelectedFamilyID(family.id);
+                  }}
                 >
-                  <View style={styles.markerShadowView}>
-                    <Image
-                      source={{
-                        uri: family.profileImgUrl,
-                      }}
-                      style={styles.markerImg}
-                    />
+                  <View
+                    style={[
+                      styles.markerCircle,
+                      shouldHightlightMarker(family.id) &&
+                        (family.id === userID
+                          ? styles.myMarker
+                          : styles.markerCircleSelected),
+                      {
+                        width: circleSize,
+                        height: circleSize,
+                        borderRadius: circleSize / 2,
+                      },
+                    ]}
+                  >
+                    <View style={styles.markerShadowView}>
+                      <Image
+                        source={{
+                          uri: family.profileImgUrl,
+                        }}
+                        style={styles.markerImg}
+                      />
+                    </View>
                   </View>
-                </View>
-              </Marker>
-            </View>
-          ))}
+                </Marker>
+              </View>
+            );
+          })}
         </MapView>
       </View>
 
