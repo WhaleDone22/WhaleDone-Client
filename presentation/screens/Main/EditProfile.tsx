@@ -170,6 +170,7 @@ function EditProfileScreen({ navigation }: EditProfileScreenProp) {
           familyName,
           alarmStatus,
           profileImgUrl: pickedImagePath,
+          nickName,
         },
       })
       .then((response) => {
