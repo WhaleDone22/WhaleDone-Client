@@ -1,6 +1,13 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState, useEffect, useRef } from 'react';
-import { Text, Image, StyleSheet, View, Pressable } from 'react-native';
+import {
+  Text,
+  Image,
+  StyleSheet,
+  View,
+  Pressable,
+  Platform,
+} from 'react-native';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import BottomSheet from 'react-native-gesture-bottom-sheet';
 import MapView, { Marker } from 'react-native-maps';
@@ -139,23 +146,36 @@ const styles = StyleSheet.create({
   markerImg: {
     width: 48,
     height: 48,
-    resizeMode: 'contain',
+    resizeMode: 'cover',
     borderRadius: 48,
+    backgroundColor: COLORS.BLUE_200,
+    borderColor: 'white',
+    borderWidth: 2,
+  },
+  markerShadowView: {
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 2,
+      },
+      android: {
+        elevation: 5,
+      },
+    }),
   },
   markerCircle: {
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  markerCircleSelected: {
     borderWidth: 1,
     borderColor: COLORS.THEME_PRIMARY,
     backgroundColor: 'rgba(68,107,255,0.25)',
-    // position: 'absolute',
   },
 });
 
-// Image
-// const defaultProfile = require('../../../assets/image-profile-default.png');
-// const ex1Profile = require('../../../assets/image-profile-ex1.png');
-// const ex2Profile = require('../../../assets/image-profile-ex2.png');
 const addFamily = require('../../../assets/ic-add-family.png');
 
 const IcNotice = require('../../../assets/ic-bell.png');
@@ -166,6 +186,9 @@ function MapScreen({ navigation }: MapScreenProp) {
   const [familyProfile, setFamilyProfile] = useState<FamilyProfile[]>([]);
   const [nickName, setNickName] = useState('');
   const [userID, setUserID] = useState<number | undefined>(undefined);
+  const [selectedFamilyID, setSelectedFamilyID] = useState<number | undefined>(
+    undefined,
+  );
 
   useEffect(() => {
     AsyncStorage.getItem('userID').then((id) => {
@@ -192,6 +215,14 @@ function MapScreen({ navigation }: MapScreenProp) {
         });
     });
   }, []);
+
+  const shouldHightlightMarker = (familyID: number) => {
+    if (selectedFamilyID === undefined) return false;
+    if (selectedFamilyID === userID) return false;
+    if (familyID === userID) return true;
+    if (familyID === selectedFamilyID) return true;
+    return false;
+  };
 
   return (
     <View style={[{ flex: 1 }]}>
@@ -227,13 +258,20 @@ function MapScreen({ navigation }: MapScreenProp) {
                 {familyProfile
                   ?.filter((family) => family.id !== userID)
                   .map((family) => (
-                    <View style={styles.profileWrapper} key={family.id}>
+                    <Pressable
+                      style={styles.profileWrapper}
+                      key={family.id}
+                      onPress={() => {
+                        bottomSheetRef.current?.close();
+                        setSelectedFamilyID(family.id);
+                      }}
+                    >
                       <Image
                         source={{ uri: family.profileImgUrl }}
                         style={styles.imgWrapper}
                       />
                       <Text style={styles.subText}>{family.nickName}</Text>
-                    </View>
+                    </Pressable>
                   ))}
 
                 <View style={styles.profileWrapper}>
@@ -303,6 +341,7 @@ function MapScreen({ navigation }: MapScreenProp) {
             latitudeDelta: 70,
             longitudeDelta: 70,
           }}
+          onPress={() => setSelectedFamilyID(undefined)}
         >
           {familyProfile?.map((family) => (
             <View key={family.id}>
@@ -310,6 +349,10 @@ function MapScreen({ navigation }: MapScreenProp) {
                 coordinate={{
                   latitude: family.latitude - family.id * 0.000001,
                   longitude: family.longitude,
+                }}
+                onPress={(e) => {
+                  e.stopPropagation();
+                  setSelectedFamilyID(family.id);
                 }}
               >
                 <View
@@ -320,14 +363,18 @@ function MapScreen({ navigation }: MapScreenProp) {
                       height: getCircleSize(family.communicationCount), // height 주석처리하면 겹쳐서 깨져보이지는 않음 (iOS only)
                       borderRadius: getCircleSize(family.communicationCount),
                     },
+                    shouldHightlightMarker(family.id) &&
+                      styles.markerCircleSelected,
                   ]}
                 >
-                  <Image
-                    source={{
-                      uri: family.profileImgUrl,
-                    }}
-                    style={styles.markerImg}
-                  />
+                  <View style={styles.markerShadowView}>
+                    <Image
+                      source={{
+                        uri: family.profileImgUrl,
+                      }}
+                      style={styles.markerImg}
+                    />
+                  </View>
                 </View>
               </Marker>
             </View>
