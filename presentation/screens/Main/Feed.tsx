@@ -9,6 +9,7 @@ import {
   Text,
   View,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FlatList, ScrollView, TextInput } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Swiper from 'react-native-swiper';
@@ -149,9 +150,20 @@ function FeedScreen({ navigation }: FeedScreenProp) {
   const [typedText, setTypedText] = useState('');
   const [viewPaddingBottom, setViewPaddingBottom] = useState(40);
   const [reactions, setReactions] = useState<ReactionItemType[]>([]);
+  const [userID, setUserID] = useState<number | undefined>(undefined);
+
+  useEffect(() => {
+    AsyncStorage.getItem('userID').then((id) => {
+      if (!id) return;
+      const uid = parseFloat(id);
+      setUserID(uid);
+    });
+  }, []);
 
   const fetchFeeds = () => {
-    api.feedService.getAllFeed().then((response) => setFeeds(response));
+    api.feedService.getAllFeed().then((response) => {
+      setFeeds(response);
+    });
   };
 
   const fetchReactions = () => {
@@ -481,7 +493,15 @@ function FeedScreen({ navigation }: FeedScreenProp) {
           </View>
         </View>
 
-        {feeds.length > 0 ? (
+        {feeds.length > 0 &&
+        !(
+          !isAll &&
+          feeds.reduce((acc, cur) => {
+            if (cur.feeds.filter((feed) => feed.writerID === userID).length > 0)
+              return acc + 1;
+            return acc;
+          }, 0) === 0
+        ) ? (
           <View
             style={[styles.feedsWrapper, { paddingBottom: viewPaddingBottom }]}
           >

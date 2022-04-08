@@ -51,9 +51,11 @@ function FeedsPerDay({
 
   return (
     <>
-      <View style={{ alignItems: 'center' }}>
-        <Text style={styles.dateText}>{date}</Text>
-      </View>
+      {feeds.filter((feed) => feed.writerID === myID).length > 0 && (
+        <View style={{ alignItems: 'center' }}>
+          <Text style={styles.dateText}>{date}</Text>
+        </View>
+      )}
       {isAll
         ? feeds.map((feed) => (
             <FeedItem
