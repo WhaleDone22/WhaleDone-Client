@@ -186,26 +186,6 @@ function MapScreen({ navigation }: MapScreenProp) {
     });
   }, []);
 
-  const editFamilyName = () => {
-    AsyncStorage.getItem('familyID').then((familyID) => {
-      if (!familyID) return;
-      privateAPI
-        .patch({ url: `api/v1/families/${familyID}/name`, data: newFamilyName })
-        .then((response) => {
-          if (response.responseSuccess) {
-            // setNewFamilyName(response.updateName);
-            navigation.navigate('MyPage');
-            bottomSheetRef.current?.close();
-          } else {
-            // 여기서 에러 띄우기
-          }
-        })
-        .catch((/* error */) => {
-          // 여기서도 에러 띄우기
-        });
-    });
-  };
-
   return (
     <View style={[{ flex: 1 }]}>
       <BottomSheet
@@ -251,7 +231,7 @@ function MapScreen({ navigation }: MapScreenProp) {
                   <Pressable
                     onPress={() => {
                       bottomSheetRef.current?.close();
-                      // navigation.navigate('GroupCodeShareFromMap');
+                      navigation.navigate('GroupCodeReissue');
                     }}
                   >
                     <Image source={addFamily} style={styles.imgWrapper} />

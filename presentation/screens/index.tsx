@@ -19,6 +19,7 @@ import LoginScreen from './Signup/Login';
 import PhoneInputScreen from './Signup/PhoneInput';
 import OnboardingScreen from './AppInit/Onboarding';
 import PasswordFindScreen from './Signup/PasswordFind';
+import GroupCodeReissueScreen from './Main/GroupCodeReissue';
 
 const Stack = createStackNavigator();
 
@@ -132,6 +133,10 @@ function Screens() {
             name="GroupCodeShare"
             component={GroupCodeShareScreen}
           />
+          <Stack.Screen
+            name="GroupCodeReissue"
+            component={GroupCodeReissueScreen}
+          />
           <Stack.Screen name="MyPage">
             {({ navigation, route }: { navigation: any; route: any }) => (
               <MyPageScreen
@@ -156,10 +161,6 @@ function Screens() {
           <Stack.Screen
             name="PhoneInputFromMypage"
             component={PhoneInputScreen}
-          />
-          <Stack.Screen
-            name="GroupCodeShareFromMap"
-            component={GroupCodeShareScreen}
           />
         </>
       )}
