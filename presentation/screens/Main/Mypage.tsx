@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import {
   Image,
   StyleSheet,
@@ -14,12 +14,14 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Avatar, Switch } from 'react-native-elements';
 import WebView from 'react-native-webview';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-easy-toast'
 import { useIsFocused } from '@react-navigation/native';
 import { privateAPI } from '../../../infrastructures/api/remote/base';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonBack from '../../components/ButtonBack';
 import COLORS from '../../styles/colors';
 import { commonStyles } from '../../styles/common';
+
 
 type MyPageScreenProp =
   | NativeStackScreenProps<NavigationStackParams, 'MyPage'> & {
@@ -28,6 +30,7 @@ type MyPageScreenProp =
 
 const mypageLine = require('../../../assets/mypage-line.png');
 const icCloseTerms = require('../../../assets/ic-close-terms.png');
+const IcArrowRight = require('../../../assets/ic-arrow-right.png');
 
 const styles = StyleSheet.create({
   headerContainer: {
@@ -62,7 +65,10 @@ const styles = StyleSheet.create({
     fontFamily: 'Pretendard-Bold',
     fontSize: 22,
   },
-
+  contentsWrapper: {
+    flex: 1,
+    justifyContent: 'space-between',
+  },
   settingsWrapper: {
     paddingHorizontal: 16,
   },
@@ -107,7 +113,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     color: 'white',
     borderRadius: 5,
-    marginTop: 180,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -121,7 +126,18 @@ const styles = StyleSheet.create({
     width: 7,
     height: 14,
   },
-
+  toastPopup: {
+    backgroundColor: '#161D24',
+    width: 380, // figma: 345
+    opacity: 0.6,
+    paddingVertical: 15,
+    paddingHorizontal: 25,
+  },
+  toastTxt: {
+    color: 'white',
+    fontFamily: 'Pretendard-Bold',
+    fontSize: 14,
+  },
   withdrawTxt: {
     fontFamily: 'Pretendard',
     fontSize: 12,
@@ -144,10 +160,7 @@ function MyPageScreen({ navigation, resetUserState }: MyPageScreenProp) {
   // const [alarmTime, setAlarmTime] = useState('');
   const [termsOpened, setTermsOpened] = useState(false);
   const [profileImage, setProfileImage] = useState('');
-
-  // const onMembershipPressed = () => {
-  //   console.log('onMembershipPressed');
-  // };
+  const toastRef = useRef<any>(null);
 
   useEffect(() => {
     privateAPI
@@ -186,6 +199,10 @@ function MyPageScreen({ navigation, resetUserState }: MyPageScreenProp) {
     });
   };
 
+  const onMembershipPressed = () => {
+    toastRef.current?.show('아직 준비중이에요! 7월에 만나요-!');
+  };
+
   return (
     <SafeAreaView style={commonStyles.container}>
       {/* Header */}
@@ -208,7 +225,6 @@ function MyPageScreen({ navigation, resetUserState }: MyPageScreenProp) {
           </Text>
         </TouchableOpacity>
       </View>
-
       {/* Profile Wrapper */}
       <View style={styles.profileWrapper}>
         <Avatar
@@ -221,74 +237,86 @@ function MyPageScreen({ navigation, resetUserState }: MyPageScreenProp) {
         <Text style={styles.userName}>{nickName} 님</Text>
       </View>
 
-      {/* 각각 설정 항목 */}
-      <View style={styles.settingsWrapper}>
-        {/* 국가 */}
-        <View style={styles.eachSettings}>
-          <Text style={styles.settingTxt}>국가</Text>
-          <Text style={styles.settingValueTxt}>+82 {phoneNumber}</Text>
-        </View>
-        <Image source={mypageLine} style={styles.lineImage} />
+      <View style={styles.contentsWrapper}>
+        {/* 각각 설정 항목 */}
+        <View style={styles.settingsWrapper}>
+          {/* 국가 */}
+          <View style={styles.eachSettings}>
+            <Text style={styles.settingTxt}>국가</Text>
+            <Text style={styles.settingValueTxt}>+82 {phoneNumber}</Text>
+          </View>
+          <Image source={mypageLine} style={styles.lineImage} />
 
-        {/* 가족 채널 */}
-        <View style={styles.eachSettings}>
-          <Text style={styles.settingTxt}>가족 채널</Text>
-          <TextInput
-            value={familyName}
-            editable={false}
-            maxLength={15}
-            style={styles.settingValueTxt}
-            placeholder={familyName}
-          />
-        </View>
-        <Image source={mypageLine} style={styles.lineImage} />
-
-        {/* 알림 받기 */}
-        {/* <View style={[styles.eachSettings, { height: 64 }]}>
-          <Text style={styles.settingTxt}>알림 받기</Text>
-          <View style={styles.alarmWrapper}>
-            <Text style={[styles.settingValueTxt, styles.alarmTxt]}>
-              10:00 PM
-            </Text>
-            <Switch
-              value={isSetAlarm}
-              onValueChange={(value) => setIsSetAlarm(value)}
-              style={styles.alarmSwitch}
+          {/* 가족 채널 */}
+          <View style={styles.eachSettings}>
+            <Text style={styles.settingTxt}>가족 채널</Text>
+            <TextInput
+              value={familyName}
+              editable={false}
+              maxLength={15}
+              style={styles.settingValueTxt}
+              placeholder={familyName}
             />
           </View>
-        </View>
-        <Image source={mypageLine} style={styles.lineImage} /> */}
+          <Image source={mypageLine} style={styles.lineImage} />
 
-        {/* 약관동의/정책 */}
-        <View style={styles.eachSettings}>
-          <Pressable onPress={() => setTermsOpened(true)}>
-            <Text style={styles.settingTxt}>약관동의/정책</Text>
-          </Pressable>
-        </View>
-        <Image source={mypageLine} style={styles.lineImage} />
+          {/* 알림 받기 */}
+          {/* <View style={[styles.eachSettings, { height: 64 }]}>
+            <Text style={styles.settingTxt}>알림 받기</Text>
+            <View style={styles.alarmWrapper}>
+              <Text style={[styles.settingValueTxt, styles.alarmTxt]}>
+                10:00 PM
+              </Text>
+              <Switch
+                value={isSetAlarm}
+                onValueChange={(value) => setIsSetAlarm(value)}
+                style={styles.alarmSwitch}
+              />
+            </View>
+          </View>
+          <Image source={mypageLine} style={styles.lineImage} /> */}
 
-        {/* 로그아웃 */}
-        <View style={styles.eachSettings}>
-          <TouchableOpacity onPress={logOut}>
-            <Text style={[styles.settingTxt, styles.logout]}>로그아웃</Text>
+          {/* 약관동의/정책 */}
+          <View style={styles.eachSettings}>
+            <Pressable onPress={() => setTermsOpened(true)}>
+              <Text style={styles.settingTxt}>약관동의/정책</Text>
+            </Pressable>
+          </View>
+          <Image source={mypageLine} style={styles.lineImage} />
+
+          {/* 로그아웃 */}
+          <View style={styles.eachSettings}>
+            <TouchableOpacity onPress={logOut}>
+              <Text style={[styles.settingTxt, styles.logout]}>로그아웃</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <View>
+          <TouchableOpacity
+            style={styles.membershipBtn}
+            onPress={onMembershipPressed}
+          >
+            <Text style={styles.membershipTxt}>
+              웨일던 프라이빗 지금 시작하세요!
+            </Text>
+            <Image source={IcArrowRight} style={styles.membershipArrowIcon} />
           </TouchableOpacity>
+          <Text style={styles.withdrawTxt} onPress={withdrawl}>
+            탈퇴하기
+          </Text>
         </View>
       </View>
 
-      <View>
-        {/* <TouchableOpacity
-          style={styles.membershipBtn}
-          // onPress={onMembershipPressed}
-        >
-          <Text style={styles.membershipTxt}>
-            웨일던 프라이빗 지금 시작하세요!
-          </Text>
-          <Image source={IcArrowRight} style={styles.membershipArrowIcon} />
-        </TouchableOpacity> */}
-        <Text style={styles.withdrawTxt} onPress={withdrawl}>
-          탈퇴하기
-        </Text>
-      </View>
+      <Toast
+        ref={toastRef}
+        style={styles.toastPopup}
+        position="bottom"
+        positionValue={25}
+        fadeInDuration={200}
+        fadeOutDuration={1000}
+        textStyle={styles.toastTxt}
+      />
       <Modal
         transparent
         visible={termsOpened}
