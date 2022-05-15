@@ -307,7 +307,7 @@ function MapScreen({ navigation }: MapScreenProp) {
                         style={styles.distanceProfile}
                       />
                       <Text style={styles.distanceText}>
-                        {family.nickName}님과의 마음거리
+                        {family.nickName}님과 마음 도달
                       </Text>
                     </View>
                     <Text
