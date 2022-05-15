@@ -8,6 +8,9 @@ import COLORS from '../../styles/colors';
 import ButtonNext from '../../components/ButtonNext';
 import { commonStyles } from '../../styles/common';
 import { publicAPI } from '../../../infrastructures/api/remote/base';
+import { Country } from '../../../infrastructures/types/country';
+
+const countryCodeWithTelNumber: Country[] = require('../../../infrastructures/data/countryCodeWithTelNumber.json');
 
 type PhoneAuthScreenProp = NativeStackScreenProps<
   NavigationStackParams,
@@ -71,6 +74,18 @@ function PhoneAuthScreen({ navigation, route }: PhoneAuthScreenProp) {
   const [minutes, setMinutes] = useState(3);
   const [seconds, setSeconds] = useState(0);
   const resetTime = () => {
+    if (minutes * 60 + seconds < 179) return;
+    publicAPI.post({
+      url: 'api/v1/sms/code',
+      data: {
+        countryCode:
+          countryCodeWithTelNumber.find(
+            (country: Country) => country.countryCode === countryCode,
+          )?.countryPhoneNumber ?? '',
+        recipientPhoneNumber: phoneNumber,
+        smsType: 'SIGNUP', // 비밀번호 변경 시에는 PW여야 함
+      },
+    });
     setSeconds(0);
     setMinutes(3);
   };

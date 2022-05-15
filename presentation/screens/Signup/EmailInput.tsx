@@ -46,10 +46,7 @@ function EmailInputScreen({ navigation, route }: EmailInputScreenProp) {
   const handleEmailInput = () => {
     if (validateEmail(email))
       navigation.navigate('PasswordInput', {
-        phoneNumber,
-        countryCode,
-        email,
-        alarmStatus,
+        userInformation: { phoneNumber, countryCode, email, alarmStatus },
       });
     else setIsValidate(false);
   };

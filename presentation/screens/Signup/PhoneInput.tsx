@@ -209,6 +209,7 @@ function PhoneInputScreen({ navigation }: PhoneInputScreenProp) {
           placeholder="010-0000-0000"
           placeholderTextColor={COLORS.TEXT_DISABLED_GREY}
           keyboardType="number-pad"
+          maxLength={15}
         />
       </View>
       <View>

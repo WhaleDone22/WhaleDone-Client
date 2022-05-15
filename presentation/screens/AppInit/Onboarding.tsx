@@ -8,7 +8,6 @@ import { NavigationStackParams } from '../../../infrastructures/types/Navigation
 import ButtonBack from '../../components/ButtonBack';
 import ButtonNext from '../../components/ButtonNext';
 import COLORS from '../../styles/colors';
-import { commonStyles } from '../../styles/common';
 
 type OnboardingScreenProp = NativeStackScreenProps<
   NavigationStackParams,
@@ -16,6 +15,11 @@ type OnboardingScreenProp = NativeStackScreenProps<
 > & { setOnboardingSeen: () => void };
 
 const styles = StyleSheet.create({
+  container: {
+    paddingTop: 12,
+    backgroundColor: 'white',
+    flex: 1,
+  },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -104,7 +108,7 @@ function OnboardingScreen({
   };
 
   return (
-    <SafeAreaView style={commonStyles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <ButtonBack onPress={navigatePage} />
         {activeIndex !== 2 ? (
@@ -133,7 +137,7 @@ function OnboardingScreen({
         ))}
       </Pages>
 
-      <View style={{ marginBottom: 46, marginTop: 76 }}>
+      <View style={{ marginBottom: 46, marginTop: 76, marginHorizontal: 16 }}>
         {activeIndex === 2 ? (
           <ButtonNext isActivated onPress={navigatePage} />
         ) : (

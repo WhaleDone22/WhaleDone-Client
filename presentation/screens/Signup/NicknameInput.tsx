@@ -62,6 +62,7 @@ function NicknameInputScreen({
         },
       })
       .then(async (response) => {
+        console.log(response);
         if (response.responseSuccess) {
           if (
             typeof response.code === 'string' &&
