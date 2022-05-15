@@ -4,6 +4,7 @@ import { Text, View, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TextInput } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Analytics from 'expo-firebase-analytics';
 import ButtonBack from '../../components/ButtonBack';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import COLORS from '../../styles/colors';
@@ -48,6 +49,9 @@ function NicknameInputScreen({
     setIsValidate(validateNickName(nickName));
   });
   const postSignUp = () => {
+    Analytics.logEvent('send_signup_request', {
+      screen: 'nickname_input',
+    });
     publicAPI
       .post({
         url: 'api/v1/user/sign-up',
@@ -62,12 +66,15 @@ function NicknameInputScreen({
         },
       })
       .then(async (response) => {
-        console.log(response);
         if (response.responseSuccess) {
           if (
             typeof response.code === 'string' &&
             response.code === 'SUCCESS'
           ) {
+            Analytics.logEvent('get_signup_response', {
+              screen: 'nickname_input',
+              label: 'success',
+            });
             await AsyncStorage.setItem(
               'token',
               response.singleData.jwtToken.split(' ')[1],
@@ -79,6 +86,11 @@ function NicknameInputScreen({
             setLogin();
             navigation.navigate('Greet', { nickname: nickName });
           }
+        } else {
+          Analytics.logEvent('get_signup_response', {
+            screen: 'nickname_input',
+            label: 'success',
+          });
         }
       });
   };

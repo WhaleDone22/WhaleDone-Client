@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import * as Analytics from 'expo-firebase-analytics';
 import { privateAPI } from '../../../infrastructures/api/remote/base';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonBack from '../../components/ButtonBack';
@@ -58,6 +59,9 @@ function GroupCodeInputScreen({
 
   const onCreateCodePressed = () => {
     privateAPI.post({ url: 'api/v1/family' }).then((response) => {
+      Analytics.logEvent('create_group_code', {
+        screen: 'group_code_input',
+      });
       if (response.code === 'SUCCESS') {
         privateAPI
           .get({ url: 'api/v1/users/auth' })
@@ -76,6 +80,9 @@ function GroupCodeInputScreen({
   };
 
   const onEnterFamilyPressed = () => {
+    Analytics.logEvent('input_group_code', {
+      screen: 'group_code_input',
+    });
     privateAPI
       .patch({
         url: 'api/v1/family/validation/invitationCode',
@@ -89,6 +96,15 @@ function GroupCodeInputScreen({
           );
           setJoinFamily();
           navigation.push('Main', { screen: 'Home' });
+          Analytics.logEvent('input_group_code', {
+            screen: 'group_code_input',
+            label: 'success',
+          });
+        } else {
+          Analytics.logEvent('input_group_code', {
+            screen: 'group_code_input',
+            label: 'not_success',
+          });
         }
       });
   };

@@ -3,6 +3,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Text, StyleSheet, View, Image, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TextInput } from 'react-native-gesture-handler';
+import * as Analytics from 'expo-firebase-analytics';
 import ButtonBack from '../../components/ButtonBack';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import COLORS from '../../styles/colors';
@@ -52,7 +53,13 @@ const styles = StyleSheet.create({
 });
 
 function PasswordInputScreen({ navigation, route }: PasswordInputScreenProp) {
-  const { phoneNumber, countryCode, email, alarmStatus } = route.params;
+  const userInformation = route.params.userInformation ?? {
+    phoneNumber: '',
+    countryCode: '',
+    email: '',
+    alarmStatus: false,
+  };
+  const { phoneNumber, countryCode, email, alarmStatus } = userInformation;
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
   const [isPasswordValidate, setIsPasswordValidate] = useState(false);
@@ -131,15 +138,18 @@ function PasswordInputScreen({ navigation, route }: PasswordInputScreenProp) {
       )}
       <View style={{ marginTop: 22 }}>
         <ButtonNext
-          onPress={() =>
+          onPress={() => {
+            Analytics.logEvent('set_password', {
+              screen: 'password_input',
+            });
             navigation.navigate('NicknameInput', {
               phoneNumber,
               countryCode,
               email,
               password,
               alarmStatus,
-            })
-          }
+            });
+          }}
           isActivated={isPasswordValidate && isPasswordSame}
         />
       </View>
