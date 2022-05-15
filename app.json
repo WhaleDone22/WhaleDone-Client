@@ -44,7 +44,13 @@
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "config": {
+        "firebase": {
+          "apiKey": "AIzaSyB1XzMmCu8TM1ICEORZbUtbLrOv14mjVoY",
+          "measurementId": "G-LN20MH6YXD"
+        }
+      }
     },
     "plugins": [
       [

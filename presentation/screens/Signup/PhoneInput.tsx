@@ -144,7 +144,7 @@ function PhoneInputScreen({ navigation }: PhoneInputScreenProp) {
             countryCodeWithTelNumber.find(
               (country: Country) => country.countryCode === selectedCountry,
             )?.countryPhoneNumber ?? '',
-          recipientPhoneNumber: phone,
+          recipientPhoneNumber: phone.replaceAll('-', ''),
           smsType: 'SIGNUP', // 비밀번호 변경 시에는 PW여야 함
         },
       })

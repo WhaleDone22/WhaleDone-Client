@@ -57,7 +57,11 @@ function Screens() {
       screenOptions={{ headerShown: false }}
       initialRouteName="Onboarding"
       screenListeners={{
-        state: (e) => Analytics.logEvent('screen-change', e.data),
+        state: (e) =>
+          Analytics.logEvent('screen_change', {
+            from: e.data?.state?.routes[0]?.name,
+            to: e.data?.state?.routes[1]?.name,
+          }),
       }}
     >
       {userState.isOnboardingUnseen && (
