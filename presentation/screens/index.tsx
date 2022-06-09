@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Analytics from 'expo-firebase-analytics';
 import BottomNavigation from './Main/BottomNavigation';
 import EditProfileScreen from './Main/EditProfile';
 import MapDetailScreen from './Main/MapDetail';
@@ -55,6 +56,13 @@ function Screens() {
     <Stack.Navigator
       screenOptions={{ headerShown: false }}
       initialRouteName="Onboarding"
+      screenListeners={{
+        state: (e) =>
+          Analytics.logEvent('screen_change', {
+            from: e.data?.state?.routes[0]?.name,
+            to: e.data?.state?.routes[1]?.name,
+          }),
+      }}
     >
       {userState.isOnboardingUnseen && (
         <Stack.Screen name="Onboarding">

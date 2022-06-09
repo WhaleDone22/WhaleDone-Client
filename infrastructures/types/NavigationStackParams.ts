@@ -19,10 +19,12 @@ export type NavigationStackParams = {
     alarmStatus: boolean;
   };
   PasswordInput: {
-    phoneNumber: string;
-    countryCode: string;
-    email: string;
-    alarmStatus: boolean;
+    userInformation?: {
+      phoneNumber: string;
+      countryCode: string;
+      email: string;
+      alarmStatus: boolean;
+    };
   };
   PhoneInput: undefined;
   PhoneAuth: { phoneNumber: string; countryCode: string; alarmStatus: boolean };

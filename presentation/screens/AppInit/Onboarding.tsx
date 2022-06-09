@@ -4,11 +4,11 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Pages } from 'react-native-pages';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Analytics from 'expo-firebase-analytics';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonBack from '../../components/ButtonBack';
 import ButtonNext from '../../components/ButtonNext';
 import COLORS from '../../styles/colors';
-import { commonStyles } from '../../styles/common';
 
 type OnboardingScreenProp = NativeStackScreenProps<
   NavigationStackParams,
@@ -16,10 +16,16 @@ type OnboardingScreenProp = NativeStackScreenProps<
 > & { setOnboardingSeen: () => void };
 
 const styles = StyleSheet.create({
+  container: {
+    paddingTop: 12,
+    backgroundColor: 'white',
+    flex: 1,
+  },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginHorizontal: 16,
   },
   skipButton: {
     color: COLORS.TEXT_DISABLED_GREY,
@@ -98,21 +104,31 @@ function OnboardingScreen({
     if (currentIndex) setActiveIndex(currentIndex);
   };
 
-  const navigatePage = () => {
+  const navigatePage = (pressed: 'back' | 'seen_all' | 'not_seen_all') => {
     AsyncStorage.setItem('isOnboardingUnseen', 'false');
+    Analytics.logEvent('skip_onboarding', {
+      screen: 'onboarding',
+      label: pressed,
+    });
     setOnboardingSeen();
   };
 
   return (
-    <SafeAreaView style={commonStyles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <ButtonBack onPress={navigatePage} />
+        <ButtonBack onPress={() => navigatePage('back')} />
         {activeIndex !== 2 ? (
-          <Text onPress={navigatePage} style={styles.skipButton}>
+          <Text
+            onPress={() => navigatePage('not_seen_all')}
+            style={styles.skipButton}
+          >
             건너뛰기
           </Text>
         ) : (
-          <Text onPress={navigatePage} style={styles.deActivatedskipButton}>
+          <Text
+            onPress={() => navigatePage('seen_all')}
+            style={styles.deActivatedskipButton}
+          >
             건너뛰기
           </Text>
         )}
@@ -133,9 +149,9 @@ function OnboardingScreen({
         ))}
       </Pages>
 
-      <View style={{ marginBottom: 46, marginTop: 76 }}>
+      <View style={{ marginBottom: 46, marginTop: 76, marginHorizontal: 16 }}>
         {activeIndex === 2 ? (
-          <ButtonNext isActivated onPress={navigatePage} />
+          <ButtonNext isActivated onPress={() => navigatePage('seen_all')} />
         ) : (
           <View style={{ height: 54 }} />
         )}

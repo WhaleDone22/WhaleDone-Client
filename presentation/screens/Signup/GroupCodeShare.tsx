@@ -2,6 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState, useEffect } from 'react';
 import { Text, StyleSheet, Share, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import * as Analytics from 'expo-firebase-analytics';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonBack from '../../components/ButtonBack';
 import COLORS from '../../styles/colors';
@@ -50,6 +51,9 @@ function GroupCodeShareScreen({ navigation, route }: GroupCodeShareScreenProp) {
     try {
       Share.share({
         message: `초대 코드는 ${code}입니다.`,
+      });
+      Analytics.logEvent('send_invite_code', {
+        screen: 'group_code_share',
       });
     } catch (error) {
       // alert(error);

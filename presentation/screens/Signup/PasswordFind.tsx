@@ -53,7 +53,7 @@ function PasswordFindScreen({ navigation }: PasswordFindScreenProp) {
       />
       <View style={{ marginTop: 22 }}>
         <ButtonNext
-          onPress={() => navigation.navigate('PasswordInput')}
+          onPress={() => navigation.navigate('PasswordInput', {})}
           isActivated={email !== ''}
         />
       </View>

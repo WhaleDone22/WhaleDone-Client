@@ -16,6 +16,7 @@ import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import BottomSheet from 'react-native-gesture-bottom-sheet';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import WebView from 'react-native-webview';
+import * as Analytics from 'expo-firebase-analytics';
 import ButtonBack from '../../components/ButtonBack';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonNext from '../../components/ButtonNext';
@@ -132,6 +133,9 @@ function PhoneInputScreen({ navigation }: PhoneInputScreenProp) {
 
   const postPhoneAuth = () => {
     if (phone === '') return;
+    Analytics.logEvent('send_phone_info', {
+      screen: 'phone_input',
+    });
     publicAPI
       .post({
         url: 'api/v1/sms/code',
@@ -140,7 +144,7 @@ function PhoneInputScreen({ navigation }: PhoneInputScreenProp) {
             countryCodeWithTelNumber.find(
               (country: Country) => country.countryCode === selectedCountry,
             )?.countryPhoneNumber ?? '',
-          recipientPhoneNumber: phone,
+          recipientPhoneNumber: phone.replaceAll('-', ''),
           smsType: 'SIGNUP', // 비밀번호 변경 시에는 PW여야 함
         },
       })
@@ -165,6 +169,10 @@ function PhoneInputScreen({ navigation }: PhoneInputScreenProp) {
                 onPress={() => {
                   setSelectedCountry(country.countryCode);
                   bottomSheetRef.current?.close();
+                  Analytics.logEvent('close_country_sheet', {
+                    screen: 'phone_input',
+                    label: 'select_country',
+                  });
                 }}
                 key={country.countryCode}
                 style={styles.countryCodeSelectorWrapper}
@@ -189,7 +197,10 @@ function PhoneInputScreen({ navigation }: PhoneInputScreenProp) {
       <View>
         <TouchableOpacity
           style={styles.countryInfoContainer}
-          onPress={() => bottomSheetRef.current?.show()}
+          onPress={() => {
+            bottomSheetRef.current?.show();
+            Analytics.logEvent('open_country_sheet', { screen: 'phone_input' });
+          }}
         >
           <Text style={styles.countryFlagText}>
             {countryCodeWithEmoji[selectedCountry]}
@@ -209,6 +220,7 @@ function PhoneInputScreen({ navigation }: PhoneInputScreenProp) {
           placeholder="010-0000-0000"
           placeholderTextColor={COLORS.TEXT_DISABLED_GREY}
           keyboardType="number-pad"
+          maxLength={15}
         />
       </View>
       <View>

@@ -2,12 +2,16 @@ import React, { useEffect, useRef, useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { StyleSheet, Text, View, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import * as Analytics from 'expo-firebase-analytics';
 import ButtonBack from '../../components/ButtonBack';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import COLORS from '../../styles/colors';
 import ButtonNext from '../../components/ButtonNext';
 import { commonStyles } from '../../styles/common';
 import { publicAPI } from '../../../infrastructures/api/remote/base';
+import { Country } from '../../../infrastructures/types/country';
+
+const countryCodeWithTelNumber: Country[] = require('../../../infrastructures/data/countryCodeWithTelNumber.json');
 
 type PhoneAuthScreenProp = NativeStackScreenProps<
   NavigationStackParams,
@@ -71,6 +75,21 @@ function PhoneAuthScreen({ navigation, route }: PhoneAuthScreenProp) {
   const [minutes, setMinutes] = useState(3);
   const [seconds, setSeconds] = useState(0);
   const resetTime = () => {
+    if (minutes * 60 + seconds < 179) return;
+    Analytics.logEvent('reset_phone_info', {
+      screen: 'phone_auth',
+    });
+    publicAPI.post({
+      url: 'api/v1/sms/code',
+      data: {
+        countryCode:
+          countryCodeWithTelNumber.find(
+            (country: Country) => country.countryCode === countryCode,
+          )?.countryPhoneNumber ?? '',
+        recipientPhoneNumber: phoneNumber,
+        smsType: 'SIGNUP', // 비밀번호 변경 시에는 PW여야 함
+      },
+    });
     setSeconds(0);
     setMinutes(3);
   };
@@ -101,6 +120,9 @@ function PhoneAuthScreen({ navigation, route }: PhoneAuthScreenProp) {
   };
 
   const postPhoneAuth = () => {
+    Analytics.logEvent('send_phone_auth', {
+      screen: 'phone_auth',
+    });
     publicAPI
       .post({
         url: 'api/v1/sms/validation/code',
@@ -111,12 +133,22 @@ function PhoneAuthScreen({ navigation, route }: PhoneAuthScreenProp) {
       })
       .then((response) => {
         if (typeof response.code === 'string') {
-          if (response.code === 'SUCCESS')
+          if (response.code === 'SUCCESS') {
+            Analytics.logEvent('get_phone_auth_response', {
+              screen: 'phone_auth',
+              label: 'success',
+            });
             navigation.navigate('EmailInput', {
               phoneNumber,
               countryCode,
               alarmStatus,
             });
+          } else {
+            Analytics.logEvent('get_phone_auth_response', {
+              screen: 'phone_auth',
+              label: 'not_success',
+            });
+          }
         }
       });
   };
