@@ -14,7 +14,7 @@ type GreetScreenProp = NativeStackScreenProps<NavigationStackParams, 'Greet'>;
 
 function GreetScreen({ navigation, route }: GreetScreenProp) {
   // const routeParams = route.params;
-  const [nickname, setNickname] = useState('');
+  const [nickname, setNickname] = useState(route.params?.nickname ?? '');
 
   useEffect(() => {
     privateAPI.get({ url: 'api/v1/users/auth' }).then((response) => {

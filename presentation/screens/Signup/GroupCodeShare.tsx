@@ -3,9 +3,11 @@ import React, { useState, useEffect } from 'react';
 import { Text, StyleSheet, Share, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as Analytics from 'expo-firebase-analytics';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonBack from '../../components/ButtonBack';
 import COLORS from '../../styles/colors';
+import { privateAPI } from '../../../infrastructures/api/remote/base';
 
 type GroupCodeShareScreenProp = NativeStackScreenProps<
   NavigationStackParams,
@@ -16,11 +18,20 @@ function GroupCodeShareScreen({ navigation, route }: GroupCodeShareScreenProp) {
   const [hours, setHours] = useState(48);
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
+  const [code, setCode] = useState(route.params.code);
 
-  const resetTime = () => {
-    setHours(48);
-    setSeconds(0);
-    setMinutes(0);
+  const resetTime = async () => {
+    const familyID = await AsyncStorage.getItem('familyID');
+    privateAPI
+      .post({ url: `api/v1/families/${familyID}/new-code` })
+      .then((response) => {
+        if (response.code === 'SUCCESS') {
+          setCode(response.singleData.invitationCode);
+          setHours(48);
+          setSeconds(0);
+          setMinutes(0);
+        }
+      });
   };
 
   useEffect(() => {
@@ -46,7 +57,6 @@ function GroupCodeShareScreen({ navigation, route }: GroupCodeShareScreenProp) {
     return () => clearInterval(countdown);
   }, [hours, minutes, seconds]);
 
-  const { code } = route.params;
   const onSharePressed = () => {
     try {
       Share.share({
@@ -83,9 +93,11 @@ function GroupCodeShareScreen({ navigation, route }: GroupCodeShareScreenProp) {
               {hours}:{minutes.toString().padStart(2, '0')}:
               {seconds.toString().padStart(2, '0')}
             </Text>
-            <Text onPress={resetTime} style={styles.resendButton}>
-              재발급
-            </Text>
+            <View style={styles.resendButton}>
+              <Text onPress={resetTime} style={styles.resendButtonText}>
+                재발급
+              </Text>
+            </View>
           </View>
         </View>
 
@@ -182,9 +194,12 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   resendButton: {
-    color: COLORS.TEXT_SECONDARY,
     borderBottomColor: COLORS.TEXT_SECONDARY,
     borderBottomWidth: 1,
+    paddingBottom: 2,
+  },
+  resendButtonText: {
+    color: COLORS.TEXT_SECONDARY,
   },
 });
 
