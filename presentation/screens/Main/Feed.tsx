@@ -7,6 +7,7 @@ import {
   Pressable,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -118,6 +119,16 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'Pretendard',
   },
+  headerIconWrapper: {
+    flexDirection: 'row',
+  },
+  headerIcon: {
+    width: 24,
+    height: 24,
+  },
+  headerIconFirst: {
+    marginRight: 20,
+  },
 });
 
 const IcSwiperNext = require('../../../assets/ic-swiper-next.png');
@@ -126,6 +137,9 @@ const IcEmojiSelectedFalse = require('../../../assets/ic-emoji-selected-false.pn
 const IcEmojiSelectedTrue = require('../../../assets/ic-emoji-selected-true.png');
 const IcMikeSelectedFalse = require('../../../assets/ic-mike-selected-false.png');
 const IcMikeSelectedTrue = require('../../../assets/ic-mike-selected-true.png');
+const IcNotice = require('../../../assets/ic-bell.png');
+const IcMyPage = require('../../../assets/ic-user-circle.png');
+const imgFeedShadow = require('../../../assets/img-feed-shadow.png');
 
 type FeedScreenProp = NativeStackScreenProps<NavigationStackParams, 'Feed'>;
 
@@ -420,54 +434,68 @@ function FeedScreen({ navigation }: FeedScreenProp) {
         ref={scrollViewRef}
         contentContainerStyle={{ flexGrow: 1 }}
       >
-        <View style={styles.timeContainer}>
-          <View style={commonStyles.titleWrapper}>
-            <Text style={commonStyles.title}>소통함</Text>
-          </View>
-          <View style={styles.timeWrapper}>
-            <View style={[styles.timeChild, styles.rightBorder]}>
-              <Text style={styles.timeTitle}>지금 나의 시간</Text>
-              <ClockItem clock={times.my} />
+        <View>
+          <View style={styles.timeContainer}>
+            <View style={commonStyles.titleWrapper}>
+              <Text style={commonStyles.title}>소통함</Text>
+              <View style={styles.headerIconWrapper}>
+                <TouchableOpacity onPress={() => navigation.navigate('Notice')}>
+                  <Image
+                    source={IcNotice}
+                    style={[styles.headerIcon, styles.headerIconFirst]}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('MyPage')}>
+                  <Image source={IcMyPage} style={styles.headerIcon} />
+                </TouchableOpacity>
+              </View>
             </View>
-            <View style={styles.timeChild}>
-              {times.families.length > 0 ? (
-                <>
-                  <Text style={styles.timeTitle}>지금 가족 시간</Text>
-                  <Swiper
-                    showsButtons={times.families.length > 1}
-                    nextButton={
-                      <Image source={IcSwiperNext} style={styles.icon} />
-                    }
-                    prevButton={
-                      <Image source={IcSwiperPrev} style={styles.icon} />
-                    }
-                    showsPagination={false}
-                    buttonWrapperStyle={styles.timeSwiperButtonWrapper}
-                    height={60}
+            <View style={styles.timeWrapper}>
+              <View style={[styles.timeChild, styles.rightBorder]}>
+                <Text style={styles.timeTitle}>지금 나의 시간</Text>
+                <ClockItem clock={times.my} />
+              </View>
+              <View style={styles.timeChild}>
+                {times.families.length > 0 ? (
+                  <>
+                    <Text style={styles.timeTitle}>지금 가족 시간</Text>
+                    <Swiper
+                      showsButtons={times.families.length > 1}
+                      nextButton={
+                        <Image source={IcSwiperNext} style={styles.icon} />
+                      }
+                      prevButton={
+                        <Image source={IcSwiperPrev} style={styles.icon} />
+                      }
+                      showsPagination={false}
+                      buttonWrapperStyle={styles.timeSwiperButtonWrapper}
+                      height={60}
+                    >
+                      {times.families.map((time) => (
+                        <ClockItem key={time.countryCode} clock={time} />
+                      ))}
+                    </Swiper>
+                  </>
+                ) : (
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
                   >
-                    {times.families.map((time) => (
-                      <ClockItem key={time.countryCode} clock={time} />
-                    ))}
-                  </Swiper>
-                </>
-              ) : (
-                <View
-                  style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <Text style={[styles.previewText, { fontSize: 12 }]}>
-                    가족을 초대하면
-                  </Text>
-                  <Text style={[styles.previewText, { fontSize: 12 }]}>
-                    시간을 비교할 수 있어요!
-                  </Text>
-                </View>
-              )}
+                    <Text style={[styles.previewText, { fontSize: 12 }]}>
+                      가족을 초대하면
+                    </Text>
+                    <Text style={[styles.previewText, { fontSize: 12 }]}>
+                      시간을 비교할 수 있어요!
+                    </Text>
+                  </View>
+                )}
+              </View>
             </View>
           </View>
+          <Image source={imgFeedShadow} width={width} style={{ width }} />
         </View>
         <View>
           <View style={styles.feedHeader}>
