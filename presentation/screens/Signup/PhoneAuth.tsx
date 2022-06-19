@@ -167,9 +167,14 @@ function PhoneAuthScreen({ navigation, route }: PhoneAuthScreenProp) {
           ref={inputRef1}
           onChangeText={(text) => {
             insertText(text, 0);
-            if (text === '') inputRef1.current?.blur();
-            else inputRef2.current?.focus();
+            if (text !== '') inputRef2.current?.focus();
           }}
+          onKeyPress={({ nativeEvent }) => {
+            if (nativeEvent.key === 'Backspace') {
+              inputRef1.current?.focus();
+            }
+          }}
+          keyboardType="number-pad"
         />
         <TextInput
           style={styles.textInput}
@@ -180,6 +185,12 @@ function PhoneAuthScreen({ navigation, route }: PhoneAuthScreenProp) {
             if (text === '') inputRef1.current?.focus();
             else inputRef3.current?.focus();
           }}
+          onKeyPress={({ nativeEvent }) => {
+            if (nativeEvent.key === 'Backspace') {
+              inputRef1.current?.focus();
+            }
+          }}
+          keyboardType="number-pad"
         />
         <TextInput
           style={styles.textInput}
@@ -190,6 +201,12 @@ function PhoneAuthScreen({ navigation, route }: PhoneAuthScreenProp) {
             if (text === '') inputRef2.current?.focus();
             else inputRef4.current?.focus();
           }}
+          onKeyPress={({ nativeEvent }) => {
+            if (nativeEvent.key === 'Backspace') {
+              inputRef2.current?.focus();
+            }
+          }}
+          keyboardType="number-pad"
         />
         <TextInput
           style={styles.textInput}
@@ -200,6 +217,12 @@ function PhoneAuthScreen({ navigation, route }: PhoneAuthScreenProp) {
             if (text === '') inputRef3.current?.focus();
             else inputRef5.current?.focus();
           }}
+          onKeyPress={({ nativeEvent }) => {
+            if (nativeEvent.key === 'Backspace') {
+              inputRef3.current?.focus();
+            }
+          }}
+          keyboardType="number-pad"
         />
         <TextInput
           style={styles.textInput}
@@ -207,9 +230,13 @@ function PhoneAuthScreen({ navigation, route }: PhoneAuthScreenProp) {
           ref={inputRef5}
           onChangeText={(text) => {
             insertText(text, 4);
-            if (text === '') inputRef4.current?.focus();
-            else inputRef5.current?.blur();
           }}
+          onKeyPress={({ nativeEvent }) => {
+            if (nativeEvent.key === 'Backspace') {
+              inputRef4.current?.focus();
+            }
+          }}
+          keyboardType="number-pad"
         />
       </View>
       <Text style={styles.hintText}>
@@ -222,9 +249,11 @@ function PhoneAuthScreen({ navigation, route }: PhoneAuthScreenProp) {
         <Text style={styles.resendTimerText}>
           {minutes}:{seconds.toString().padStart(2, '0')}
         </Text>
-        <Text onPress={resetTime} style={styles.resendButton}>
+        <View style={styles.resendButton}>
+          <Text onPress={resetTime} style={styles.resendButtonText}>
           재전송
         </Text>
+        </View>
       </View>
     </SafeAreaView>
   );
