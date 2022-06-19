@@ -78,7 +78,7 @@ function PhoneAuthScreen({ navigation, route }: PhoneAuthScreenProp) {
   const [minutes, setMinutes] = useState(3);
   const [seconds, setSeconds] = useState(0);
   const resetTime = () => {
-    if (minutes * 60 + seconds < 179) return;
+    if (minutes * 60 + seconds > 10) return;
     Analytics.logEvent('reset_phone_info', {
       screen: 'phone_auth',
     });
@@ -254,8 +254,8 @@ function PhoneAuthScreen({ navigation, route }: PhoneAuthScreenProp) {
         </Text>
         <View style={styles.resendButton}>
           <Text onPress={resetTime} style={styles.resendButtonText}>
-          재전송
-        </Text>
+            재전송
+          </Text>
         </View>
       </View>
     </SafeAreaView>
