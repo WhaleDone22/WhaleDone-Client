@@ -52,9 +52,12 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   resendButton: {
-    color: COLORS.TEXT_SECONDARY,
     borderBottomColor: COLORS.TEXT_SECONDARY,
     borderBottomWidth: 1,
+  },
+  resendButtonText: {
+    color: COLORS.TEXT_SECONDARY,
+    paddingBottom: 2,
   },
 });
 
