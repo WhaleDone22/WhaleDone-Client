@@ -86,9 +86,12 @@ const styles = StyleSheet.create({
   countryCodeSelectorWrapper: {
     flex: 1,
     flexDirection: 'row',
-    paddingHorizontal: 26,
+    marginHorizontal: 18,
+    paddingHorizontal: 8,
     paddingVertical: 20,
     alignItems: 'center',
+    borderBottomColor: COLORS.GREY_020,
+    borderBottomWidth: 1,
   },
   countryCodeCountryNameText: {
     fontFamily: 'Pretendard-Bold',
@@ -160,8 +163,14 @@ function PhoneInputScreen({ navigation }: PhoneInputScreenProp) {
 
   return (
     <SafeAreaView style={commonStyles.container}>
-      <BottomSheet ref={bottomSheetRef} snapPoints={[700]} height={height - 93}>
-        <ScrollView>
+      <BottomSheet
+        hasDraggableIcon
+        sheetBackgroundColor="#FFFFFF"
+        ref={bottomSheetRef}
+        snapPoints={[700]}
+        height={height - 93}
+      >
+        <ScrollView style={{}}>
           <Text style={styles.countryCodeSelectorTitleText}>국가 코드</Text>
           {countryCodeWithTelNumber.map((country) =>
             countryServiceActive.includes(country.countryCode) ? (
