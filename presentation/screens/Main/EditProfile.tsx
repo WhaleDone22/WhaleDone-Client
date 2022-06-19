@@ -202,7 +202,12 @@ function EditProfileScreen({ navigation }: EditProfileScreenProp) {
       <View style={styles.profileWrapper}>
         <TouchableOpacity onPress={() => openModal()}>
           <Avatar size={60} source={{ uri: pickedImagePath }} rounded>
-            <Avatar.Accessory size={20} source={IcProfileImageEdit} />
+            <Avatar.Accessory
+              size={20}
+              source={IcProfileImageEdit}
+              style={{ shadowOpacity: 0, elevation: 0 }}
+              tvParallaxProperties
+            />
           </Avatar>
         </TouchableOpacity>
         <TextInput
