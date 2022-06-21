@@ -39,7 +39,6 @@
     "react-native": "0.64.3",
     "react-native-easy-toast": "^2.0.0",
     "react-native-elements": "^3.4.2",
-    "react-native-gesture-bottom-sheet": "1.1.0",
     "react-native-gesture-handler": "~2.1.0",
     "react-native-maps": "^0.30.1",
     "react-native-pages": "0.9.0",

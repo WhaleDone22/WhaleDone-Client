@@ -14,8 +14,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FlatList, ScrollView, TextInput } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Swiper from 'react-native-swiper';
-import BottomSheet from 'react-native-gesture-bottom-sheet';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import BottomSheet from '../../../custom-modules/react-native-getsture-bottom-sheet';
 import { api } from '../../../infrastructures/api';
 import {
   ClockTime,
@@ -290,7 +290,9 @@ function FeedScreen({ navigation }: FeedScreenProp) {
         height={430}
         backgroundColor="#00000000"
         sheetBackgroundColor="#FFFFFF"
+        draggable
         hasDraggableIcon
+        dragIconStyle={{ width: 76 }}
         onClose={() => {
           setSelectedFeedID(undefined);
           setBottomSheetMode('reaction');

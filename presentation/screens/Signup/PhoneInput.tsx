@@ -14,10 +14,10 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
-import BottomSheet from 'react-native-gesture-bottom-sheet';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import WebView from 'react-native-webview';
 import * as Analytics from 'expo-firebase-analytics';
+import BottomSheet from '../../../custom-modules/react-native-getsture-bottom-sheet';
 import ButtonBack from '../../components/ButtonBack';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonNext from '../../components/ButtonNext';
@@ -184,11 +184,12 @@ function PhoneInputScreen({ navigation }: PhoneInputScreenProp) {
   return (
     <SafeAreaView style={commonStyles.container}>
       <BottomSheet
-        hasDraggableIcon
         sheetBackgroundColor="#FFFFFF"
         ref={bottomSheetRef}
-        snapPoints={[700]}
         height={height - 93}
+        draggable
+        hasDraggableIcon
+        dragIconStyle={{ width: 76 }}
       >
         <ScrollView style={{}}>
           <Text style={styles.countryCodeSelectorTitleText}>국가 코드</Text>
