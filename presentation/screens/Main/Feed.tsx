@@ -13,8 +13,8 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FlatList, ScrollView, TextInput } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Swiper from 'react-native-swiper';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import Carousel from 'react-native-snap-carousel';
 import BottomSheet from '../../../custom-modules/react-native-getsture-bottom-sheet';
 import { api } from '../../../infrastructures/api';
 import {
@@ -129,10 +129,15 @@ const styles = StyleSheet.create({
   headerIconFirst: {
     marginRight: 20,
   },
+  carouselContainer: {
+    flexDirection: 'row',
+  },
 });
 
 const IcSwiperNext = require('../../../assets/ic-swiper-next.png');
 const IcSwiperPrev = require('../../../assets/ic-swiper-prev.png');
+const IcSwiperLast = require('../../../assets/ic-swiper-last.png');
+const IcSwiperFirst = require('../../../assets/ic-swiper-first.png');
 const IcEmojiSelectedFalse = require('../../../assets/ic-emoji-selected-false.png');
 const IcEmojiSelectedTrue = require('../../../assets/ic-emoji-selected-true.png');
 const IcMikeSelectedFalse = require('../../../assets/ic-mike-selected-false.png');
@@ -252,6 +257,11 @@ function FeedScreen({ navigation }: FeedScreenProp) {
       type,
     });
   };
+
+  const familyTimeCarouselRef = useRef<Carousel<ClockTime>>(null);
+  const [activeFamilyTimeIndex, setActiveFamilyTimeIndex] = useState<
+    number | undefined
+  >(undefined);
 
   useEffect(() => {
     fetchFeeds();
@@ -461,22 +471,53 @@ function FeedScreen({ navigation }: FeedScreenProp) {
                 {times.families.length > 0 ? (
                   <>
                     <Text style={styles.timeTitle}>지금 가족 시간</Text>
-                    <Swiper
-                      showsButtons={times.families.length > 1}
-                      nextButton={
-                        <Image source={IcSwiperNext} style={styles.icon} />
-                      }
-                      prevButton={
-                        <Image source={IcSwiperPrev} style={styles.icon} />
-                      }
-                      showsPagination={false}
-                      buttonWrapperStyle={styles.timeSwiperButtonWrapper}
-                      height={60}
-                    >
-                      {times.families.map((time) => (
-                        <ClockItem key={time.countryCode} clock={time} />
-                      ))}
-                    </Swiper>
+                    <View style={styles.carouselContainer}>
+                      {times.families.length > 1 &&
+                        (activeFamilyTimeIndex === 0 ? (
+                          <Image source={IcSwiperFirst} style={styles.icon} />
+                        ) : (
+                          <TouchableOpacity
+                            onPress={() => {
+                              familyTimeCarouselRef.current?.snapToPrev();
+                            }}
+                          >
+                            <Image source={IcSwiperPrev} style={styles.icon} />
+                          </TouchableOpacity>
+                        ))}
+                      <Carousel
+                        ref={familyTimeCarouselRef}
+                        data={times.families}
+                        renderItem={({ item, index }) => (
+                          <ClockItem
+                            key={item.countryCode}
+                            clock={item}
+                            isCarousel
+                            isLastItem={index === times.families.length - 1}
+                          />
+                        )}
+                        onSnapToItem={(index) =>
+                          setActiveFamilyTimeIndex(index)
+                        }
+                        itemWidth={110}
+                        itemHeight={54}
+                        sliderWidth={130}
+                        inactiveSlideOpacity={0}
+                        inactiveSlideScale={1}
+                        activeSlideAlignment="end"
+                      />
+                      {times.families.length > 1 &&
+                        (activeFamilyTimeIndex === times.families.length - 1 ? (
+                          <Image source={IcSwiperLast} style={styles.icon} />
+                        ) : (
+                          <TouchableOpacity
+                            onPress={() => {
+                              familyTimeCarouselRef.current?.snapToNext();
+                            }}
+                          >
+                            <Image source={IcSwiperNext} style={styles.icon} />
+                          </TouchableOpacity>
+                        ))}
+                    </View>
                   </>
                 ) : (
                   <View
