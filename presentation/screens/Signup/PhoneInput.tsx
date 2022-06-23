@@ -10,13 +10,14 @@ import {
   Platform,
   Modal,
   Pressable,
+  TouchableHighlight,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
-import BottomSheet from 'react-native-gesture-bottom-sheet';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import WebView from 'react-native-webview';
 import * as Analytics from 'expo-firebase-analytics';
+import BottomSheet from '../../../custom-modules/react-native-getsture-bottom-sheet';
 import ButtonBack from '../../components/ButtonBack';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonNext from '../../components/ButtonNext';
@@ -86,7 +87,18 @@ const styles = StyleSheet.create({
   countryCodeSelectorWrapper: {
     flex: 1,
     flexDirection: 'row',
-    paddingHorizontal: 26,
+    marginHorizontal: 18,
+    paddingHorizontal: 8,
+    paddingVertical: 20,
+    alignItems: 'center',
+    borderBottomColor: COLORS.GREY_020,
+    borderBottomWidth: 1,
+  },
+  countryCodeSelectorWrapperSelecting: {
+    flex: 1,
+    flexDirection: 'row',
+    marginHorizontal: 18,
+    paddingHorizontal: 8,
     paddingVertical: 20,
     alignItems: 'center',
   },
@@ -94,9 +106,19 @@ const styles = StyleSheet.create({
     fontFamily: 'Pretendard-Bold',
     fontSize: 16,
   },
+  countryCodeCountryNameTextSelecting: {
+    fontFamily: 'Pretendard-Bold',
+    fontSize: 16,
+    color: 'white',
+  },
   countryCodeCountryCodeText: {
     fontFamily: 'Pretendard',
     marginStart: 5,
+  },
+  countryCodeCountryCodeTextSelecting: {
+    fontFamily: 'Pretendard',
+    marginStart: 5,
+    color: 'white',
   },
 });
 
@@ -108,6 +130,7 @@ function PhoneInputScreen({ navigation }: PhoneInputScreenProp) {
   const [termsOpened, setTermsOpened] = useState(false);
   const [policyOpened, setPolicyOpened] = useState(false);
   const bottomSheetRef = useRef<any>(null);
+  const [selectingCountry, setSelectingCountry] = useState<string | null>(null);
   const [userState, setUserState] = useState<{
     isLoggedIn: boolean;
   }>({
@@ -160,12 +183,19 @@ function PhoneInputScreen({ navigation }: PhoneInputScreenProp) {
 
   return (
     <SafeAreaView style={commonStyles.container}>
-      <BottomSheet ref={bottomSheetRef} snapPoints={[700]} height={height - 93}>
-        <ScrollView>
+      <BottomSheet
+        sheetBackgroundColor="#FFFFFF"
+        ref={bottomSheetRef}
+        height={height - 93}
+        draggable
+        hasDraggableIcon
+        dragIconStyle={{ width: 76 }}
+      >
+        <ScrollView style={{}}>
           <Text style={styles.countryCodeSelectorTitleText}>국가 코드</Text>
           {countryCodeWithTelNumber.map((country) =>
             countryServiceActive.includes(country.countryCode) ? (
-              <TouchableOpacity
+              <TouchableHighlight
                 onPress={() => {
                   setSelectedCountry(country.countryCode);
                   bottomSheetRef.current?.close();
@@ -175,15 +205,37 @@ function PhoneInputScreen({ navigation }: PhoneInputScreenProp) {
                   });
                 }}
                 key={country.countryCode}
-                style={styles.countryCodeSelectorWrapper}
+                underlayColor={COLORS.BLUE_500}
+                onPressIn={() => setSelectingCountry(country.countryCode)}
+                onPressOut={() => setSelectingCountry(null)}
               >
-                <Text style={styles.countryCodeCountryNameText}>
-                  {country.countryNameKR}
-                </Text>
-                <Text style={styles.countryCodeCountryCodeText}>
-                  +{country.countryPhoneNumber}
-                </Text>
-              </TouchableOpacity>
+                <View
+                  style={
+                    selectingCountry === country.countryCode
+                      ? styles.countryCodeSelectorWrapperSelecting
+                      : styles.countryCodeSelectorWrapper
+                  }
+                >
+                  <Text
+                    style={
+                      selectingCountry === country.countryCode
+                        ? styles.countryCodeCountryNameTextSelecting
+                        : styles.countryCodeCountryNameText
+                    }
+                  >
+                    {country.countryNameKR}
+                  </Text>
+                  <Text
+                    style={
+                      selectingCountry === country.countryCode
+                        ? styles.countryCodeCountryCodeTextSelecting
+                        : styles.countryCodeCountryCodeText
+                    }
+                  >
+                    +{country.countryPhoneNumber}
+                  </Text>
+                </View>
+              </TouchableHighlight>
             ) : undefined,
           )}
         </ScrollView>

@@ -6,15 +6,18 @@ import COLORS from '../styles/colors';
 import FeedItem from './FeedItem';
 
 const styles = StyleSheet.create({
-  dateText: {
+  dateWrapper: {
     marginTop: 24,
     backgroundColor: COLORS.BLUE_100,
     width: 100,
+    alignItems: 'center',
+    borderRadius: 3,
+    paddingVertical: 5,
+  },
+  dateText: {
     textAlign: 'center',
     color: COLORS.TEXT_SECONDARY,
     fontSize: 12,
-    paddingVertical: 5,
-    borderRadius: 3,
     fontFamily: 'Pretendard',
   },
 });
@@ -53,7 +56,9 @@ function FeedsPerDay({
     <>
       {feeds.filter((feed) => feed.writerID === myID).length > 0 && (
         <View style={{ alignItems: 'center' }}>
-          <Text style={styles.dateText}>{date}</Text>
+          <View style={styles.dateWrapper}>
+            <Text style={styles.dateText}>{date}</Text>
+          </View>
         </View>
       )}
       {isAll

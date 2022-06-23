@@ -118,7 +118,11 @@ function Screens() {
       )}
       {userState.isLoggedIn && !userState.isJoinedFamily && (
         <>
-          <Stack.Screen name="Greet" component={GreetScreen} />
+          <Stack.Screen
+            name="Greet"
+            component={GreetScreen}
+            initialParams={{ nickname: '' }}
+          />
           <Stack.Screen name="GroupCodeInput">
             {({ navigation, route }: { navigation: any; route: any }) => (
               <GroupCodeInputScreen

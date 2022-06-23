@@ -14,5 +14,7 @@ export const commonStyles = StyleSheet.create({
   titleWrapper: {
     paddingVertical: 20,
     paddingHorizontal: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });

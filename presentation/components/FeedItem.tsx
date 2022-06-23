@@ -32,7 +32,11 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     flex: 1,
   },
-  selectedFeedBox: {
+  selectedMyFeedBubble: {
+    borderWidth: 1,
+    borderColor: COLORS.BLUE_400,
+  },
+  selectedFamilyFeedBubble: {
     borderWidth: 1,
     borderColor: COLORS.GREY_050,
   },
@@ -54,6 +58,10 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.BLUE_200,
     marginLeft: 0,
     marginRight: 10,
+  },
+  familyFeedBubble: {
+    borderWidth: 1,
+    borderColor: COLORS.GREY_030,
   },
   feedReactions: {
     flexDirection: 'row',
@@ -161,8 +169,11 @@ function FeedItem({
         <Pressable
           style={[
             styles.feedBubble,
-            isMine && styles.myFeedBubble,
-            selectedFeedID === feed.id && styles.selectedFeedBox,
+            isMine ? styles.myFeedBubble : styles.familyFeedBubble,
+            selectedFeedID === feed.id &&
+              (isMine
+                ? styles.selectedMyFeedBubble
+                : styles.selectedFamilyFeedBubble),
           ]}
           onPress={onBubbleClicked}
           onLongPress={onBubbleLongPressed}

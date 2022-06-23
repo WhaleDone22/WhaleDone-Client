@@ -21,7 +21,14 @@ const styles = StyleSheet.create({
   },
 });
 
-function ClockItem({ clock }: { clock: ClockTime }) {
+interface ClockItemProps {
+  clock: ClockTime;
+  isCarousel?: boolean;
+  isLastItem?: boolean;
+}
+
+function ClockItem(props: ClockItemProps) {
+  const { clock, isCarousel = false, isLastItem = false } = props;
   const [time, setTime] = useState<Date>(new Date());
 
   useEffect(() => {
@@ -34,11 +41,22 @@ function ClockItem({ clock }: { clock: ClockTime }) {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        isCarousel && { marginRight: 16 },
+        isLastItem && {},
+      ]}
+    >
       <Text style={styles.text}>{countryCodeWithEmoji[clock.countryCode]}</Text>
       <Text style={styles.text}>{toTimeFormat(time)}</Text>
     </View>
   );
 }
+
+ClockItem.defaultProps = {
+  isCarousel: false,
+  isLastItem: false,
+};
 
 export default ClockItem;

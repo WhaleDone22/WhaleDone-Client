@@ -7,14 +7,15 @@ import {
   Pressable,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FlatList, ScrollView, TextInput } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Swiper from 'react-native-swiper';
-import BottomSheet from 'react-native-gesture-bottom-sheet';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import Carousel from 'react-native-snap-carousel';
+import BottomSheet from '../../../custom-modules/react-native-getsture-bottom-sheet';
 import { api } from '../../../infrastructures/api';
 import {
   ClockTime,
@@ -118,14 +119,32 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'Pretendard',
   },
+  headerIconWrapper: {
+    flexDirection: 'row',
+  },
+  headerIcon: {
+    width: 24,
+    height: 24,
+  },
+  headerIconFirst: {
+    marginRight: 20,
+  },
+  carouselContainer: {
+    flexDirection: 'row',
+  },
 });
 
 const IcSwiperNext = require('../../../assets/ic-swiper-next.png');
 const IcSwiperPrev = require('../../../assets/ic-swiper-prev.png');
+const IcSwiperLast = require('../../../assets/ic-swiper-last.png');
+const IcSwiperFirst = require('../../../assets/ic-swiper-first.png');
 const IcEmojiSelectedFalse = require('../../../assets/ic-emoji-selected-false.png');
 const IcEmojiSelectedTrue = require('../../../assets/ic-emoji-selected-true.png');
 const IcMikeSelectedFalse = require('../../../assets/ic-mike-selected-false.png');
 const IcMikeSelectedTrue = require('../../../assets/ic-mike-selected-true.png');
+const IcNotice = require('../../../assets/ic-bell.png');
+const IcMyPage = require('../../../assets/ic-user-circle.png');
+const imgFeedShadow = require('../../../assets/img-feed-shadow.png');
 
 type FeedScreenProp = NativeStackScreenProps<NavigationStackParams, 'Feed'>;
 
@@ -239,6 +258,11 @@ function FeedScreen({ navigation }: FeedScreenProp) {
     });
   };
 
+  const familyTimeCarouselRef = useRef<Carousel<ClockTime>>(null);
+  const [activeFamilyTimeIndex, setActiveFamilyTimeIndex] = useState<
+    number | undefined
+  >(undefined);
+
   useEffect(() => {
     fetchFeeds();
   }, []);
@@ -276,7 +300,9 @@ function FeedScreen({ navigation }: FeedScreenProp) {
         height={430}
         backgroundColor="#00000000"
         sheetBackgroundColor="#FFFFFF"
+        draggable
         hasDraggableIcon
+        dragIconStyle={{ width: 76 }}
         onClose={() => {
           setSelectedFeedID(undefined);
           setBottomSheetMode('reaction');
@@ -420,54 +446,99 @@ function FeedScreen({ navigation }: FeedScreenProp) {
         ref={scrollViewRef}
         contentContainerStyle={{ flexGrow: 1 }}
       >
-        <View style={styles.timeContainer}>
-          <View style={commonStyles.titleWrapper}>
-            <Text style={commonStyles.title}>소통함</Text>
-          </View>
-          <View style={styles.timeWrapper}>
-            <View style={[styles.timeChild, styles.rightBorder]}>
-              <Text style={styles.timeTitle}>지금 나의 시간</Text>
-              <ClockItem clock={times.my} />
+        <View>
+          <View style={styles.timeContainer}>
+            <View style={commonStyles.titleWrapper}>
+              <Text style={commonStyles.title}>소통함</Text>
+              <View style={styles.headerIconWrapper}>
+                <TouchableOpacity onPress={() => navigation.navigate('Notice')}>
+                  <Image
+                    source={IcNotice}
+                    style={[styles.headerIcon, styles.headerIconFirst]}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('MyPage')}>
+                  <Image source={IcMyPage} style={styles.headerIcon} />
+                </TouchableOpacity>
+              </View>
             </View>
-            <View style={styles.timeChild}>
-              {times.families.length > 0 ? (
-                <>
-                  <Text style={styles.timeTitle}>지금 가족 시간</Text>
-                  <Swiper
-                    showsButtons={times.families.length > 1}
-                    nextButton={
-                      <Image source={IcSwiperNext} style={styles.icon} />
-                    }
-                    prevButton={
-                      <Image source={IcSwiperPrev} style={styles.icon} />
-                    }
-                    showsPagination={false}
-                    buttonWrapperStyle={styles.timeSwiperButtonWrapper}
-                    height={60}
+            <View style={styles.timeWrapper}>
+              <View style={[styles.timeChild, styles.rightBorder]}>
+                <Text style={styles.timeTitle}>지금 나의 시간</Text>
+                <ClockItem clock={times.my} />
+              </View>
+              <View style={styles.timeChild}>
+                {times.families.length > 0 ? (
+                  <>
+                    <Text style={styles.timeTitle}>지금 가족 시간</Text>
+                    <View style={styles.carouselContainer}>
+                      {times.families.length > 1 &&
+                        (activeFamilyTimeIndex === 0 ? (
+                          <Image source={IcSwiperFirst} style={styles.icon} />
+                        ) : (
+                          <TouchableOpacity
+                            onPress={() => {
+                              familyTimeCarouselRef.current?.snapToPrev();
+                            }}
+                          >
+                            <Image source={IcSwiperPrev} style={styles.icon} />
+                          </TouchableOpacity>
+                        ))}
+                      <Carousel
+                        ref={familyTimeCarouselRef}
+                        data={times.families}
+                        renderItem={({ item, index }) => (
+                          <ClockItem
+                            key={item.countryCode}
+                            clock={item}
+                            isCarousel
+                            isLastItem={index === times.families.length - 1}
+                          />
+                        )}
+                        onSnapToItem={(index) =>
+                          setActiveFamilyTimeIndex(index)
+                        }
+                        itemWidth={110}
+                        itemHeight={54}
+                        sliderWidth={130}
+                        inactiveSlideOpacity={0}
+                        inactiveSlideScale={1}
+                        activeSlideAlignment="end"
+                      />
+                      {times.families.length > 1 &&
+                        (activeFamilyTimeIndex === times.families.length - 1 ? (
+                          <Image source={IcSwiperLast} style={styles.icon} />
+                        ) : (
+                          <TouchableOpacity
+                            onPress={() => {
+                              familyTimeCarouselRef.current?.snapToNext();
+                            }}
+                          >
+                            <Image source={IcSwiperNext} style={styles.icon} />
+                          </TouchableOpacity>
+                        ))}
+                    </View>
+                  </>
+                ) : (
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
                   >
-                    {times.families.map((time) => (
-                      <ClockItem key={time.countryCode} clock={time} />
-                    ))}
-                  </Swiper>
-                </>
-              ) : (
-                <View
-                  style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <Text style={[styles.previewText, { fontSize: 12 }]}>
-                    가족을 초대하면
-                  </Text>
-                  <Text style={[styles.previewText, { fontSize: 12 }]}>
-                    시간을 비교할 수 있어요!
-                  </Text>
-                </View>
-              )}
+                    <Text style={[styles.previewText, { fontSize: 12 }]}>
+                      가족을 초대하면
+                    </Text>
+                    <Text style={[styles.previewText, { fontSize: 12 }]}>
+                      시간을 비교할 수 있어요!
+                    </Text>
+                  </View>
+                )}
+              </View>
             </View>
           </View>
+          <Image source={imgFeedShadow} width={width} style={{ width }} />
         </View>
         <View>
           <View style={styles.feedHeader}>

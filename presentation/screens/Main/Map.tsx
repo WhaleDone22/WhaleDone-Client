@@ -9,9 +9,9 @@ import {
   Platform,
 } from 'react-native';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
-import BottomSheet from 'react-native-gesture-bottom-sheet';
 import MapView, { Marker } from 'react-native-maps';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import BottomSheet from '../../../custom-modules/react-native-getsture-bottom-sheet';
 import { privateAPI } from '../../../infrastructures/api/remote/base';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import { getCircleSize } from '../../../infrastructures/utils/circles';
@@ -58,16 +58,6 @@ const styles = StyleSheet.create({
     width: 150,
     backgroundColor: '#000',
     borderRadius: 20,
-  },
-
-  // Bottom sheet
-  bottomSheet: {
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowOffset: {
-      height: 8,
-      width: 8,
-    },
   },
   bsWrapper: {
     paddingHorizontal: 16,
@@ -233,9 +223,12 @@ function MapScreen({ navigation }: MapScreenProp) {
       <BottomSheet
         ref={bottomSheetRef}
         hasDraggableIcon
+        backgroundColor="#00000000"
+        sheetBackgroundColor="#ffffffd2"
+        dragIconStyle={{ width: 76 }}
+        dragIconColor={COLORS.TEXT_DISABLED_GREY}
         height={400}
         radius={25}
-        style={styles.bottomSheet}
       >
         <Pressable>
           <View>
