@@ -205,7 +205,11 @@ function EditProfileScreen({ navigation }: EditProfileScreenProp) {
             <Avatar.Accessory
               size={20}
               source={IcProfileImageEdit}
-              style={{ shadowOpacity: 0, elevation: 0 }}
+              style={{
+                shadowOpacity: 0,
+                elevation: 0,
+                backgroundColor: 'transparent',
+              }}
               tvParallaxProperties
             />
           </Avatar>
