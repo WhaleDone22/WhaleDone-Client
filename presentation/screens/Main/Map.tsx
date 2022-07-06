@@ -7,6 +7,7 @@ import {
   View,
   Pressable,
   Platform,
+  AppState,
 } from 'react-native';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import MapView, { Marker } from 'react-native-maps';
@@ -178,7 +179,7 @@ const IcMyPage = require('../../../assets/ic-user-circle.png');
 function MapScreen({ navigation }: MapScreenProp) {
   const bottomSheetRef = useRef<any>(null);
   const [familyProfile, setFamilyProfile] = useState<FamilyProfile[]>([]);
-  const [myNickName, setMyNickName] = useState('');
+  const [familyName, setFamilyName] = useState<string>('');
   const [myCommunicationCnt, setMyCommunicationCnt] = useState(0);
   const [userID, setUserID] = useState<number | undefined>(undefined);
   const [selectedFamilyID, setSelectedFamilyID] = useState<number | undefined>(
@@ -208,6 +209,22 @@ function MapScreen({ navigation }: MapScreenProp) {
           // 여기서도 에러 띄우기
         });
     });
+  }, []);
+
+  const setFamilyNameFromRemote = () => {
+    privateAPI
+      .get({
+        url: 'api/v1/users/auth',
+      })
+      .then((response) => {
+        if (response.code === 'SUCCESS') {
+          setFamilyName(response.singleData.groupName);
+        }
+      });
+  };
+
+  useEffect(() => {
+    setFamilyNameFromRemote();
   }, []);
 
   const shouldHightlightMarker = (familyID: number) => {
@@ -240,8 +257,13 @@ function MapScreen({ navigation }: MapScreenProp) {
                 </Text>
               </View>
               <View style={[styles.textWrapper1, styles.textWrapper2]}>
-                <Text style={styles.subText}>가족 채널명</Text>
-                <Pressable onPress={() => navigation.navigate('EditProfile')}>
+                <Text style={styles.subText}>{familyName}</Text>
+                <Pressable
+                  onPress={() => {
+                    bottomSheetRef.current?.close();
+                    navigation.navigate('EditProfile');
+                  }}
+                >
                   <Text style={styles.editText}>수정 {'>'} </Text>
                 </Pressable>
               </View>
