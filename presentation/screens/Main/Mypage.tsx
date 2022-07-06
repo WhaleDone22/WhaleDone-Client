@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   Image,
   StyleSheet,
@@ -9,19 +9,22 @@ import {
   TouchableOpacity,
   Modal,
   Pressable,
+  Dimensions,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Avatar, Switch } from 'react-native-elements';
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
+import { Avatar } from 'react-native-elements';
 import WebView from 'react-native-webview';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Toast from 'react-native-easy-toast'
+import Toast from 'react-native-easy-toast';
 import { useIsFocused } from '@react-navigation/native';
 import { privateAPI } from '../../../infrastructures/api/remote/base';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import ButtonBack from '../../components/ButtonBack';
 import COLORS from '../../styles/colors';
 import { commonStyles } from '../../styles/common';
-
 
 type MyPageScreenProp =
   | NativeStackScreenProps<NavigationStackParams, 'MyPage'> & {
@@ -31,6 +34,8 @@ type MyPageScreenProp =
 const mypageLine = require('../../../assets/mypage-line.png');
 const icCloseTerms = require('../../../assets/ic-close-terms.png');
 const IcArrowRight = require('../../../assets/ic-arrow-right.png');
+
+const windowWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
   headerContainer: {
@@ -128,7 +133,7 @@ const styles = StyleSheet.create({
   },
   toastPopup: {
     backgroundColor: '#161D24',
-    width: 380, // figma: 345
+    width: windowWidth - 30,
     opacity: 0.6,
     paddingVertical: 15,
     paddingHorizontal: 25,
@@ -149,6 +154,7 @@ const styles = StyleSheet.create({
 
 function MyPageScreen({ navigation, resetUserState }: MyPageScreenProp) {
   const isFocused = useIsFocused();
+  const insets = useSafeAreaInsets();
   const [isEditable, setIsEditable] = useState(true);
   const [isSetAlarm, setIsSetAlarm] = useState(true);
 
@@ -200,7 +206,7 @@ function MyPageScreen({ navigation, resetUserState }: MyPageScreenProp) {
   };
 
   const onMembershipPressed = () => {
-    toastRef.current?.show('아직 준비중이에요! 7월에 만나요-!');
+    toastRef.current?.show('멤버십은 아직 준비 중이에요!');
   };
 
   return (
@@ -210,9 +216,7 @@ function MyPageScreen({ navigation, resetUserState }: MyPageScreenProp) {
         <ButtonBack onPress={() => navigation.goBack()} />
         <Text style={styles.headerTitle}>마이페이지</Text>
         <TouchableOpacity
-          onPress={() =>
-            navigation.navigate('EditProfile', { nickname: nickName })
-          }
+          onPress={() => navigation.navigate('EditProfile')}
           disabled={!isEditable}
         >
           <Text
@@ -312,7 +316,7 @@ function MyPageScreen({ navigation, resetUserState }: MyPageScreenProp) {
         ref={toastRef}
         style={styles.toastPopup}
         position="bottom"
-        positionValue={25}
+        positionValue={insets.bottom + 168}
         fadeInDuration={200}
         fadeOutDuration={1000}
         textStyle={styles.toastTxt}
