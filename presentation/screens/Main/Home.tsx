@@ -1,7 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import {
-  Image,
   StyleSheet,
   Text,
   View,
@@ -15,6 +14,7 @@ import { privateAPI } from '../../../infrastructures/api/remote/base';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import { commonStyles } from '../../styles/common';
 import COLORS from '../../styles/colors';
+import Header from '../../components/Header';
 
 interface ImageItemProps {
   icon: any;
@@ -38,30 +38,6 @@ interface RenderItemProps {
 type HomeScreenProp = NativeStackScreenProps<NavigationStackParams, 'Home'>;
 
 const styles = StyleSheet.create({
-  headerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  headerLogo: {
-    width: 118,
-    height: 27,
-    marginBottom: 14,
-  },
-  headerIconWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-  },
-  headerNotice: {
-    width: 24,
-    height: 24,
-  },
-  headerMyPage: {
-    width: 24,
-    height: 24,
-    marginLeft: 16,
-  },
-
   title: {
     fontSize: 18,
     fontFamily: 'Pretendard-Bold',
@@ -137,9 +113,6 @@ const styles = StyleSheet.create({
   },
 });
 
-const Logo = require('../../../assets/logo-whaledone.png');
-const IcNotice = require('../../../assets/ic-bell.png');
-const IcMyPage = require('../../../assets/ic-user-circle.png');
 const IcWork = require('../../../assets/ic-work.png');
 const IcRelationship = require('../../../assets/ic-relationship.png');
 const IcDaily = require('../../../assets/ic-daily.png');
@@ -267,20 +240,9 @@ function HomeScreen({ navigation }: HomeScreenProp) {
 
   return (
     <SafeAreaView style={commonStyles.container}>
-      <View style={styles.headerContainer}>
-        <Image source={Logo} style={styles.headerLogo} />
-
-        <View style={styles.headerIconWrapper}>
-          <TouchableOpacity onPress={() => navigation.navigate('Notice')}>
-            <Image source={IcNotice} style={styles.headerNotice} />
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => navigation.navigate('MyPage')}>
-            <Image source={IcMyPage} style={styles.headerMyPage} />
-          </TouchableOpacity>
-        </View>
+      <View style={{ marginTop: 2 }}>
+        <Header isTitleLogo title="" />
       </View>
-
       {/* Title */}
       <View style={styles.titleWrapper}>
         <Text style={styles.title}>{week1}</Text>

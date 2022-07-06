@@ -29,6 +29,7 @@ import { commonStyles } from '../../styles/common';
 import ReactionItem from '../../components/ReactionItem';
 import AudioRecorder from '../../components/AudioRecorder';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
+import Header from '../../components/Header';
 
 const { width, height } = Dimensions.get('window');
 const reactionEmojis: string[] = require('../../../infrastructures/data/reactionEmoji.json');
@@ -448,19 +449,8 @@ function FeedScreen({ navigation }: FeedScreenProp) {
       >
         <View>
           <View style={styles.timeContainer}>
-            <View style={commonStyles.titleWrapper}>
-              <Text style={commonStyles.title}>소통함</Text>
-              <View style={styles.headerIconWrapper}>
-                <TouchableOpacity onPress={() => navigation.navigate('Notice')}>
-                  <Image
-                    source={IcNotice}
-                    style={[styles.headerIcon, styles.headerIconFirst]}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate('MyPage')}>
-                  <Image source={IcMyPage} style={styles.headerIcon} />
-                </TouchableOpacity>
-              </View>
+            <View style={{ padding: 16 }}>
+              <Header isTitleLogo={false} title="소통함" />
             </View>
             <View style={styles.timeWrapper}>
               <View style={[styles.timeChild, styles.rightBorder]}>

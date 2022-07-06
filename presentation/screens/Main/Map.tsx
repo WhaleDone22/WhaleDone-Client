@@ -7,11 +7,11 @@ import {
   View,
   Pressable,
   Platform,
-  AppState,
 } from 'react-native';
-import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler';
 import MapView, { Marker } from 'react-native-maps';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import BottomSheet from '../../../custom-modules/react-native-getsture-bottom-sheet';
 import { privateAPI } from '../../../infrastructures/api/remote/base';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
@@ -20,6 +20,7 @@ import { getDistance } from '../../../infrastructures/utils/distances';
 
 import COLORS from '../../styles/colors';
 import { FamilyProfile } from '../../../infrastructures/types/map';
+import Header from '../../components/Header';
 
 type MapScreenProp = NativeStackScreenProps<NavigationStackParams, 'Map'>;
 
@@ -173,8 +174,6 @@ const styles = StyleSheet.create({
 });
 
 const addFamily = require('../../../assets/ic-add-family.png');
-const IcNotice = require('../../../assets/ic-bell.png');
-const IcMyPage = require('../../../assets/ic-user-circle.png');
 
 function MapScreen({ navigation }: MapScreenProp) {
   const bottomSheetRef = useRef<any>(null);
@@ -234,6 +233,8 @@ function MapScreen({ navigation }: MapScreenProp) {
     if (familyID === selectedFamilyID) return true;
     return false;
   };
+
+  const insets = useSafeAreaInsets();
 
   return (
     <View style={[{ flex: 1 }]}>
@@ -412,16 +413,15 @@ function MapScreen({ navigation }: MapScreenProp) {
         </MapView>
       </View>
 
-      <View style={styles.headerContainer}>
-        <Text style={styles.headerTitle}>마음거리</Text>
-        <View style={{ flexDirection: 'row' }}>
-          <TouchableOpacity onPress={() => navigation.navigate('Notice')}>
-            <Image source={IcNotice} style={styles.headerNotice} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('MyPage')}>
-            <Image source={IcMyPage} style={styles.headerMyPage} />
-          </TouchableOpacity>
-        </View>
+      <View
+        style={{
+          padding: 16,
+          width: '100%',
+          position: 'absolute',
+          marginTop: insets.top,
+        }}
+      >
+        <Header isTitleLogo={false} title="마음거리" />
       </View>
 
       <Pressable
