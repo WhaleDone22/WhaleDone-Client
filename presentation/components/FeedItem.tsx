@@ -55,6 +55,8 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
   },
   myFeedBubble: {
+    borderWidth: 1,
+    borderColor: 'transparent',
     backgroundColor: COLORS.BLUE_200,
     marginLeft: 0,
     marginRight: 10,
@@ -213,6 +215,7 @@ function FeedItem({
                 position: 'absolute',
                 backgroundColor: COLORS.GREY_010,
                 bottom: 0,
+                marginBottom: -20,
                 left: 0,
                 width: '100%',
                 borderRadius: 10,
@@ -223,7 +226,7 @@ function FeedItem({
                 },
                 shadowOpacity: 0.27,
                 shadowRadius: 4.65,
-                elevation: 6,
+                elevation: 4,
               }}
             >
               <Pressable
