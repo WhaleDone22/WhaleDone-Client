@@ -1,14 +1,14 @@
 node_modules
-.expo/
-dist/
-npm-debug.*
-*.jks
-*.p8
-*.p12
-*.key
-*.mobileprovision
-*.orig.*
-web-build/
+# .expo/
+# dist/
+# npm-debug.*
+# *.jks
+# *.p8
+# *.p12
+# *.key
+# *.mobileprovision
+# *.orig.*
+# web-build/
 
 # macOS
 .DS_Store
@@ -42,13 +42,13 @@ project.xcworkspace
 
 # Android/IntelliJ
 #
-/android
-build/
-.idea
-.gradle
-local.properties
-*.iml
-*.hprof
+# /android
+# build/
+# .idea
+# .gradle
+# local.properties
+# *.iml
+# *.hprof
 
 # node.js
 #
@@ -57,10 +57,10 @@ npm-debug.log
 yarn-error.log
 
 # BUCK
-buck-out/
-\.buckd/
-*.keystore
-!debug.keystore
+# buck-out/
+# \.buckd/
+# *.keystore
+# !debug.keystore
 
 # Bundle artifacts
 *.jsbundle
@@ -70,8 +70,8 @@ buck-out/
 /ios/Pods/
 
 # Expo
-.expo/
-web-build/
-dist/
+# .expo/
+# web-build/
+# dist/
 
 # @end expo-cli

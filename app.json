@@ -34,12 +34,15 @@
       },
       "package": "com.mammoth.whaledone",
       "googleServicesFile": "./google-services.json",
-      "versionCode": 6,
+      "versionCode": 9,
       "softwareKeyboardLayoutMode": "pan",
       "config": {
-        "googleSignIn": "API Key 값으로 수정하여 빌드",
+        "googleSignIn": {
+          "certificateHash": "AIzaSyD2_avFZ_LXFBj-vsjhcbGTa1Ihy1mIWAI",
+          "apiKey": "AIzaSyD2_avFZ_LXFBj-vsjhcbGTa1Ihy1mIWAI"
+        },
         "googleMaps": {
-          "apiKey": "API Key 값으로 수정하여 빌드"
+          "apiKey": "AIzaSyD2_avFZ_LXFBj-vsjhcbGTa1Ihy1mIWAI"
         }
       }
     },

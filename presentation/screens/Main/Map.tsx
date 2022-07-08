@@ -12,6 +12,7 @@ import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import BottomSheet from 'react-native-gesture-bottom-sheet';
 import MapView, { Marker } from 'react-native-maps';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { WebView } from 'react-native-webview';
 import { privateAPI } from '../../../infrastructures/api/remote/base';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import { getCircleSize } from '../../../infrastructures/utils/circles';
@@ -395,6 +396,13 @@ function MapScreen({ navigation }: MapScreenProp) {
             );
           })}
         </MapView>
+
+        {/* <WebView
+          source={{
+            uri: 'http://maps.google.com/maps',
+          }}
+          style={[{ width: '100%', height: '100%' }]}
+        /> */}
       </View>
 
       <View style={styles.headerContainer}>

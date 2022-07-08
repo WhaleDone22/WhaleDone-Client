@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "260829520305",
+    "project_id": "whaledone-29e55",
+    "storage_bucket": "whaledone-29e55.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:260829520305:android:2a0c3b489b04c564ccdd90",
+        "android_client_info": {
+          "package_name": "com.mammoth.whaledone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "260829520305-2vugvn6r1lmk3h1r7nnn9vuqjpfrub52.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBttXULT2WNKz0psF_qRLNeu4WvWwDO_hQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "260829520305-2vugvn6r1lmk3h1r7nnn9vuqjpfrub52.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
