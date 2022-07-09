@@ -34,12 +34,11 @@
       },
       "package": "com.mammoth.whaledone",
       "googleServicesFile": "./google-services.json",
-      "versionCode": 6,
+      "versionCode": 1,
       "softwareKeyboardLayoutMode": "pan",
       "config": {
-        "googleSignIn": "API Key 값으로 수정하여 빌드",
         "googleMaps": {
-          "apiKey": "API Key 값으로 수정하여 빌드"
+          "apiKey": "AIzaSyCKmk9GEYApRUHRo_qLaj2eTNwgntxuvbM"
         }
       }
     },
