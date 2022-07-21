@@ -10,6 +10,7 @@ import {
   Modal,
   Pressable,
   Dimensions,
+  Alert,
 } from 'react-native';
 import {
   SafeAreaView,
@@ -195,14 +196,27 @@ function MyPageScreen({ navigation, resetUserState }: MyPageScreenProp) {
     navigation.navigate('SignUpMain');
   };
 
-  const withdrawl = () => {
-    privateAPI.patch({ url: 'api/v1/users/auth/status' }).then((response) => {
-      if (response.code === 'SUCCESS') {
-        AsyncStorage.clear();
-        resetUserState();
-        navigation.navigate('SignUpMain');
-      }
-    });
+  const withdrawal = () => {
+    Alert.alert('경고', '회원 정보가 삭제됩니다. 탈퇴하시겠습니까?', [
+      {
+        text: '취소',
+        style: 'cancel',
+      },
+      {
+        text: '탈퇴하기',
+        onPress: () => {
+          privateAPI
+            .patch({ url: 'api/v1/users/auth/status' })
+            .then((response) => {
+              if (response.code === 'SUCCESS') {
+                AsyncStorage.clear();
+                resetUserState();
+                navigation.navigate('SignUpMain');
+              }
+            });
+        },
+      },
+    ]);
   };
 
   const onMembershipPressed = () => {
@@ -306,7 +320,7 @@ function MyPageScreen({ navigation, resetUserState }: MyPageScreenProp) {
             </Text>
             <Image source={IcArrowRight} style={styles.membershipArrowIcon} />
           </TouchableOpacity>
-          <Text style={styles.withdrawTxt} onPress={withdrawl}>
+          <Text style={styles.withdrawTxt} onPress={withdrawal}>
             탈퇴하기
           </Text>
         </View>
