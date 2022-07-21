@@ -450,7 +450,13 @@ function FeedScreen({ navigation }: FeedScreenProp) {
         <View>
           <View style={styles.timeContainer}>
             <View style={{ padding: 16 }}>
-              <Header isTitleLogo={false} title="소통함" />
+              <Header
+                isTitleLogo={false}
+                title="소통함"
+                navigate={(screen: keyof NavigationStackParams) =>
+                  navigation.navigate(screen)
+                }
+              />
             </View>
             <View style={styles.timeWrapper}>
               <View style={[styles.timeChild, styles.rightBorder]}>

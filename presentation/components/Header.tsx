@@ -1,4 +1,3 @@
-import { useNavigationContainerRef } from '@react-navigation/native';
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { NavigationStackParams } from '../../infrastructures/types/NavigationStackParams';
@@ -7,6 +6,7 @@ import { commonStyles } from '../styles/common';
 interface HeaderProps {
   isTitleLogo: boolean;
   title: string;
+  navigate: (screen: keyof NavigationStackParams) => void;
 }
 
 const Logo = require('../../assets/logo-whaledone.png');
@@ -39,8 +39,7 @@ const styles = StyleSheet.create({
 });
 
 function Header(props: HeaderProps) {
-  const { title, isTitleLogo } = props;
-  const navigationRef = useNavigationContainerRef<NavigationStackParams>();
+  const { title, isTitleLogo, navigate } = props;
 
   return (
     <View style={styles.headerWrapper}>
@@ -51,17 +50,13 @@ function Header(props: HeaderProps) {
       )}
 
       <View style={styles.headerIconWrapper}>
-        <TouchableOpacity
-          onPress={() => navigationRef.current?.navigate('Notice')}
-        >
+        <TouchableOpacity onPress={() => navigate('Notice')}>
           <Image
             source={IcNotice}
             style={[styles.headerIcon, styles.headerIconFirst]}
           />
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigationRef.current?.navigate('MyPage')}
-        >
+        <TouchableOpacity onPress={() => navigate('MyPage')}>
           <Image source={IcMyPage} style={styles.headerIcon} />
         </TouchableOpacity>
       </View>

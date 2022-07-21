@@ -421,7 +421,13 @@ function MapScreen({ navigation }: MapScreenProp) {
           marginTop: insets.top,
         }}
       >
-        <Header isTitleLogo={false} title="마음거리" />
+        <Header
+          isTitleLogo={false}
+          title="마음거리"
+          navigate={(screen: keyof NavigationStackParams) =>
+            navigation.navigate(screen)
+          }
+        />
       </View>
 
       <Pressable

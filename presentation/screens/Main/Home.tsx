@@ -241,7 +241,13 @@ function HomeScreen({ navigation }: HomeScreenProp) {
   return (
     <SafeAreaView style={commonStyles.container}>
       <View style={{ marginTop: 2 }}>
-        <Header isTitleLogo title="" />
+        <Header
+          isTitleLogo
+          title=""
+          navigate={(screen: keyof NavigationStackParams) =>
+            navigation.navigate(screen)
+          }
+        />
       </View>
       {/* Title */}
       <View style={styles.titleWrapper}>
