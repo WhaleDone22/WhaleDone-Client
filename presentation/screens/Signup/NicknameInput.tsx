@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Text, View, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TextInput } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Analytics from 'expo-firebase-analytics';
+import Toast from 'react-native-easy-toast';
 import ButtonBack from '../../components/ButtonBack';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import COLORS from '../../styles/colors';
@@ -45,6 +46,7 @@ function NicknameInputScreen({
     route.params;
   const [nickName, setNickName] = useState('');
   const [isValidate, setIsValidate] = useState(false);
+  const toastRef = useRef<Toast>();
   useEffect(() => {
     setIsValidate(validateNickName(nickName));
   });
@@ -61,7 +63,7 @@ function NicknameInputScreen({
           countryCode,
           password,
           phoneNumber,
-          profileImgUrl: 'https://avatars.githubusercontent.com/u/48249505?v=4', // 서버 변경 후 지워야 함
+          profileImgUrl: 'https://avatars.githubusercontent.com/u/48249505?v=4',
           alarmStatus,
         },
       })
@@ -89,8 +91,9 @@ function NicknameInputScreen({
         } else {
           Analytics.logEvent('get_signup_response', {
             screen: 'nickname_input',
-            label: 'success',
+            label: 'failure',
           });
+          toastRef.current?.show(response.message ?? '다시 시도해주세요');
         }
       });
   };
@@ -128,6 +131,12 @@ function NicknameInputScreen({
           isActivated={isValidate && nickName.length < 6}
         />
       </View>
+      <Toast
+        ref={toastRef}
+        position="bottom"
+        fadeInDuration={200}
+        fadeOutDuration={1000}
+      />
     </SafeAreaView>
   );
 }
