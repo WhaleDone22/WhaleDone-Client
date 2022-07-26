@@ -26,8 +26,11 @@ export type NavigationStackParams = {
       alarmStatus: boolean;
     };
   };
-  PhoneInput: undefined;
-  PhoneAuth: { phoneNumber: string; countryCode: string; alarmStatus: boolean };
+  PasswordIssue: { phoneNumber: string };
+  PhoneInput: undefined | { forPassword: boolean };
+  PhoneAuth:
+    | { phoneNumber: string; countryCode: string; alarmStatus: boolean }
+    | { phoneNumber: string; countryCode: string; forPassword: boolean };
   Main: { screen: 'Home' | 'Map' | 'Feed' };
   EditProfile: undefined;
   MapDetail: {
@@ -52,8 +55,8 @@ export type NavigationStackParams = {
   Map: undefined;
   Feed: undefined;
   Onboarding: undefined;
-  PasswordFind: undefined;
   PhoneAuthFromMypage: undefined;
   PhoneInputFromMypage: undefined;
   GroupCodeReissue: undefined;
+  PasswordChange: undefined;
 };

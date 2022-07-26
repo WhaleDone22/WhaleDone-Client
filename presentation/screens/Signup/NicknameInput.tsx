@@ -46,7 +46,7 @@ function NicknameInputScreen({
     route.params;
   const [nickName, setNickName] = useState('');
   const [isValidate, setIsValidate] = useState(false);
-  const toastRef = useRef<Toast>();
+  const toastRef = useRef<Toast>(null);
   useEffect(() => {
     setIsValidate(validateNickName(nickName));
   });

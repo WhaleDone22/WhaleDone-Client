@@ -19,8 +19,9 @@ import PhoneAuthScreen from './Signup/PhoneAuth';
 import LoginScreen from './Signup/Login';
 import PhoneInputScreen from './Signup/PhoneInput';
 import OnboardingScreen from './AppInit/Onboarding';
-import PasswordFindScreen from './Signup/PasswordFind';
 import GroupCodeReissueScreen from './Main/GroupCodeReissue';
+import PasswordIssueScreen from './Signup/PasswordIssue';
+import PasswordChangeScreen from './Main/PasswordChange';
 
 const Stack = createStackNavigator();
 
@@ -113,7 +114,7 @@ function Screens() {
           <Stack.Screen name="PasswordInput" component={PasswordInputScreen} />
           <Stack.Screen name="PhoneAuth" component={PhoneAuthScreen} />
           <Stack.Screen name="PhoneInput" component={PhoneInputScreen} />
-          <Stack.Screen name="PasswordFind" component={PasswordFindScreen} />
+          <Stack.Screen name="PasswordIssue" component={PasswordIssueScreen} />
         </>
       )}
       {userState.isLoggedIn && !userState.isJoinedFamily && (
@@ -173,6 +174,10 @@ function Screens() {
           <Stack.Screen
             name="PhoneInputFromMypage"
             component={PhoneInputScreen}
+          />
+          <Stack.Screen
+            name="PasswordChange"
+            component={PasswordChangeScreen}
           />
         </>
       )}

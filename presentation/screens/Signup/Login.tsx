@@ -166,7 +166,9 @@ function LoginScreen({ navigation, setLogin }: LoginScreenProp) {
             borderBottomWidth: 2,
             paddingBottom: 2,
           }}
-          onPress={() => navigation.navigate('PasswordFind')}
+          onPress={() =>
+            navigation.navigate('PhoneInput', { forPassword: true })
+          }
         >
           <Text
             style={{

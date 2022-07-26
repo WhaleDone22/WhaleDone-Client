@@ -301,6 +301,12 @@ function MyPageScreen({ navigation, resetUserState }: MyPageScreenProp) {
             </Pressable>
           </View>
           <Image source={mypageLine} style={styles.lineImage} />
+          <View style={styles.eachSettings}>
+            <Pressable onPress={() => navigation.navigate('PasswordChange')}>
+              <Text style={styles.settingTxt}>비밀번호 변경</Text>
+            </Pressable>
+          </View>
+          <Image source={mypageLine} style={styles.lineImage} />
 
           {/* 로그아웃 */}
           <View style={styles.eachSettings}>

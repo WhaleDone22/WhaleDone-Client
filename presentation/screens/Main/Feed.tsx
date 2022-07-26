@@ -25,7 +25,6 @@ import {
 import ClockItem from '../../components/ClockItem';
 import FeedsPerDay from '../../components/FeedsPerDay';
 import COLORS from '../../styles/colors';
-import { commonStyles } from '../../styles/common';
 import ReactionItem from '../../components/ReactionItem';
 import AudioRecorder from '../../components/AudioRecorder';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
@@ -143,8 +142,6 @@ const IcEmojiSelectedFalse = require('../../../assets/ic-emoji-selected-false.pn
 const IcEmojiSelectedTrue = require('../../../assets/ic-emoji-selected-true.png');
 const IcMikeSelectedFalse = require('../../../assets/ic-mike-selected-false.png');
 const IcMikeSelectedTrue = require('../../../assets/ic-mike-selected-true.png');
-const IcNotice = require('../../../assets/ic-bell.png');
-const IcMyPage = require('../../../assets/ic-user-circle.png');
 const imgFeedShadow = require('../../../assets/img-feed-shadow.png');
 
 type FeedScreenProp = NativeStackScreenProps<NavigationStackParams, 'Feed'>;

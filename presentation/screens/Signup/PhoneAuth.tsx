@@ -3,6 +3,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { StyleSheet, Text, View, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as Analytics from 'expo-firebase-analytics';
+import Toast from 'react-native-easy-toast';
 import ButtonBack from '../../components/ButtonBack';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
 import COLORS from '../../styles/colors';
@@ -62,7 +63,8 @@ const styles = StyleSheet.create({
 });
 
 function PhoneAuthScreen({ navigation, route }: PhoneAuthScreenProp) {
-  const { phoneNumber, countryCode, alarmStatus } = route.params;
+  const routeParams = route.params;
+  const toastRef = useRef<Toast>(null);
   const inputRef1 = useRef<TextInput | null>(null);
   const inputRef2 = useRef<TextInput | null>(null);
   const inputRef3 = useRef<TextInput | null>(null);
@@ -78,19 +80,24 @@ function PhoneAuthScreen({ navigation, route }: PhoneAuthScreenProp) {
   const [minutes, setMinutes] = useState(3);
   const [seconds, setSeconds] = useState(0);
   const resetTime = () => {
-    if (minutes * 60 + seconds > 10) return;
+    if (minutes * 60 + seconds > 10) {
+      toastRef.current?.show('3분이 지난 이후에 시도해 주세요');
+      return;
+    }
     Analytics.logEvent('reset_phone_info', {
       screen: 'phone_auth',
     });
+    const forPassword = 'forPassword' in routeParams;
     publicAPI.post({
       url: 'api/v1/sms/code',
       data: {
         countryCode:
           countryCodeWithTelNumber.find(
-            (country: Country) => country.countryCode === countryCode,
+            (country: Country) =>
+              country.countryCode === routeParams.countryCode,
           )?.countryPhoneNumber ?? '',
-        recipientPhoneNumber: phoneNumber,
-        smsType: 'SIGNUP', // 비밀번호 변경 시에는 PW여야 함
+        recipientPhoneNumber: routeParams.phoneNumber,
+        smsType: forPassword ? 'PW' : 'SIGNUP',
       },
     });
     setSeconds(0);
@@ -131,7 +138,7 @@ function PhoneAuthScreen({ navigation, route }: PhoneAuthScreenProp) {
         url: 'api/v1/sms/validation/code',
         data: {
           smsCode: filledTexts.join('').toUpperCase(),
-          phoneNumber,
+          phoneNumber: routeParams.phoneNumber,
         },
       })
       .then((response) => {
@@ -141,9 +148,11 @@ function PhoneAuthScreen({ navigation, route }: PhoneAuthScreenProp) {
               screen: 'phone_auth',
               label: 'success',
             });
+            const alarmStatus =
+              'alarmStatus' in routeParams ? routeParams.alarmStatus : false;
             navigation.navigate('EmailInput', {
-              phoneNumber,
-              countryCode,
+              phoneNumber: routeParams.phoneNumber,
+              countryCode: routeParams.countryCode,
               alarmStatus,
             });
           } else {
@@ -151,9 +160,50 @@ function PhoneAuthScreen({ navigation, route }: PhoneAuthScreenProp) {
               screen: 'phone_auth',
               label: 'not_success',
             });
+            toastRef.current?.show('다시 시도해주세요');
           }
         }
       });
+  };
+
+  const postPasswordAuth = () => {
+    Analytics.logEvent('send_password_phone_auth', {
+      screen: 'phone_auth',
+    });
+    publicAPI
+      .post({
+        url: 'api/v1/sms/validation/password-code',
+        data: {
+          smsCode: filledTexts.join('').toUpperCase(),
+          phoneNumber: routeParams.phoneNumber,
+        },
+      })
+      .then((response) => {
+        if (typeof response.code === 'string' && response.code === 'SUCCESS') {
+          Analytics.logEvent('get_password_phone_auth_response', {
+            screen: 'phone_auth',
+            label: 'success',
+          });
+          navigation.navigate('PasswordIssue', {
+            phoneNumber: routeParams.phoneNumber,
+          });
+        } else {
+          Analytics.logEvent('get_phone_auth_response', {
+            screen: 'phone_auth',
+            label: 'not_success',
+          });
+          toastRef.current?.show('다시 시도해주세요');
+        }
+      });
+  };
+
+  const onSubmitClick = () => {
+    const forPassword = 'forPassword' in routeParams;
+    if (forPassword) {
+      postPasswordAuth();
+    } else {
+      postPhoneAuth();
+    }
   };
 
   return (
@@ -246,7 +296,7 @@ function PhoneAuthScreen({ navigation, route }: PhoneAuthScreenProp) {
         전송된 인증번호는 3분 동안만 입력 가능해요.
       </Text>
       <View style={{ marginTop: 22 }}>
-        <ButtonNext onPress={postPhoneAuth} isActivated />
+        <ButtonNext onPress={onSubmitClick} isActivated />
       </View>
       <View style={styles.resendContainer}>
         <Text style={styles.resendTimerText}>
@@ -258,6 +308,12 @@ function PhoneAuthScreen({ navigation, route }: PhoneAuthScreenProp) {
           </Text>
         </View>
       </View>
+      <Toast
+        ref={toastRef}
+        position="bottom"
+        fadeInDuration={200}
+        fadeOutDuration={1000}
+      />
     </SafeAreaView>
   );
 }

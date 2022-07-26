@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import {
   Text,
@@ -14,9 +14,9 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import WebView from 'react-native-webview';
 import * as Analytics from 'expo-firebase-analytics';
+import Toast from 'react-native-easy-toast';
 import BottomSheet from '../../../custom-modules/react-native-getsture-bottom-sheet';
 import ButtonBack from '../../components/ButtonBack';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function PhoneInputScreen({ navigation }: PhoneInputScreenProp) {
+function PhoneInputScreen({ navigation, route }: PhoneInputScreenProp) {
   const [selectedCountry, setSelectedCountry] = useState('KR');
   const [phone, setPhone] = useState('');
   const [termsChecked, setTermsChecked] = useState(false);
@@ -130,29 +130,39 @@ function PhoneInputScreen({ navigation }: PhoneInputScreenProp) {
   const [termsOpened, setTermsOpened] = useState(false);
   const [policyOpened, setPolicyOpened] = useState(false);
   const bottomSheetRef = useRef<any>(null);
+  const toastRef = useRef<Toast>(null);
   const [selectingCountry, setSelectingCountry] = useState<string | null>(null);
-  const [userState, setUserState] = useState<{
-    isLoggedIn: boolean;
-  }>({
-    isLoggedIn: false,
-  });
+  const routeParams = route.params;
 
-  useEffect(() => {
-    AsyncStorage.getItem('token').then((token) => {
-      setUserState((prev) => ({ ...prev, isLoggedIn: token !== null }));
+  const postPhoneAuthForPwChange = () => {
+    if (phone === '') return;
+    Analytics.logEvent('send_phone_info', {
+      screen: 'phone_input',
     });
-  }, []);
-
-  // useEffect(() => {
-  //   if (phone.length === 10) {
-  //     setPhone(phone.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3'));
-  //   }
-  //   if (phone.length === 13) {
-  //     setPhone(
-  //       phone.replace(/-/g, '').replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3'),
-  //     );
-  //   }
-  // }, [phone]);
+    publicAPI
+      .post({
+        url: 'api/v1/sms/code',
+        data: {
+          countryCode:
+            countryCodeWithTelNumber.find(
+              (country: Country) => country.countryCode === selectedCountry,
+            )?.countryPhoneNumber ?? '',
+          recipientPhoneNumber: phone.replaceAll('-', ''),
+          smsType: 'PW',
+        },
+      })
+      .then((response) => {
+        if (response.responseSuccess && response.code === 'SUCCESS') {
+          navigation.navigate('PhoneAuth', {
+            phoneNumber: phone,
+            countryCode: selectedCountry,
+            forPassword: true,
+          });
+        } else {
+          toastRef.current?.show(response.message ?? '다시 시도해주세요');
+        }
+      });
+  };
 
   const postPhoneAuth = () => {
     if (phone === '') return;
@@ -168,17 +178,28 @@ function PhoneInputScreen({ navigation }: PhoneInputScreenProp) {
               (country: Country) => country.countryCode === selectedCountry,
             )?.countryPhoneNumber ?? '',
           recipientPhoneNumber: phone.replaceAll('-', ''),
-          smsType: 'SIGNUP', // 비밀번호 변경 시에는 PW여야 함
+          smsType: 'SIGNUP',
         },
       })
       .then((response) => {
-        if (response.responseSuccess)
+        if (response.responseSuccess && response.code === 'SUCCESS') {
           navigation.navigate('PhoneAuth', {
             phoneNumber: phone,
             countryCode: selectedCountry,
             alarmStatus: alertChecked,
           });
+        } else {
+          toastRef.current?.show(response.message ?? '다시 시도해주세요');
+        }
       });
+  };
+
+  const sendSms = () => {
+    if (routeParams?.forPassword) {
+      postPhoneAuthForPwChange();
+    } else {
+      postPhoneAuth();
+    }
   };
 
   return (
@@ -275,94 +296,106 @@ function PhoneInputScreen({ navigation }: PhoneInputScreenProp) {
           maxLength={15}
         />
       </View>
-      <View>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginBottom: 16,
-          }}
-        >
-          <TouchableOpacity onPress={() => setTermsChecked((prev) => !prev)}>
-            <Image
-              source={
-                termsChecked ? icCheckboxCheckedTrue : icCheckboxCheckedFalse
-              }
-              style={{ width: 16, height: 16, marginRight: 16 }}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{ borderBottomColor: COLORS.BLUE_500, borderBottomWidth: 1 }}
-            onPress={() => setTermsOpened(true)}
+      {routeParams?.forPassword !== true && (
+        <View>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginBottom: 16,
+            }}
           >
+            <TouchableOpacity onPress={() => setTermsChecked((prev) => !prev)}>
+              <Image
+                source={
+                  termsChecked ? icCheckboxCheckedTrue : icCheckboxCheckedFalse
+                }
+                style={{ width: 16, height: 16, marginRight: 16 }}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                borderBottomColor: COLORS.BLUE_500,
+                borderBottomWidth: 1,
+              }}
+              onPress={() => setTermsOpened(true)}
+            >
+              <Text
+                style={{
+                  fontFamily: 'Pretendard',
+                  color: COLORS.BLUE_500,
+                  fontSize: 12,
+                }}
+              >
+                개인정보처리방침
+              </Text>
+            </TouchableOpacity>
             <Text
               style={{
                 fontFamily: 'Pretendard',
-                color: COLORS.BLUE_500,
+                color: COLORS.TEXT_SECONDARY,
                 fontSize: 12,
               }}
             >
-              개인정보처리방침
+              {' '}
+              및{' '}
             </Text>
-          </TouchableOpacity>
-          <Text
-            style={{
-              fontFamily: 'Pretendard',
-              color: COLORS.TEXT_SECONDARY,
-              fontSize: 12,
-            }}
-          >
-            {' '}
-            및{' '}
-          </Text>
-          <TouchableOpacity
-            style={{ borderBottomColor: COLORS.BLUE_500, borderBottomWidth: 1 }}
-            onPress={() => setPolicyOpened(true)}
-          >
+            <TouchableOpacity
+              style={{
+                borderBottomColor: COLORS.BLUE_500,
+                borderBottomWidth: 1,
+              }}
+              onPress={() => setPolicyOpened(true)}
+            >
+              <Text
+                style={{
+                  fontFamily: 'Pretendard',
+                  color: COLORS.BLUE_500,
+                  fontSize: 12,
+                }}
+              >
+                서비스 이용약관
+              </Text>
+            </TouchableOpacity>
             <Text
               style={{
                 fontFamily: 'Pretendard',
-                color: COLORS.BLUE_500,
+                color: COLORS.TEXT_SECONDARY,
                 fontSize: 12,
               }}
             >
-              서비스 이용약관
+              에 동의합니다.
             </Text>
-          </TouchableOpacity>
-          <Text
-            style={{
-              fontFamily: 'Pretendard',
-              color: COLORS.TEXT_SECONDARY,
-              fontSize: 12,
-            }}
-          >
-            에 동의합니다.
-          </Text>
+          </View>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <TouchableOpacity onPress={() => setAlertChecked((prev) => !prev)}>
+              <Image
+                source={
+                  alertChecked ? icCheckboxCheckedTrue : icCheckboxCheckedFalse
+                }
+                style={{ width: 16, height: 16, marginRight: 16 }}
+              />
+            </TouchableOpacity>
+            <Text
+              style={{
+                fontFamily: 'Pretendard',
+                color: COLORS.TEXT_SECONDARY,
+                fontSize: 12,
+              }}
+            >
+              서비스 알람 수신에 동의합니다. (선택)
+            </Text>
+          </View>
         </View>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <TouchableOpacity onPress={() => setAlertChecked((prev) => !prev)}>
-            <Image
-              source={
-                alertChecked ? icCheckboxCheckedTrue : icCheckboxCheckedFalse
-              }
-              style={{ width: 16, height: 16, marginRight: 16 }}
-            />
-          </TouchableOpacity>
-          <Text
-            style={{
-              fontFamily: 'Pretendard',
-              color: COLORS.TEXT_SECONDARY,
-              fontSize: 12,
-            }}
-          >
-            서비스 알람 수신에 동의합니다. (선택)
-          </Text>
-        </View>
-      </View>
+      )}
       <View style={{ marginTop: 22 }}>
         <ButtonNext
-          onPress={postPhoneAuth}
-          isActivated={phone !== '' && selectedCountry !== null && termsChecked}
+          onPress={sendSms}
+          isActivated={
+            phone !== '' &&
+            selectedCountry !== null &&
+            (termsChecked || routeParams?.forPassword === true)
+          }
         />
       </View>
       <Modal
@@ -445,6 +478,12 @@ function PhoneInputScreen({ navigation }: PhoneInputScreenProp) {
           </Pressable>
         </Pressable>
       </Modal>
+      <Toast
+        ref={toastRef}
+        position="bottom"
+        fadeInDuration={200}
+        fadeOutDuration={1000}
+      />
     </SafeAreaView>
   );
 }
