@@ -8,9 +8,10 @@ import {
   Pressable,
   Platform,
 } from 'react-native';
-import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler';
 import MapView, { Marker } from 'react-native-maps';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import BottomSheet from '../../../custom-modules/react-native-getsture-bottom-sheet';
 import { privateAPI } from '../../../infrastructures/api/remote/base';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
@@ -19,6 +20,7 @@ import { getDistance } from '../../../infrastructures/utils/distances';
 
 import COLORS from '../../styles/colors';
 import { FamilyProfile } from '../../../infrastructures/types/map';
+import Header from '../../components/Header';
 
 type MapScreenProp = NativeStackScreenProps<NavigationStackParams, 'Map'>;
 
@@ -172,13 +174,11 @@ const styles = StyleSheet.create({
 });
 
 const addFamily = require('../../../assets/ic-add-family.png');
-const IcNotice = require('../../../assets/ic-bell.png');
-const IcMyPage = require('../../../assets/ic-user-circle.png');
 
 function MapScreen({ navigation }: MapScreenProp) {
   const bottomSheetRef = useRef<any>(null);
   const [familyProfile, setFamilyProfile] = useState<FamilyProfile[]>([]);
-  const [myNickName, setMyNickName] = useState('');
+  const [familyName, setFamilyName] = useState<string>('');
   const [myCommunicationCnt, setMyCommunicationCnt] = useState(0);
   const [userID, setUserID] = useState<number | undefined>(undefined);
   const [selectedFamilyID, setSelectedFamilyID] = useState<number | undefined>(
@@ -210,6 +210,22 @@ function MapScreen({ navigation }: MapScreenProp) {
     });
   }, []);
 
+  const setFamilyNameFromRemote = () => {
+    privateAPI
+      .get({
+        url: 'api/v1/users/auth',
+      })
+      .then((response) => {
+        if (response.code === 'SUCCESS') {
+          setFamilyName(response.singleData.groupName);
+        }
+      });
+  };
+
+  useEffect(() => {
+    setFamilyNameFromRemote();
+  }, []);
+
   const shouldHightlightMarker = (familyID: number) => {
     if (selectedFamilyID === undefined) return false;
     if (selectedFamilyID === userID) return false;
@@ -217,6 +233,8 @@ function MapScreen({ navigation }: MapScreenProp) {
     if (familyID === selectedFamilyID) return true;
     return false;
   };
+
+  const insets = useSafeAreaInsets();
 
   return (
     <View style={[{ flex: 1 }]}>
@@ -240,8 +258,13 @@ function MapScreen({ navigation }: MapScreenProp) {
                 </Text>
               </View>
               <View style={[styles.textWrapper1, styles.textWrapper2]}>
-                <Text style={styles.subText}>가족 채널명</Text>
-                <Pressable onPress={() => navigation.navigate('EditProfile')}>
+                <Text style={styles.subText}>{familyName}</Text>
+                <Pressable
+                  onPress={() => {
+                    bottomSheetRef.current?.close();
+                    navigation.navigate('EditProfile');
+                  }}
+                >
                   <Text style={styles.editText}>수정 {'>'} </Text>
                 </Pressable>
               </View>
@@ -390,16 +413,21 @@ function MapScreen({ navigation }: MapScreenProp) {
         </MapView>
       </View>
 
-      <View style={styles.headerContainer}>
-        <Text style={styles.headerTitle}>마음거리</Text>
-        <View style={{ flexDirection: 'row' }}>
-          <TouchableOpacity onPress={() => navigation.navigate('Notice')}>
-            <Image source={IcNotice} style={styles.headerNotice} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('MyPage')}>
-            <Image source={IcMyPage} style={styles.headerMyPage} />
-          </TouchableOpacity>
-        </View>
+      <View
+        style={{
+          padding: 16,
+          width: '100%',
+          position: 'absolute',
+          marginTop: insets.top,
+        }}
+      >
+        <Header
+          isTitleLogo={false}
+          title="마음거리"
+          navigate={(screen: keyof NavigationStackParams) =>
+            navigation.navigate(screen)
+          }
+        />
       </View>
 
       <Pressable

@@ -25,10 +25,10 @@ import {
 import ClockItem from '../../components/ClockItem';
 import FeedsPerDay from '../../components/FeedsPerDay';
 import COLORS from '../../styles/colors';
-import { commonStyles } from '../../styles/common';
 import ReactionItem from '../../components/ReactionItem';
 import AudioRecorder from '../../components/AudioRecorder';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
+import Header from '../../components/Header';
 
 const { width, height } = Dimensions.get('window');
 const reactionEmojis: string[] = require('../../../infrastructures/data/reactionEmoji.json');
@@ -142,8 +142,6 @@ const IcEmojiSelectedFalse = require('../../../assets/ic-emoji-selected-false.pn
 const IcEmojiSelectedTrue = require('../../../assets/ic-emoji-selected-true.png');
 const IcMikeSelectedFalse = require('../../../assets/ic-mike-selected-false.png');
 const IcMikeSelectedTrue = require('../../../assets/ic-mike-selected-true.png');
-const IcNotice = require('../../../assets/ic-bell.png');
-const IcMyPage = require('../../../assets/ic-user-circle.png');
 const imgFeedShadow = require('../../../assets/img-feed-shadow.png');
 
 type FeedScreenProp = NativeStackScreenProps<NavigationStackParams, 'Feed'>;
@@ -448,19 +446,14 @@ function FeedScreen({ navigation }: FeedScreenProp) {
       >
         <View>
           <View style={styles.timeContainer}>
-            <View style={commonStyles.titleWrapper}>
-              <Text style={commonStyles.title}>소통함</Text>
-              <View style={styles.headerIconWrapper}>
-                <TouchableOpacity onPress={() => navigation.navigate('Notice')}>
-                  <Image
-                    source={IcNotice}
-                    style={[styles.headerIcon, styles.headerIconFirst]}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate('MyPage')}>
-                  <Image source={IcMyPage} style={styles.headerIcon} />
-                </TouchableOpacity>
-              </View>
+            <View style={{ padding: 16 }}>
+              <Header
+                isTitleLogo={false}
+                title="소통함"
+                navigate={(screen: keyof NavigationStackParams) =>
+                  navigation.navigate(screen)
+                }
+              />
             </View>
             <View style={styles.timeWrapper}>
               <View style={[styles.timeChild, styles.rightBorder]}>

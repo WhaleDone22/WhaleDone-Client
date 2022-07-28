@@ -2,7 +2,7 @@
   "expo": {
     "name": "WhaleDone",
     "slug": "WhaleDone",
-    "version": "1.0.14",
+    "version": "1.0.15",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -16,7 +16,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "bundleIdentifier": "com.softsquared.whaledone",
-      "buildNumber": "1.0.14",
+      "buildNumber": "1.0.15",
       "googleServicesFile": "./GoogleService-Info.plist",
       "supportsTablet": false,
       "infoPlist": {

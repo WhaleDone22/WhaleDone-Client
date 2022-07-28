@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   Text,
   StyleSheet,
@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
+import Toast from 'react-native-easy-toast';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { publicAPI } from '../../../infrastructures/api/remote/base';
 import { NavigationStackParams } from '../../../infrastructures/types/NavigationStackParams';
@@ -61,11 +62,12 @@ function LoginScreen({ navigation, setLogin }: LoginScreenProp) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isPasswordVisible, setIsPasswordVisible] = useState(true);
+  const toastRef = useRef<Toast>(null);
   const handleLogin = async () => {
     publicAPI
       .post({ url: 'api/v1/user/sign-in', data: { email, password } })
       .then(async (response) => {
-        if (response.responseSuccess) {
+        if (response.code === 'SUCCESS') {
           if (typeof response.singleData.jwtToken === 'string') {
             await AsyncStorage.setItem(
               'token',
@@ -91,14 +93,14 @@ function LoginScreen({ navigation, setLogin }: LoginScreenProp) {
               }
             }
           } else {
-            // 에러 띄우기
+            toastRef.current?.show('다시 시도해주세요');
           }
         } else {
-          // 여기서 에러 띄우기
+          toastRef.current?.show(response.message);
         }
       })
-      .catch((/* error */) => {
-        // 여기서도 에러 띄우기
+      .catch(() => {
+        toastRef.current?.show('다시 시도해주세요');
       });
   };
 
@@ -164,7 +166,9 @@ function LoginScreen({ navigation, setLogin }: LoginScreenProp) {
             borderBottomWidth: 2,
             paddingBottom: 2,
           }}
-          onPress={() => navigation.navigate('PasswordFind')}
+          onPress={() =>
+            navigation.navigate('PhoneInput', { forPassword: true })
+          }
         >
           <Text
             style={{
@@ -177,6 +181,12 @@ function LoginScreen({ navigation, setLogin }: LoginScreenProp) {
           </Text>
         </TouchableOpacity>
       </View>
+      <Toast
+        ref={toastRef}
+        position="bottom"
+        fadeInDuration={200}
+        fadeOutDuration={1000}
+      />
     </SafeAreaView>
   );
 }
