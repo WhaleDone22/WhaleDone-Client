@@ -1,5 +1,21 @@
 import React, { useRef, useState } from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Alert
+} from 'react-native';
+import {
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from 'react-native-popup-menu';
+import Modal from 'react-native-modal';
+import Tooltip from 'react-native-walkthrough-tooltip';
 import { api } from '../../infrastructures/api';
 import { Feed, reactionToIcon } from '../../infrastructures/types/feed';
 import COLORS from '../styles/colors';
@@ -7,6 +23,16 @@ import COLORS from '../styles/colors';
 const ImageEmptyProfile = require('../../assets/image-profile-empty.png');
 const IcEditBlack = require('../../assets/ic-edit-black.png');
 const IcDeleteRed = require('../../assets/ic-delete-red.png');
+const IcMore = require('../../assets/ic-more.png');
+const IcLine = require('../../assets/ic-moreBtn-line.png');
+
+const modalButtonStyle = {
+  width: 139,
+  height: 50,
+  borderRadius: 5,
+  justifyContent: 'center',
+  alignItems: 'center',
+};
 
 const styles = StyleSheet.create({
   profileImage: {
@@ -65,10 +91,22 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.GREY_030,
   },
-  feedReactions: {
+  iconsWrap: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     marginTop: 10,
     paddingHorizontal: 20,
+  },
+  feedReactions: {
+    flexDirection: 'row',
+  },
+  feedMoreButton: {
+    flexDirection: 'row',
+  },
+  moreIcon: {
+    width: 16,
+    height: 16,
+    marginVertical: 8,
   },
   reactionBox: {
     flexDirection: 'row',
@@ -94,6 +132,43 @@ const styles = StyleSheet.create({
     fontFamily: 'Pretendard',
     color: 'black',
     paddingHorizontal: 20,
+  },
+  modalContainer: {
+    width: 327,
+    height: 194,
+    backgroundColor: '#ffffff',
+    borderRadius: 10,
+    padding: 20,
+    justifyContent: 'space-between',
+    position: 'absolute',
+  },
+  modalTitleText: {
+    fontFamily: 'Pretendard-Bold',
+    fontSize: 20,
+  },
+  modalContentText: {
+    fontFamily: 'Pretendard',
+    fontSize: 14,
+    color: COLORS.TEXT_SECONDARY,
+    lineHeight: 25,
+  },
+  modalButtonWrap: {
+    flexDirection: 'row',
+  },
+  modalWithdrawButton: {
+    ...modalButtonStyle,
+    // backgroundColor: 'yellow',
+    marginRight: 9,
+    borderWidth: 1,
+    borderColor: COLORS.TEXT_DISABLED_GREY,
+  },
+  modalActiveButton: {
+    ...modalButtonStyle,
+    backgroundColor: COLORS.THEME_NEGATIVE,
+  },
+  modalButtonText: {
+    fontFamily: 'Pretendard',
+    fontSize: 16,
   },
 });
 
@@ -123,6 +198,11 @@ function FeedItem({
   const [positionY, setPositionY] = useState<number | undefined>(undefined);
   const [height, setHeight] = useState<number | undefined>(undefined);
   const [editVisible, setEditVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [modalValue, setModalValue] = useState<string>('');
+  const [modalContent, setModalContent] = useState('');
+  const [isReported, setIsReported] = useState<boolean>(false);
+
   const feedViewRef = useRef<View>(null);
   const onBubbleClicked = () => {
     setSelectedFeedID();
@@ -146,6 +226,37 @@ function FeedItem({
         fetchFeeds();
       }
     });
+  };
+
+  const onMorePressed = (value: string) => {
+    setModalVisible(true);
+    setModalValue(value);
+    if (value === '신고하기') {
+      setModalContent(
+        '상대방이 업로드한 모든 게시글이 삭제돼요. 신고 후에는 취소할 수 없으니 신중히 사용해 주세요.',
+      );
+    } else {
+      setModalContent(
+        '이제 상대방과 더 이상 소통하지 않아요. 차단 후에는 취소할 수 없으니 신중히 사용해 주세요.',
+      );
+    }
+  };
+
+  const onActivePressed = () => {
+    setIsReported(!isReported);
+    setModalVisible(false);
+    Alert.alert(
+      '⚠ 신고 접수 안내',
+      '서비스 운영정책 위반으로 소통이 임시 제한되었어요. 임시조치 기간동안 다른 서비스는 이용 가능하나 소통 공유는 불가하며 탈퇴에 제한이 있어요.',
+      [
+        {
+          text: '확인',
+          // onPress: () => console.log("글이 안보임"),
+          style: 'cancel',
+        },
+      ],
+      { cancelable: false },
+    );
   };
 
   return (
@@ -180,35 +291,97 @@ function FeedItem({
           onPress={onBubbleClicked}
           onLongPress={onBubbleLongPressed}
         >
-          <Text style={styles.titleText}>{feed.title}</Text>
-          {feed.type === 'TEXT' && (
-            <Text style={styles.bodyText}>{feed.body}</Text>
+          {isReported && (
+            <Text
+              style={{ color: COLORS.TEXT_DISABLED_GREY, textAlign: 'center' }}
+            >
+              신고 접수로 잠시 제한된 글입니다.
+            </Text>
           )}
-          {feed.type === 'IMAGE' && (
-            <View style={{ paddingHorizontal: 24 }}>
-              <Image
-                source={{ uri: feed.body }}
-                style={{
-                  width: '100%',
-                  height: 332,
-                  marginTop: 16,
-                  borderRadius: 5,
-                  alignSelf: 'center',
-                }}
-              />
+          {!isReported && (
+            <View>
+              <Text style={styles.titleText}>{feed.title}</Text>
+              {feed.type === 'TEXT' && (
+                <Text style={styles.bodyText}>{feed.body}</Text>
+              )}
+              {feed.type === 'IMAGE' && (
+                <View style={{ paddingHorizontal: 24 }}>
+                  <Image
+                    source={{ uri: feed.body }}
+                    style={{
+                      width: '100%',
+                      height: 332,
+                      marginTop: 16,
+                      borderRadius: 5,
+                      alignSelf: 'center',
+                    }}
+                  />
+                </View>
+              )}
+              <View style={styles.iconsWrap}>
+                <View style={styles.feedReactions}>
+                  {feed.reactions.map((reaction) => (
+                    <Pressable key={reaction.type} style={styles.reactionBox}>
+                      <Image
+                        source={reactionToIcon[reaction.type]}
+                        style={styles.reactionIcon}
+                      />
+                      <Text style={styles.reactionCount}>{reaction.count}</Text>
+                    </Pressable>
+                  ))}
+                </View>
+                <Modal
+                  // isVisible Props에 State 값을 물려주어 On/off control
+                  isVisible={modalVisible}
+                  // 아이폰에서 모달창 동작시 깜박임 해결
+                  useNativeDriver
+                  hideModalContentWhileAnimating
+                  style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <View style={styles.modalContainer}>
+                    <Text style={styles.modalTitleText}>{modalValue}</Text>
+                    <Text style={styles.modalContentText}>{modalContent}</Text>
+                    <View style={styles.modalButtonWrap}>
+                      <Pressable onPress={() => setModalVisible(false)}>
+                        <View style={styles.modalWithdrawButton}>
+                          <Text style={styles.modalButtonText}>취소하기</Text>
+                        </View>
+                      </Pressable>
+                      <Pressable onPress={onActivePressed}>
+                        <View style={styles.modalActiveButton}>
+                          <Text
+                            style={[styles.modalButtonText, { color: 'white' }]}
+                          >
+                            {modalValue}
+                          </Text>
+                        </View>
+                      </Pressable>
+                    </View>
+                  </View>
+                </Modal>
+                <Menu onSelect={onMorePressed}>
+                  <MenuTrigger>
+                    <Image source={IcMore} style={styles.moreIcon} />
+                  </MenuTrigger>
+                  <MenuOptions style={{ padding: 10 }}>
+                    <MenuOption value="신고하기" text="글 신고하기" />
+                    <MenuOption value={2} disableTouchable>
+                      <Image
+                        source={IcLine}
+                        style={{ width: 168, height: 1, alignItems: 'center' }}
+                      />
+                    </MenuOption>
+                    <MenuOption value="차단하기" text="사용자 차단하기" />
+                  </MenuOptions>
+                </Menu>
+              </View>
             </View>
           )}
-          <View style={styles.feedReactions}>
-            {feed.reactions.map((reaction) => (
-              <Pressable key={reaction.type} style={styles.reactionBox}>
-                <Image
-                  source={reactionToIcon[reaction.type]}
-                  style={styles.reactionIcon}
-                />
-                <Text style={styles.reactionCount}>{reaction.count}</Text>
-              </Pressable>
-            ))}
-          </View>
+
           {isMine && editVisible && (
             <View
               style={{
